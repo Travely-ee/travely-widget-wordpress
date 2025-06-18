@@ -72,7 +72,7 @@ class Plugin_Name {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'plugin-name';
+               $this->plugin_name = 'travely-widget';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -168,10 +168,10 @@ class Plugin_Name {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Plugin_Name_Public( $this->get_plugin_name(), $this->get_version() );
+               $plugin_public = new Plugin_Name_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+               $this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
+               $this->loader->add_action( 'init', $plugin_public, 'register_blocks' );
 
 	}
 
