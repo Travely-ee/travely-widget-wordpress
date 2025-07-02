@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              http://travely.ee
- * @since             1.0.0
+ * @since             1.0.1
  * @package           Travely_Widget
  *
  * @wordpress-plugin
  * Plugin Name:       Travely Widget
  * Plugin URI:        http://travely.ee
  * Description:       The plugin allows you to use the Travely system widget on your website.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Travely OU
  * Author URI:        http://travely.ee/
  * License:           Commerce

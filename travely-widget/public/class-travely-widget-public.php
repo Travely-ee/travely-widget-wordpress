@@ -87,7 +87,7 @@ class Travely_Widget_Public {
                ob_start();
                ?>
                <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search"></div>
-               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>');}});window.travelyWidgetInitialized=true;}})();</script>
+               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search','country']);}});window.travelyWidgetInitialized=true;}})();</script>
                <?php
                return ob_get_clean();
        }
