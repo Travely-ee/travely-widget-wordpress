@@ -16,7 +16,9 @@ The plugin allows you to use the Travely system widget on your website.
 2. Go to your WordPress admin panel.
 3. Navigate to Plugins → Add New → Upload Plugin.
 4. Upload the archive and activate the plugin.
+5. Create a new page with the `[travely-widget-results]` shortcode to display search results.
+6. Go to **Settings → Travely Widget** to configure the widget. Enter your API key and the URL of the search results page.
 
 == Usage ==
 
-After activation, use the `[travely_widget]` shortcode in any post or page to display the Travely widget.
+Use the `[travely-widget-search]`, `[travely-widget-country]`, or `[travely-widget-best]` shortcodes in any post or page to display Travely widgets.

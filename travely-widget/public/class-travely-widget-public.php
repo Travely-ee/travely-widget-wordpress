@@ -56,6 +56,8 @@ class Travely_Widget_Public {
 
        public function register_shortcodes() {
                add_shortcode( 'travely-widget-search', array( $this, 'render_search' ) );
+               add_shortcode( 'travely-widget-country', array( $this, 'render_countries' ) );
+               add_shortcode( 'travely-widget-best', array( $this, 'render_best_tours' ) );
                add_shortcode( 'travely-widget-results', array( $this, 'render_results' ) );
        }
 
@@ -63,6 +65,12 @@ class Travely_Widget_Public {
                if ( function_exists( 'register_block_type' ) ) {
                        register_block_type( 'travely/widget-search', array(
                                'render_callback' => array( $this, 'render_search' ),
+                       ) );
+                       register_block_type( 'travely/widget-country', array(
+                               'render_callback' => array( $this, 'render_countries' ),
+                       ) );
+                       register_block_type( 'travely/widget-best', array(
+                               'render_callback' => array( $this, 'render_best_tours' ),
                        ) );
                        register_block_type( 'travely/widget-results', array(
                                'render_callback' => array( $this, 'render_results' ),
@@ -81,18 +89,44 @@ class Travely_Widget_Public {
 
        public function render_search() {
                $this->enqueue_remote_assets();
-               $id   = $this->unique_id( 'travely-widget-search-' );
+               $id   = $this->unique_id( 'travely-widget-search-global-' );
                $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search"></div>
-               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search','country']);}});window.travelyWidgetInitialized=true;}})();</script>
+               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search travely-widget-search-global"></div>
+               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search']);}});window.travelyWidgetInitialized=true;}})();</script>
                <?php
                return ob_get_clean();
        }
 
-       public function render_results() {
+       public function render_countries() {
+               $this->enqueue_remote_assets();
+               $id   = $this->unique_id( 'travely-widget-search-country-' );
+               $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+
+               ob_start();
+               ?>
+               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search travely-widget-search-country"></div>
+               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['country']);}});window.travelyWidgetInitialized=true;}})();</script>
+               <?php
+               return ob_get_clean();
+       }
+
+        public function render_best_tours() {
+               $this->enqueue_remote_assets();
+               $id   = $this->unique_id( 'travely-widget-search-best-tours-' );
+               $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+
+               ob_start();
+               ?>
+               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search travely-widget-search-best-tours"></div>
+               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['best']);}});window.travelyWidgetInitialized=true;}})();</script>
+               <?php
+               return ob_get_clean();
+        }
+
+    public function render_results() {
                $this->enqueue_remote_assets();
                $id   = $this->unique_id( 'travely-widget-results-' );
                $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
