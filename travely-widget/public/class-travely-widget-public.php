@@ -85,8 +85,8 @@ class Travely_Widget_Public {
        }
 
        private function enqueue_remote_assets() {
-               wp_enqueue_style( 'travely-widget-remote-css', 'https://devwidget.travely.ee/eng/static/css/main.css', array(), $this->version );
-               wp_enqueue_script( 'travely-widget-remote-js', 'https://devwidget.travely.ee/eng/static/js/main.js', array(), $this->version, true );
+               wp_enqueue_style( 'travely-widget-remote-css', 'https://devwidget.travely.ee/est/static/css/main.css', array(), $this->version );
+               wp_enqueue_script( 'travely-widget-remote-js', 'https://devwidget.travely.ee/est/static/js/main.js', array(), $this->version, true );
        }
 
        private function unique_id( $prefix ) {
