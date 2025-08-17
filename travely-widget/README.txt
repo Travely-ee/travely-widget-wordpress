@@ -1,7 +1,7 @@
 === Travely Widget ===
 Requires at least: 4.3
 Tested up to: 4.3
-Stable tag: 1.0.5
+Stable tag: 1.0.8
 License: Commerce
 
 The plugin allows you to use the Travely system widget on your website.
@@ -22,7 +22,3 @@ The plugin allows you to use the Travely system widget on your website.
 == Usage ==
 
 Use the `[travely-widget-search]`, `[travely-widget-country]`, or `[travely-widget-best]` shortcodes in any post or page to display Travely widgets.
-
-== Changelog ==
-= 1.0.5 =
-* Use Web Components with Shadow DOM to isolate widget CSS styles.
