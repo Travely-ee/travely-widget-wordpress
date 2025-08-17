@@ -3,6 +3,40 @@
   if (window.__TravelyWidgetComponentLoaded__) return;
   window.__TravelyWidgetComponentLoaded__ = true;
 
+  // --- Глобальный реестр контейнеров в Shadow DOM (только для наших id) ---
+  window.__TravelyShadowContainers__ = window.__TravelyShadowContainers__ || new Map();
+
+  // Патч для document.getElementById и querySelector только на наши id
+  // (если уже пропатчено — пропускаем)
+  if (!window.__TravelyWidgetDomPatched__) {
+    window.__TravelyWidgetDomPatched__ = true;
+    const OG_getElementById = document.getElementById.bind(document);
+    const OG_querySelector = document.querySelector.bind(document);
+
+    document.getElementById = function (id) {
+      if (window.__TravelyShadowContainers__ && window.__TravelyShadowContainers__.has(id)) {
+        return window.__TravelyShadowContainers__.get(id);
+      }
+      return OG_getElementById(id);
+    };
+
+    document.querySelector = function (selector) {
+      // минимальная поддержка случая "#id"
+      if (typeof selector === 'string' && selector.startsWith('#')) {
+        const id = selector.slice(1);
+        if (window.__TravelyShadowContainers__ && window.__TravelyShadowContainers__.has(id)) {
+          return window.__TravelyShadowContainers__.get(id);
+        }
+      }
+      return OG_querySelector(selector);
+    };
+  }
+
+  // Хелпер: регистрирует элемент-контейнер под его id в глобальной карте
+  function registerShadowContainer(id, el) {
+    if (id && el) window.__TravelyShadowContainers__.set(id, el);
+  }
+
   class TravelyWidgetBase extends HTMLElement {
     constructor() {
       super();
@@ -30,13 +64,18 @@
       }
 
       // Пробрасываем id кастомного элемента в контейнер
-      const containerId = this.getAttribute('id') || this._generateId();
+      // ВАЖНО: id, по которому библиотека ищет контейнер, должен быть на самом контейнере.
+      // Он находится в Shadow DOM, поэтому регистрируем его в глобальной карте.
+      const hostId = this.getAttribute('id'); // мог быть задан на custom-element
+      const containerId = hostId || this._generateId();
       container.id = containerId;
-      // Убираем id у host-элемента, чтобы не было дублирования в основном DOM
-      if (this.hasAttribute('id')) this.removeAttribute('id');
+      // id оставляем ТОЛЬКО на контейнере в shadow; на host можно убрать, чтобы не было дубликата
+      if (hostId) this.removeAttribute('id');
 
       this._shadow.appendChild(container);
       this._container = container;
+      // Регистрируем контейнер, чтобы document.getElementById('#id') вернул его
+      registerShadowContainer(containerId, this._container);
     }
 
     get mode() {
