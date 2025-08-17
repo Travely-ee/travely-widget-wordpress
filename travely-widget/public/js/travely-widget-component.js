@@ -1,79 +1,134 @@
-class TravelyWidgetElement extends HTMLElement {
-    constructor() {
-        super();
-        const shadow = this.attachShadow({mode: 'open'});
-        // Load external CSS inside shadow DOM
-        const link = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', 'https://devwidget.travely.ee/est/static/css/main.css');
-        shadow.appendChild(link);
+(() => {
+  // Защита от двойной инициализации файла
+  if (window.__TravelyWidgetComponentLoaded__) return;
+  window.__TravelyWidgetComponentLoaded__ = true;
 
-        // Create container inside shadow
-        const container = document.createElement('div');
-        const tag = this.tagName.toLowerCase();
-        if (tag === 'travely-widget-results') {
-            container.classList.add('travely-widget-results');
-        } else {
-            container.classList.add('travely-widget-search');
-            if (tag === 'travely-widget-search') {
-                container.classList.add('travely-widget-search-global');
-            } else if (tag === 'travely-widget-country') {
-                container.classList.add('travely-widget-search-country');
-            } else if (tag === 'travely-widget-best') {
-                container.classList.add('travely-widget-search-best-tours');
-            }
+  class TravelyWidgetBase extends HTMLElement {
+    constructor() {
+      super();
+      this._shadow = this.attachShadow({ mode: 'open' });
+
+      // Подключаем CSS внутрь Shadow DOM
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://devwidget.travely.ee/est/static/css/main.css';
+      this._shadow.appendChild(link);
+
+      // Создаем контейнер
+      const container = document.createElement('div');
+      if (this.mode === 'results') {
+        container.classList.add('travely-widget-results');
+      } else {
+        container.classList.add('travely-widget-search');
+        if (this.mode === 'search') {
+          container.classList.add('travely-widget-search-global');
+        } else if (this.mode === 'country') {
+          container.classList.add('travely-widget-search-country');
+        } else if (this.mode === 'best') {
+          container.classList.add('travely-widget-search-best-tours');
         }
-        // Use element's id as container id if provided
-        const containerId = this.getAttribute('id');
-        if (containerId) {
-            container.setAttribute('id', containerId);
-            // Remove id from custom element to avoid duplicate
-            this.removeAttribute('id');
-        }
-        shadow.appendChild(container);
-        this._container = container;
+      }
+
+      // Пробрасываем id кастомного элемента в контейнер
+      const containerId = this.getAttribute('id') || this._generateId();
+      container.id = containerId;
+      // Убираем id у host-элемента, чтобы не было дублирования в основном DOM
+      if (this.hasAttribute('id')) this.removeAttribute('id');
+
+      this._shadow.appendChild(container);
+      this._container = container;
+    }
+
+    get mode() {
+      // У подклассов переопределено статическое свойство
+      return this.constructor.__mode || 'search';
+    }
+
+    _generateId() {
+      return `travely-widget-${this.mode}-${Math.random().toString(36).slice(2, 9)}`;
     }
 
     connectedCallback() {
-        const tag = this.tagName;
-        // Retrieve data from attributes
-        const key = this.getAttribute('data-key');
-        const path = this.getAttribute('data-path');
-        // Function to initialize TravelySearch
-        const runInit = () => {
-            if (tag === 'TRAVELY-WIDGET-RESULTS') {
-                // Initialize results iframe
-                window.TravelySearch.initIframe(this._container.id, key, path);
-            } else if (tag === 'TRAVELY-WIDGET-SEARCH') {
-                // Initialize search widget
-                window.TravelySearch.initSearch(this._container.id, path, ['search']);
-            } else {
-                // Initialize country or best tours widget
-                const mode = (tag === 'TRAVELY-WIDGET-COUNTRY') ? 'country' : (tag === 'TRAVELY-WIDGET-BEST') ? 'best' : '';
-                const settings = {
-                    containerId: this._container.id,
-                    mode: mode,
-                    pathToSearch: path,
-                    key: key
-                };
-                window.TravelySearch.initSearchSeparate([settings]);
-            }
-        };
-        // Wait for TravelySearch library to load
-        if (window.TravelySearch) {
-            runInit();
-        } else {
-            const interval = setInterval(() => {
-                if (window.TravelySearch) {
-                    clearInterval(interval);
-                    runInit();
-                }
-            }, 50);
-        }
-    }
-}
+      const key = this.getAttribute('data-key') || '';
+      const path = this.getAttribute('data-path') || '';
 
-customElements.define('travely-widget-search', TravelyWidgetElement);
-customElements.define('travely-widget-country', TravelyWidgetElement);
-customElements.define('travely-widget-best', TravelyWidgetElement);
-customElements.define('travely-widget-results', TravelyWidgetElement);
+      const runInit = () => {
+        try {
+          if (!window.TravelySearch) return;
+
+          switch (this.mode) {
+            case 'results':
+              if (typeof window.TravelySearch.initIframe === 'function') {
+                window.TravelySearch.initIframe(this._container.id, key, path);
+              }
+              break;
+            case 'search':
+              if (typeof window.TravelySearch.initSearch === 'function') {
+                window.TravelySearch.initSearch(this._container.id, path, ['search']);
+              }
+              break;
+            case 'country':
+            case 'best': {
+              if (typeof window.TravelySearch.initSearchSeparate === 'function') {
+                const settings = [{
+                  containerId: this._container.id,
+                  mode: this.mode,
+                  pathToSearch: path,
+                  key: key
+                }];
+                window.TravelySearch.initSearchSeparate(settings);
+              }
+              break;
+            }
+          }
+        } catch (e) {
+          // не ломаем страницу, просто логируем
+          console.error('Travely Widget init error:', e);
+        }
+      };
+
+      // Ждем, пока загрузится библиотека TravelySearch
+      if (window.TravelySearch) {
+        runInit();
+      } else {
+        const t0 = Date.now();
+        const interval = setInterval(() => {
+          if (window.TravelySearch) {
+            clearInterval(interval);
+            runInit();
+          } else if (Date.now() - t0 > 10000) {
+            // фейл-сейф: перестаем ждать через 10с
+            clearInterval(interval);
+          }
+        }, 50);
+      }
+    }
+  }
+
+  // Подклассы с уникальными конструкторами
+  class TravelyWidgetSearch extends TravelyWidgetBase {}
+  TravelyWidgetSearch.__mode = 'search';
+
+  class TravelyWidgetCountry extends TravelyWidgetBase {}
+  TravelyWidgetCountry.__mode = 'country';
+
+  class TravelyWidgetBest extends TravelyWidgetBase {}
+  TravelyWidgetBest.__mode = 'best';
+
+  class TravelyWidgetResults extends TravelyWidgetBase {}
+  TravelyWidgetResults.__mode = 'results';
+
+  // Регистрируем, если еще не зарегистрированы
+  if (!customElements.get('travely-widget-search')) {
+    customElements.define('travely-widget-search', TravelyWidgetSearch);
+  }
+  if (!customElements.get('travely-widget-country')) {
+    customElements.define('travely-widget-country', TravelyWidgetCountry);
+  }
+  if (!customElements.get('travely-widget-best')) {
+    customElements.define('travely-widget-best', TravelyWidgetBest);
+  }
+  if (!customElements.get('travely-widget-results')) {
+    customElements.define('travely-widget-results', TravelyWidgetResults);
+  }
+})();
