@@ -85,7 +85,7 @@ class Travely_Widget_Public {
        }
 
        private function enqueue_remote_assets() {
-               wp_enqueue_style( 'travely-widget-remote-css', 'https://devwidget.travely.ee/est/static/css/main.css', array(), $this->version );
+               // wp_enqueue_style( 'travely-widget-remote-css', 'https://devwidget.travely.ee/est/static/css/main.css', array(), $this->version );
                wp_enqueue_script( 'travely-widget-remote-js', 'https://devwidget.travely.ee/est/static/js/main.js', array(), $this->version, true );
        }
 
@@ -99,11 +99,7 @@ class Travely_Widget_Public {
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search travely-widget-search-global"></div>
-               <script>
-                   window.travelyWidgetInstances = window.travelyWidgetInstances || [];
-                   window.travelyWidgetInstances.push({ mode: 'search', containerId: '<?php echo esc_js( $id ); ?>', key: '<?php echo esc_js($this->key); ?>', path: '<?php echo esc_js($this->path); ?>' });
-               </script>
+               <travely-widget-search id="<?php echo esc_attr( $id ); ?>" data-key="<?php echo esc_attr( $this->key ); ?>" data-path="<?php echo esc_attr( $this->path ); ?>"></travely-widget-search>
                <?php
                return ob_get_clean();
        }
@@ -114,11 +110,7 @@ class Travely_Widget_Public {
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search travely-widget-search-country"></div>
-               <script>
-                   window.travelyWidgetInstances = window.travelyWidgetInstances || [];
-                   window.travelyWidgetInstances.push({ mode: 'country', containerId: '<?php echo esc_js( $id ); ?>', key: '<?php echo esc_js($this->key); ?>', path: '<?php echo esc_js($this->path); ?>' });
-               </script>
+               <travely-widget-country id="<?php echo esc_attr( $id ); ?>" data-key="<?php echo esc_attr( $this->key ); ?>" data-path="<?php echo esc_attr( $this->path ); ?>"></travely-widget-country>
                <?php
                return ob_get_clean();
        }
@@ -129,11 +121,7 @@ class Travely_Widget_Public {
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search travely-widget-search-best-tours"></div>
-               <script>
-                    window.travelyWidgetInstances = window.travelyWidgetInstances || [];
-                    window.travelyWidgetInstances.push({ mode: 'best', containerId: '<?php echo esc_js( $id ); ?>', key: '<?php echo esc_js($this->key); ?>', path: '<?php echo esc_js($this->path); ?>' });
-               </script>
+               <travely-widget-best id="<?php echo esc_attr( $id ); ?>" data-key="<?php echo esc_attr( $this->key ); ?>" data-path="<?php echo esc_attr( $this->path ); ?>"></travely-widget-best>
                <?php
                return ob_get_clean();
         }
@@ -144,11 +132,7 @@ class Travely_Widget_Public {
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results"></div>
-               <script>
-                   window.travelyWidgetInstances = window.travelyWidgetInstances || [];
-                   window.travelyWidgetInstances.push({ mode: 'result', containerId: '<?php echo esc_js( $id ); ?>', key: '<?php echo esc_js($this->key); ?>', path: '<?php echo esc_js($this->path); ?>' });
-               </script>
+               <travely-widget-results id="<?php echo esc_attr( $id ); ?>" data-key="<?php echo esc_attr( $this->key ); ?>" data-path="<?php echo esc_attr( $this->path ); ?>"></travely-widget-results>
                <?php
                return ob_get_clean();
        }
@@ -168,6 +152,7 @@ class Travely_Widget_Public {
 	 */
 	public function enqueue_scripts() {
         wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/travely-widget-public.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( $this->plugin_name . '-component', plugin_dir_url( __FILE__ ) . 'js/travely-widget-component.js', array(), $this->version, false );
 	}
 
 }
