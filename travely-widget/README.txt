@@ -21,4 +21,4 @@ The plugin allows you to use the Travely system widget on your website.
 
 == Usage ==
 
-Use the `[travely-widget-search]`, `[travely-widget-country]`, or `[travely-widget-results]` shortcodes in any post or page to display Travely widgets.
+Use the `[travely-widget-search]`, `[travely-widget-country]`, or `[travely-widget-search-country]` shortcodes in any post or page to display Travely widgets.
