@@ -14,6 +14,6 @@
 
 ## Использование 
 
-Используйте шорткоды `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-best]` в любой записи или странице, чтобы отобразить виджеты Travely. 
+Используйте шорткоды `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]` в любой записи или странице, чтобы отобразить виджеты Travely. 
 
 
