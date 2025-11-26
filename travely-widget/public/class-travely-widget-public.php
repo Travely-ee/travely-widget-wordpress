@@ -56,6 +56,8 @@ class Travely_Widget_Public {
 
        public function register_shortcodes() {
                add_shortcode( 'travely-widget-search', array( $this, 'render_search' ) );
+               add_shortcode( 'travely-widget-search-country', array( $this, 'render_search_country' ) );
+               add_shortcode( 'travely-widget-country', array( $this, 'render_country' ) );
                add_shortcode( 'travely-widget-results', array( $this, 'render_results' ) );
        }
 
@@ -71,11 +73,8 @@ class Travely_Widget_Public {
        }
 
        private function enqueue_remote_assets() {
-//       https://d2lg2kxqgbzbpf.cloudfront.net/
                wp_enqueue_style( 'travely-widget-remote-css', 'https://wgsearch.travely.ee/est/static/css/main.css', array(), $this->version );
                wp_enqueue_script( 'travely-widget-remote-js', 'https://wgsearch.travely.ee/est/static/js/main.js', array(), $this->version, true );
-               //wp_enqueue_style( 'travely-widget-remote-css', 'https://d2lg2kxqgbzbpf.cloudfront.net/est/static/css/main.css', array(), $this->version );
-               //wp_enqueue_script( 'travely-widget-remote-js', 'https://d2lg2kxqgbzbpf.cloudfront.net/est/static/js/main.js', array(), $this->version, true );
        }
 
        private function unique_id( $prefix ) {
@@ -90,10 +89,34 @@ class Travely_Widget_Public {
                ob_start();
                ?>
                <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search"></div>
-               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search','country']);}});window.travelyWidgetInitialized=true;}})();</script>
+               <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search']);}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
                <?php
                return ob_get_clean();
        }
+       public function render_search_country() {
+            $this->enqueue_remote_assets();
+            $id   = $this->unique_id( 'travely-widget-search-country-' );
+            $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+
+            ob_start();
+            ?>
+            <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country"></div>
+            <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search','country']);}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
+            <?php
+            return ob_get_clean();
+       }
+       public function render_country() {
+            $this->enqueue_remote_assets();
+            $id   = $this->unique_id( 'travely-widget-country-' );
+            $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+
+            ob_start();
+            ?>
+            <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country"></div>
+            <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['country']);}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
+            <?php
+            return ob_get_clean();
+        }
 
        public function render_results() {
                $this->enqueue_remote_assets();
@@ -104,7 +127,7 @@ class Travely_Widget_Public {
                ob_start();
                ?>
                <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results"></div>
-               <script>(function(){if(!window.travelyWidgetInitialized){document.addEventListener('DOMContentLoaded',function(){if(window.TravelySearch){TravelySearch.initIframe('<?php echo esc_js( $id ); ?>','<?php echo $key; ?>','<?php echo $path; ?>');}});window.travelyWidgetInitialized=true;}})();</script>
+               <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initIframe('<?php echo esc_js( $id ); ?>','<?php echo $key; ?>','<?php echo $path; ?>');}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
                <?php
                return ob_get_clean();
        }
