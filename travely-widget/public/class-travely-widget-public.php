@@ -77,57 +77,67 @@ class Travely_Widget_Public {
                wp_enqueue_script( 'travely-widget-remote-js', 'https://wgsearch.travely.ee/est/static/js/main.js', array(), $this->version, true );
        }
 
+       private function enqueue_local_assets() {
+               wp_enqueue_script(
+                       'travely-widget-init',
+                       plugin_dir_url( __FILE__ ) . 'js/travely-widget-init.js',
+                       array( 'travely-widget-remote-js' ),
+                       $this->version,
+                       true
+               );
+       }
+
        private function unique_id( $prefix ) {
                return $prefix . uniqid();
        }
 
        public function render_search() {
                $this->enqueue_remote_assets();
+               $this->enqueue_local_assets();
                $id   = $this->unique_id( 'travely-widget-search-' );
                $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search"></div>
-               <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search']);}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
+               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>"></div>
                <?php
                return ob_get_clean();
        }
        public function render_search_country() {
             $this->enqueue_remote_assets();
+            $this->enqueue_local_assets();
             $id   = $this->unique_id( 'travely-widget-search-country-' );
             $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
 
             ob_start();
             ?>
-            <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country"></div>
-            <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['search','country']);}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
+            <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>"></div>
             <?php
             return ob_get_clean();
        }
        public function render_country() {
             $this->enqueue_remote_assets();
+            $this->enqueue_local_assets();
             $id   = $this->unique_id( 'travely-widget-country-' );
             $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
 
             ob_start();
             ?>
-            <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country"></div>
-            <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initSearch('<?php echo esc_js( $id ); ?>','<?php echo $path; ?>',['country']);}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
+            <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>"></div>
             <?php
             return ob_get_clean();
         }
 
        public function render_results() {
                $this->enqueue_remote_assets();
+               $this->enqueue_local_assets();
                $id   = $this->unique_id( 'travely-widget-results-' );
                $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
                $key  = esc_js( get_option( 'travely_widget_key', '' ) );
 
                ob_start();
                ?>
-               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results"></div>
-               <script>(function(){var init=function(){if(window.TravelySearch){TravelySearch.initIframe('<?php echo esc_js( $id ); ?>','<?php echo $key; ?>','<?php echo $path; ?>');}};if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}})();</script>
+               <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>"></div>
                <?php
                return ob_get_clean();
        }
