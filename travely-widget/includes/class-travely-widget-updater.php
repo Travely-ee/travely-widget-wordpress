@@ -279,16 +279,23 @@ class Travely_Widget_Updater {
 			return $true;
 		}
 
-		$plugin_folder = WP_PLUGIN_DIR . '/' . dirname( $this->plugin_basename );
-		$wp_filesystem->move( $result['destination'], $plugin_folder );
-		$result['destination'] = $plugin_folder;
+		// Store if plugin was active before update
+		$was_active = is_plugin_active( $this->plugin_basename );
 
-		// Check if plugin was active before update
-		if ( is_plugin_active( $this->plugin_basename ) ) {
+		$plugin_folder = WP_PLUGIN_DIR . '/' . dirname( $this->plugin_basename );
+		
+		// Only move if destination is different from plugin folder
+		if ( $result['destination'] !== $plugin_folder ) {
+			$wp_filesystem->move( $result['destination'], $plugin_folder );
+			$result['destination'] = $plugin_folder;
+		}
+
+		// Reactivate plugin if it was active before update
+		if ( $was_active ) {
 			activate_plugin( $this->plugin_basename );
 		}
 
-		return $result;
+		return $true;
 	}
 
 	/**
