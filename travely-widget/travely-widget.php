@@ -16,7 +16,7 @@
  * Plugin Name:       Travely Widget
  * Plugin URI:        http://travely.ee
  * Description:       The plugin allows you to use the Travely system widget on your website.
- * Version:           1.0.11
+ * Version:           1.0.12
  * Author:            Travely OU
  * Author URI:        http://travely.ee/
  * License:           Commerce
