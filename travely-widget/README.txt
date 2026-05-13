@@ -1,7 +1,7 @@
 === Travely Widget ===
-Requires at least: 4.3
-Tested up to: 4.3
-Stable tag: 1.0.12
+Requires at least: 5.8
+Tested up to: 5.8
+Stable tag: 1.0.13
 License: Commerce
 
 The plugin allows you to use the Travely system widget on your website.
