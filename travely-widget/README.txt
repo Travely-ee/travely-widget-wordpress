@@ -1,6 +1,6 @@
 === Travely Widget ===
 Requires at least: 5.8
-Tested up to: 4.3
+Tested up to: 5.8
 Stable tag: 1.0.13
 License: Commerce
 
