@@ -165,7 +165,7 @@ class Travely_Widget_Updater {
 			'version'      => $remote_version,
 			'url'          => 'https://github.com/Travely-ee/travely-widget-wordpress/releases/tag/' . rawurlencode( sanitize_text_field( $repo_info->tag_name ) ),
 			'package'      => $package_url,
-			'tested'       => '',
+			'tested'       => '5.8',
 			'requires_php' => '',
 			'icons'        => array(),
 			'banners'      => array(),
@@ -233,7 +233,7 @@ class Travely_Widget_Updater {
 			'author'        => '<a href="http://travely.ee">Travely OU</a>',
 			'homepage'      => esc_url( $this->update_uri ),
 			'requires'      => '5.8',
-			'tested'        => '',
+			'tested'        => '5.8',
 			'downloaded'    => 0,
 			'last_updated'  => $published_at,
 			'sections'      => array(
