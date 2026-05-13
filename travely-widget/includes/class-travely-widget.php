@@ -72,13 +72,13 @@ class Travely_Widget {
 		} else {
 			$this->version = '1.0.0';
 		}
-               $this->plugin_name = 'travely-widget';
+
+        $this->plugin_name = 'travely-widget';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
