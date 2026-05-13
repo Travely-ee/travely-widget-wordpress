@@ -83,5 +83,7 @@ function run_travely_widget() {
 run_travely_widget();
 
 // Initialize WordPress native update provider.
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
-new Travely_Widget_Updater( __FILE__ );
+if ( is_admin() || wp_doing_cron() ) {
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
+  new Travely_Widget_Updater( __FILE__ );
+}
