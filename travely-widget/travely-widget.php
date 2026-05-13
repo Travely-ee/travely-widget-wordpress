@@ -82,8 +82,6 @@ function run_travely_widget() {
 }
 run_travely_widget();
 
-// Initialize automatic updates system
-if ( is_admin() ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
-	new Travely_Widget_Updater( __FILE__ );
-}
+// Initialize WordPress native update provider.
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
+new Travely_Widget_Updater( __FILE__ );
