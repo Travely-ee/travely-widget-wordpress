@@ -29,3 +29,10 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+if ( get_option( 'travely_widget_remove_data_on_uninstall', false ) ) {
+	delete_option( 'travely_widget_key' );
+	delete_option( 'travely_widget_path_to_search' );
+	delete_option( 'travely_widget_remove_data_on_uninstall' );
+	delete_transient( 'travely_widget_github_release' );
+}

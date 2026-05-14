@@ -119,6 +119,16 @@ class Travely_Widget_Admin {
                         )
                );
 
+               register_setting(
+                        'travely_widget_option_group',
+                        'travely_widget_remove_data_on_uninstall',
+                        array(
+                            'type'              => 'boolean',
+                            'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
+                            'default'           => false,
+                        )
+               );
+
                add_settings_section( 'travely_widget_setting_section', '', null, 'travely-widget-admin' );
 
                add_settings_field(
@@ -133,6 +143,14 @@ class Travely_Widget_Admin {
                        'travely_widget_path_to_search',
                        __( 'Path to Search', 'travely-widget' ),
                        array( $this, 'path_callback' ),
+                       'travely-widget-admin',
+                       'travely_widget_setting_section'
+               );
+
+               add_settings_field(
+                       'travely_widget_remove_data_on_uninstall',
+                       __( 'Remove data on uninstall', 'travely-widget' ),
+                       array( $this, 'remove_data_callback' ),
                        'travely-widget-admin',
                        'travely_widget_setting_section'
                );
@@ -152,6 +170,20 @@ class Travely_Widget_Admin {
                        esc_attr( $value )
                );
        }
+
+        public function remove_data_callback() {
+               $value = (bool) get_option( 'travely_widget_remove_data_on_uninstall', false );
+
+               printf(
+                       '<input type="hidden" name="travely_widget_remove_data_on_uninstall" value="0" />'
+               );
+
+               printf(
+                       '<label><input type="checkbox" name="travely_widget_remove_data_on_uninstall" value="1" %s /> %s</label>',
+                       checked( true, $value, false ),
+                       esc_html__( 'Remove plugin settings when uninstalling the plugin.', 'travely-widget' )
+               );
+        }
 
         public function sanitize_api_key( $value ) {
                return sanitize_text_field( $value );
@@ -175,5 +207,9 @@ class Travely_Widget_Admin {
                }
 
                return $value;
+        }
+
+        public function sanitize_checkbox( $value ) {
+            return ! empty( $value );
         }
 }
