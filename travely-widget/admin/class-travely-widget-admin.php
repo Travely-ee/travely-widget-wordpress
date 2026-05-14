@@ -99,8 +99,25 @@ class Travely_Widget_Admin {
        }
 
        public function page_init() {
-               register_setting( 'travely_widget_option_group', 'travely_widget_key' );
-               register_setting( 'travely_widget_option_group', 'travely_widget_path_to_search' );
+               register_setting(
+                        'travely_widget_option_group',
+                        'travely_widget_key',
+                        array(
+                            'type'              => 'string',
+                            'sanitize_callback' => array( $this, 'sanitize_api_key' ),
+                            'default'           => '',
+                        )
+               );
+
+               register_setting(
+                        'travely_widget_option_group',
+                        'travely_widget_path_to_search',
+                        array(
+                            'type'              => 'string',
+                            'sanitize_callback' => array( $this, 'sanitize_path_to_search' ),
+                            'default'           => '/tour-search',
+                        )
+               );
 
                add_settings_section( 'travely_widget_setting_section', '', null, 'travely-widget-admin' );
 
@@ -136,4 +153,27 @@ class Travely_Widget_Admin {
                );
        }
 
+        public function sanitize_api_key( $value ) {
+               return sanitize_text_field( $value );
+        }
+
+        public function sanitize_path_to_search( $value ) {
+               $value = sanitize_text_field( $value );
+               $value = trim( $value );
+
+               if ( '' === $value ) {
+                      return '/tour-search';
+               }
+
+               if ( preg_match( '#^https?://#i', $value ) ) {
+                      $path = wp_parse_url( $value, PHP_URL_PATH );
+                      $value = $path ? $path : '/tour-search';
+               }
+
+               if ( '/' !== substr( $value, 0, 1 ) ) {
+                      $value = '/' . $value;
+               }
+
+               return $value;
+        }
 }
