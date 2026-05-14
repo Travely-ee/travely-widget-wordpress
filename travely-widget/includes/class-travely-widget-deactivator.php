@@ -29,8 +29,8 @@ class Travely_Widget_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
-
-	}
+    public static function deactivate() {
+        delete_transient( 'travely_widget_github_release' );
+    }
 
 }

@@ -87,6 +87,7 @@ class Travely_Widget_Admin {
                ?>
                <div class="wrap">
                        <h1><?php esc_html_e( 'Travely Widget Settings', 'travely-widget' ); ?></h1>
+                       <p><?php esc_html_e( 'Configure your Travely Widget public key and the page path where search results should be displayed.', 'travely-widget' ); ?></p>
                        <form method="post" action="options.php">
                                <?php
                                settings_fields( 'travely_widget_option_group' );
@@ -169,6 +170,7 @@ class Travely_Widget_Admin {
                        '<input type="text" id="travely_widget_path_to_search" name="travely_widget_path_to_search" value="%s" />',
                        esc_attr( $value )
                );
+
        }
 
         public function remove_data_callback() {
