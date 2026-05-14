@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * The plugin bootstrap file
@@ -28,7 +28,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+    die;
 }
 
 /**
@@ -43,8 +43,8 @@ define( 'TRAVELY_WIDGET_VERSION', '1.0.14' );
  * This action is documented in includes/class-travely-widget-activator.php
  */
 function activate_travely_widget() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-activator.php';
-	Travely_Widget_Activator::activate();
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-activator.php';
+    Travely_Widget_Activator::activate();
 }
 
 /**
@@ -52,8 +52,8 @@ function activate_travely_widget() {
  * This action is documented in includes/class-travely-widget-deactivator.php
  */
 function deactivate_travely_widget() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-deactivator.php';
-	Travely_Widget_Deactivator::deactivate();
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-deactivator.php';
+    Travely_Widget_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_travely_widget' );
@@ -75,15 +75,15 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget.php';
  * @since    1.0.0
  */
 function run_travely_widget() {
-
-	$plugin = new Travely_Widget();
-	$plugin->run();
+    $plugin = new Travely_Widget();
+    $plugin->run();
 
 }
 run_travely_widget();
 
 // Initialize WordPress native update provider.
 if ( is_admin() || wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
-	new Travely_Widget_Updater( __FILE__ );
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
+    new Travely_Widget_Updater( __FILE__ );
 }
+

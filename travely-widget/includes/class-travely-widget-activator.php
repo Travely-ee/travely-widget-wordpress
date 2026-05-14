@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Fired during plugin activation
@@ -22,13 +22,13 @@
  */
 class Travely_Widget_Activator {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
     public static function activate() {
         if ( version_compare( get_bloginfo( 'version' ), '5.8', '<' ) ) {
             if ( ! function_exists( 'deactivate_plugins' ) ) {
@@ -50,3 +50,4 @@ class Travely_Widget_Activator {
     }
 
 }
+
