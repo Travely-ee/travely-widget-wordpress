@@ -8,27 +8,28 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://travely.ee
+ * @link              https://travely-solutions.eu
  * @since             1.0.1
  * @package           Travely_Widget
  *
  * @wordpress-plugin
  * Plugin Name:       Travely Widget
- * Plugin URI:        http://travely.ee
+ * Plugin URI:        https://travely-solutions.eu
  * Description:       The plugin allows you to use the Travely system widget on your website.
- * Version:           1.0.13
+ * Version:           1.0.14
  * Requires at least: 5.8
  * Update URI:        https://github.com/Travely-ee/travely-widget-wordpress
- * Author:            Travely OU
- * Author URI:        http://travely.ee/
- * License:           Commerce
+ * Author:            Travely Solutions OÜ
+ * Author URI:        https://travely-solutions.eu
+ * License:           Proprietary
+ * License URI:       https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
  * Text Domain:       travely-widget
  * Domain Path:       /languages
  */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+    die;
 }
 
 /**
@@ -36,15 +37,15 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TRAVELY_WIDGET_VERSION', '1.0.13' );
+define( 'TRAVELY_WIDGET_VERSION', '1.0.14' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-travely-widget-activator.php
  */
 function activate_travely_widget() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-activator.php';
-	Travely_Widget_Activator::activate();
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-activator.php';
+    Travely_Widget_Activator::activate();
 }
 
 /**
@@ -52,8 +53,8 @@ function activate_travely_widget() {
  * This action is documented in includes/class-travely-widget-deactivator.php
  */
 function deactivate_travely_widget() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-deactivator.php';
-	Travely_Widget_Deactivator::deactivate();
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-deactivator.php';
+    Travely_Widget_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_travely_widget' );
@@ -75,15 +76,15 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget.php';
  * @since    1.0.0
  */
 function run_travely_widget() {
-
-	$plugin = new Travely_Widget();
-	$plugin->run();
+    $plugin = new Travely_Widget();
+    $plugin->run();
 
 }
 run_travely_widget();
 
 // Initialize WordPress native update provider.
 if ( is_admin() || wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
-	new Travely_Widget_Updater( __FILE__ );
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-travely-widget-updater.php';
+    new Travely_Widget_Updater( __FILE__ );
 }
+

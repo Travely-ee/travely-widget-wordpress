@@ -19,7 +19,7 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.0
  *
  * @package    Travely_Widget
@@ -27,5 +27,13 @@
 
 // If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
+    exit;
 }
+
+if ( get_option( 'travely_widget_remove_data_on_uninstall', false ) ) {
+    delete_option( 'travely_widget_key' );
+    delete_option( 'travely_widget_path_to_search' );
+    delete_option( 'travely_widget_remove_data_on_uninstall' );
+    delete_transient( 'travely_widget_github_release' );
+}
+

@@ -1,12 +1,12 @@
 # Russian translation for Travely Widget
-# Copyright (C) 2026 Travely OU
+# Copyright (C) 2026 Travely Solutions OÜ
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.13\n"
+"Project-Id-Version: Travely Widget 1.0.14\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
-"POT-Creation-Date: 2026-05-13 18:16+0300\n"
-"PO-Revision-Date: 2026-05-13 18:23+0300\n"
+"POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
+"PO-Revision-Date: 2026-05-14 12:29+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -24,9 +24,10 @@ msgid "Travely Widget"
 msgstr "Виджет Travely"
 
 #. Plugin URI of the plugin
+#. Author URI of the plugin
 #: travely-widget.php
-msgid "http://travely.ee"
-msgstr "http://travely.ee"
+msgid "https://travely-solutions.eu"
+msgstr "https://travely-solutions.eu"
 
 #. Description of the plugin
 #: travely-widget.php
@@ -35,25 +36,41 @@ msgstr "Плагин позволяет использовать виджет с
 
 #. Author of the plugin
 #: travely-widget.php
-msgid "Travely OU"
-msgstr "Travely OU"
-
-#. Author URI of the plugin
-#: travely-widget.php
-msgid "http://travely.ee/"
-msgstr "http://travely.ee/"
+msgid "Travely Solutions OÜ"
+msgstr "Travely Solutions OÜ"
 
 #: admin/class-travely-widget-admin.php:89
 msgid "Travely Widget Settings"
 msgstr "Настройки виджета Travely"
 
-#: admin/class-travely-widget-admin.php:109
+#: admin/class-travely-widget-admin.php:90
+msgid ""
+"Configure your Travely Widget public key and the page path where search "
+"results should be displayed."
+msgstr ""
+"Укажите открытый ключ виджета Travely и путь к странице, где должны "
+"отображаться результаты поиска."
+
+#: admin/class-travely-widget-admin.php:137
 msgid "API Key"
 msgstr "API ключ"
 
-#: admin/class-travely-widget-admin.php:117
+#: admin/class-travely-widget-admin.php:145
 msgid "Path to Search"
 msgstr "Путь к поиску"
+
+#: admin/class-travely-widget-admin.php:153
+msgid "Remove data on uninstall"
+msgstr "Удалить настройки при удалении плагина"
+
+#: admin/class-travely-widget-admin.php:186
+msgid "Remove plugin settings when uninstalling the plugin."
+msgstr "При удалении плагина удалите его настройки."
+
+#: includes/class-travely-widget-activator.php:41
+msgid "Travely Widget requires WordPress 5.8 or higher."
+msgstr ""
+"Для работы виджета Travely Widget требуется WordPress версии 5.8 или выше."
 
 #: includes/class-travely-widget-updater.php:112
 msgid "GitHub API request failed."
@@ -70,3 +87,29 @@ msgstr "Обновление доступно на GitHub."
 #: includes/class-travely-widget-updater.php:279
 msgid "View on GitHub"
 msgstr "Посмотреть на GitHub"
+
+#: blocks/results/block.json
+msgctxt "block title"
+msgid "Travely Results Widget"
+msgstr "Виджет результатов Travely"
+
+#: blocks/results/block.json
+msgctxt "block description"
+msgid "Displays the Travely search results widget."
+msgstr "Отображает виджет результатов поиска Travely."
+
+#: blocks/search/block.json
+msgctxt "block title"
+msgid "Travely Search Widget"
+msgstr "Виджет поиска Travely"
+
+#: blocks/search/block.json
+msgctxt "block description"
+msgid "Displays the Travely search widget."
+msgstr "Отображает виджет поиска Travely."
+
+#~ msgid "http://travely.ee/"
+#~ msgstr "http://travely.ee/"
+
+#~ msgid "Travely OU"
+#~ msgstr "Travely OU"

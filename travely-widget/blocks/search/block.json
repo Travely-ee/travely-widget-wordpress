@@ -1,0 +1,12 @@
+{
+  "apiVersion": 2,
+  "name": "travely/widget-search",
+  "title": "Travely Search Widget",
+  "category": "widgets",
+  "icon": "search",
+  "description": "Displays the Travely search widget.",
+  "textdomain": "travely-widget",
+  "supports": {
+    "html": false
+  }
+}

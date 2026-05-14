@@ -1,8 +1,9 @@
 === Travely Widget ===
 Requires at least: 5.8
 Tested up to: 5.8
-Stable tag: 1.0.13
-License: Commerce
+Stable tag: 1.0.14
+License: Proprietary
+License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
 The plugin allows you to use the Travely system widget on your website.
 
@@ -12,7 +13,7 @@ The plugin allows you to use the Travely system widget on your website.
 
 == Installation ==
 
-1. Download the plugin archive (`travely-widget.zip`) from the GitHub releases page.
+1. Download the plugin archive (`travely-widget-v*.zip`) from the GitHub releases page.
 2. Go to your WordPress admin panel.
 3. Navigate to Plugins → Add New → Upload Plugin.
 4. Upload the archive and activate the plugin.
