@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Plugin updater class for GitHub releases.
