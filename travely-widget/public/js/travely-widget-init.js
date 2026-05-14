@@ -39,6 +39,8 @@
 
 	function onReady(){
 		scan();
+		observeChanges();
+
 		if(!ensureTravelySearch()){
 			var retries = 10;
 			var interval = setInterval(function(){
@@ -50,6 +52,32 @@
 				}
 			}, 300);
 		}
+	}
+
+	function observeChanges(){
+		if(typeof MutationObserver === 'undefined'){
+			return;
+		}
+
+		var observer = new MutationObserver(function(mutations){
+			var shouldScan = false;
+
+			for(var i = 0; i < mutations.length; i++){
+				if(mutations[i].addedNodes && mutations[i].addedNodes.length){
+					shouldScan = true;
+					break;
+				}
+			}
+
+			if(shouldScan){
+				scan();
+			}
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
 	}
 
 	if(document.readyState === 'loading'){
