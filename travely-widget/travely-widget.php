@@ -16,7 +16,7 @@
  * Plugin Name:       Travely Widget
  * Plugin URI:        http://travely.ee
  * Description:       The plugin allows you to use the Travely system widget on your website.
- * Version:           1.0.13
+ * Version:           1.0.14
  * Requires at least: 5.8
  * Update URI:        https://github.com/Travely-ee/travely-widget-wordpress
  * Author:            Travely OU
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TRAVELY_WIDGET_VERSION', '1.0.13' );
+define( 'TRAVELY_WIDGET_VERSION', '1.0.14' );
 
 /**
  * The code that runs during plugin activation.
