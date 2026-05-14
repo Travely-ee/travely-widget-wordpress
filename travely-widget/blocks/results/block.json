@@ -1,0 +1,12 @@
+{
+  "apiVersion": 2,
+  "name": "travely/widget-results",
+  "title": "Travely Results Widget",
+  "category": "widgets",
+  "icon": "list-view",
+  "description": "Displays the Travely search results widget.",
+  "textdomain": "travely-widget",
+  "supports": {
+    "html": false
+  }
+}
