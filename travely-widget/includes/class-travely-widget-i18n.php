@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.0
  *
  * @package    Travely_Widget
@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    Travely_Widget
  * @subpackage Travely_Widget/includes
- * @author     Andrei Abozau <andrei@travely.ee>
+ * @author     Travely Solutions OÜ <info@travely.ee>
  */
 class Travely_Widget_i18n {
 

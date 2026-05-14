@@ -8,19 +8,19 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://travely.ee
+ * @link              https://travely-solutions.eu
  * @since             1.0.1
  * @package           Travely_Widget
  *
  * @wordpress-plugin
  * Plugin Name:       Travely Widget
- * Plugin URI:        http://travely.ee
+ * Plugin URI:        https://travely-solutions.eu
  * Description:       The plugin allows you to use the Travely system widget on your website.
  * Version:           1.0.14
  * Requires at least: 5.8
  * Update URI:        https://github.com/Travely-ee/travely-widget-wordpress
- * Author:            Travely OU
- * Author URI:        http://travely.ee/
+ * Author:            Travely Solutions OÜ
+ * Author URI:        https://travely-solutions.eu
  * License:           Proprietary
  * License URI:       https://github.com/Travely-ee/travely-widget-wordpress/tree/main/travely-widget/LICENSE.txt
  * Text Domain:       travely-widget

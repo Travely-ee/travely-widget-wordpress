@@ -19,7 +19,7 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.0
  *
  * @package    Travely_Widget

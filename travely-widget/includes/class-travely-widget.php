@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.0
  *
  * @package    Travely_Widget
@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Travely_Widget
  * @subpackage Travely_Widget/includes
- * @author     Andrei Abozau <andrei@travely.ee>
+ * @author     Travely Solutions OÜ <info@travely.ee>
  */
 class Travely_Widget {
 

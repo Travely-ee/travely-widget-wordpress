@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.1
  *
  * @package    Travely_Widget
@@ -18,7 +18,7 @@
  *
  * @package    Travely_Widget
  * @subpackage Travely_Widget/public
- * @author     Andrei Abozau <abozau@travely.ee>
+ * @author     Travely Solutions OÜ <info@travely.ee>
  */
 class Travely_Widget_Public {
 

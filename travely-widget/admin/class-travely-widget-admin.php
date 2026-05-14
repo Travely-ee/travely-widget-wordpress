@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.0
  *
  * @package    Travely_Widget
@@ -18,7 +18,7 @@
  *
  * @package    Travely_Widget
  * @subpackage Travely_Widget/admin
- * @author     Andrei Abozau <andrei@travely.ee>
+ * @author     Travely Solutions OÜ <info@travely.ee>
  */
 class Travely_Widget_Admin {
 

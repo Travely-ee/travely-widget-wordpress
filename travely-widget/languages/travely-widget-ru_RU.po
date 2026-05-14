@@ -1,12 +1,12 @@
 # Russian translation for Travely Widget
-# Copyright (C) 2026 Travely OU
+# Copyright (C) 2026 Travely Solutions OÜ
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
 "Project-Id-Version: Travely Widget 1.0.14\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
-"POT-Creation-Date: 2026-05-14 11:01+0300\n"
-"PO-Revision-Date: 2026-05-14 11:03+0300\n"
+"POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
+"PO-Revision-Date: 2026-05-14 12:29+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -24,9 +24,10 @@ msgid "Travely Widget"
 msgstr "Виджет Travely"
 
 #. Plugin URI of the plugin
+#. Author URI of the plugin
 #: travely-widget.php
-msgid "http://travely.ee"
-msgstr "http://travely.ee"
+msgid "https://travely-solutions.eu"
+msgstr "https://travely-solutions.eu"
 
 #. Description of the plugin
 #: travely-widget.php
@@ -35,13 +36,8 @@ msgstr "Плагин позволяет использовать виджет с
 
 #. Author of the plugin
 #: travely-widget.php
-msgid "Travely OU"
-msgstr "Travely OU"
-
-#. Author URI of the plugin
-#: travely-widget.php
-msgid "http://travely.ee/"
-msgstr "http://travely.ee/"
+msgid "Travely Solutions OÜ"
+msgstr "Travely Solutions OÜ"
 
 #: admin/class-travely-widget-admin.php:89
 msgid "Travely Widget Settings"
@@ -71,7 +67,7 @@ msgstr "Удалить настройки при удалении плагина
 msgid "Remove plugin settings when uninstalling the plugin."
 msgstr "При удалении плагина удалите его настройки."
 
-#: includes/class-travely-widget-activator.php:37
+#: includes/class-travely-widget-activator.php:41
 msgid "Travely Widget requires WordPress 5.8 or higher."
 msgstr ""
 "Для работы виджета Travely Widget требуется WordPress версии 5.8 или выше."
@@ -111,3 +107,9 @@ msgstr "Виджет поиска Travely"
 msgctxt "block description"
 msgid "Displays the Travely search widget."
 msgstr "Отображает виджет поиска Travely."
+
+#~ msgid "http://travely.ee/"
+#~ msgstr "http://travely.ee/"
+
+#~ msgid "Travely OU"
+#~ msgstr "Travely OU"

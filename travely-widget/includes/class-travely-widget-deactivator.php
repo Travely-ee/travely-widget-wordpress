@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.0
  *
  * @package    Travely_Widget
@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Travely_Widget
  * @subpackage Travely_Widget/includes
- * @author     Andrei Abozau <andrei@travely.ee>
+ * @author     Travely Solutions OÜ <info@travely.ee>
  */
 class Travely_Widget_Deactivator {
 

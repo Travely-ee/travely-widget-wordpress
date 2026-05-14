@@ -3,7 +3,7 @@
 /**
  * Plugin updater class for GitHub releases.
  *
- * @link       http://travely.ee
+ * @link       https://travely-solutions.eu
  * @since      1.0.14
  *
  * @package    Travely_Widget
@@ -230,7 +230,7 @@ class Travely_Widget_Updater {
             'name'          => 'Travely Widget',
             'slug'          => dirname( $this->plugin_basename ),
             'version'       => $remote_version,
-            'author'        => '<a href="http://travely.ee">Travely OU</a>',
+            'author'        => '<a href="https://travely-solutions.eu/">Travely Solutions OÜ</a>',
             'homepage'      => esc_url( $this->update_uri ),
             'requires'      => '5.8',
             'tested'        => '5.8',
