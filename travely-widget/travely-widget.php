@@ -22,7 +22,7 @@
  * Author:            Travely Solutions OÜ
  * Author URI:        https://travely-solutions.eu
  * License:           Proprietary
- * License URI:       https://github.com/Travely-ee/travely-widget-wordpress/tree/main/travely-widget/LICENSE.txt
+ * License URI:       https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
  * Text Domain:       travely-widget
  * Domain Path:       /languages
  */
