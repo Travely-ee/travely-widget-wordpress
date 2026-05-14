@@ -55,7 +55,7 @@
 	}
 
 	function observeChanges(){
-		if(typeof MutationObserver === 'undefined'){
+		if(typeof MutationObserver === 'undefined' || !document.body){
 			return;
 		}
 
