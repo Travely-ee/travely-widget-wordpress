@@ -1,0 +1,153 @@
+TRAVELY WIDGET FOR WORDPRESS — PROPRIETARY SOFTWARE LICENSE AGREEMENT
+
+Version 1.0 — Last updated: 14 May 2026
+
+Copyright (c) 2026 Travely Solutions OÜ. All rights reserved.
+
+Travely Solutions OÜ
+Registry code: 17119805
+Registered office: Kai tn 1, Kesklinna linnaosa, 10111 Tallinn, Harju maakond,
+Republic of Estonia
+Email: info@travely.ee
+("Licensor")
+
+================================================================================
+1. DEFINITIONS
+================================================================================
+
+"Software" means the WordPress plugin known as "Travely Widget for WordPress",
+including all of its source code, object code, scripts, assets, templates,
+configuration files, documentation, and any updates, patches, or new versions
+made available by the Licensor.
+
+"Licensee" / "You" means the individual or legal entity that downloads,
+installs, copies, or otherwise uses the Software.
+
+"Use" means installing, activating, and running the Software on a WordPress
+website for its intended purpose of displaying Travely widgets.
+
+================================================================================
+2. OWNERSHIP
+================================================================================
+
+The Software is the exclusive property of Travely Solutions OÜ. It is licensed,
+not sold. Travely Solutions OÜ retains all right, title, and interest in and to
+the Software, including all intellectual property rights, copyrights,
+trademarks, and trade secrets contained therein. This Agreement does not
+transfer to You any ownership interest in the Software.
+
+This is a commercial software product. Nothing in this Agreement shall be
+construed as placing the Software, in whole or in part, in the public domain or
+as licensing it under any open-source or free-software license.
+
+================================================================================
+3. GRANT OF LICENSE
+================================================================================
+
+Subject to Your full compliance with this Agreement, the Licensor grants You a
+limited, non-exclusive, non-transferable, non-sublicensable, revocable license
+to install and Use the Software on WordPress websites that You own or operate,
+solely in connection with the services provided by Travely Solutions OÜ and
+solely for the duration permitted by Your agreement or arrangement with the
+Licensor.
+
+================================================================================
+4. RESTRICTIONS
+================================================================================
+
+Except to the extent that the following restrictions are expressly prohibited
+by applicable mandatory law, You may NOT:
+
+(a) modify, adapt, translate, or create derivative works of the Software, or
+    alter its source code, in whole or in part;
+(b) decompile, disassemble, reverse engineer, or otherwise attempt to derive
+    the source code or underlying structure, ideas, or algorithms of the
+    Software, except where such code is already provided in human-readable form,
+    in which case restriction (a) above still applies;
+(c) copy, reproduce, or distribute the Software, except for a reasonable number
+    of backup copies for Your own internal use;
+(d) sell, resell, rent, lease, lend, sublicense, assign, or otherwise transfer
+    the Software or any rights granted under this Agreement to any third party;
+(e) remove, obscure, or alter any copyright, trademark, or other proprietary
+    notices contained in or on the Software;
+(f) use the Software to develop a competing product or service;
+(g) use the Software in any manner not expressly authorized by this Agreement.
+
+If You require a modification or customization of the Software, You must
+contact the Licensor. Any such modification, if approved, may be performed only
+by the Licensor or with its prior written consent.
+
+================================================================================
+5. NO WARRANTY
+================================================================================
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED
+"AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS,
+IMPLIED, STATUTORY, OR OTHERWISE. THE LICENSOR EXPRESSLY DISCLAIMS ALL
+WARRANTIES, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
+
+THE LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL BE UNINTERRUPTED, ERROR-
+FREE, SECURE, OR FREE OF HARMFUL COMPONENTS, OR THAT IT WILL BE COMPATIBLE WITH
+ANY PARTICULAR HARDWARE, SOFTWARE, OR CONFIGURATION.
+
+================================================================================
+6. LIMITATION OF LIABILITY
+================================================================================
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, TRAVELY SOLUTIONS OÜ SHALL
+NOT BE LIABLE FOR ANY DAMAGE, LOSS, OR HARM OF ANY KIND ARISING OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR ITS USE OR INABILITY TO BE USED, INCLUDING BUT
+NOT LIMITED TO DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+PUNITIVE DAMAGES; LOSS OF PROFITS, REVENUE, DATA, OR BUSINESS; WEBSITE
+DOWNTIME; OR DAMAGE TO ANY COMPUTER SYSTEM OR WORDPRESS INSTALLATION, EVEN IF
+THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+You assume full responsibility for the installation and Use of the Software and
+for any results obtained from it.
+
+Nothing in this Agreement excludes or limits the liability of the Licensor for
+any liability that cannot be excluded or limited under applicable mandatory
+law, including liability for intentional misconduct or gross negligence.
+
+================================================================================
+7. TERMINATION
+================================================================================
+
+This Agreement is effective until terminated. It terminates automatically,
+without notice, if You breach any of its terms. The Licensor may also terminate
+this license if Your arrangement or agreement with the Licensor ends. Upon
+termination, You must cease all Use of the Software and delete all copies in
+Your possession or control. Sections 2, 5, 6, 8, and 9 survive termination.
+
+================================================================================
+8. GOVERNING LAW AND JURISDICTION
+================================================================================
+
+This Agreement is governed by and construed in accordance with the laws of the
+Republic of Estonia, without regard to its conflict-of-law provisions. Any
+dispute arising out of or in connection with this Agreement that cannot be
+resolved amicably shall be subject to the exclusive jurisdiction of the courts
+of the Republic of Estonia, unless mandatory law provides otherwise.
+
+================================================================================
+9. ENTIRE AGREEMENT
+================================================================================
+
+This Agreement constitutes the entire agreement between You and the Licensor
+regarding the Software and supersedes all prior or contemporaneous
+understandings. If any provision of this Agreement is held to be unenforceable,
+the remaining provisions shall remain in full force and effect.
+
+================================================================================
+10. CONTACT
+================================================================================
+
+Travely Solutions OÜ
+Registry code: 17119805
+Kai tn 1, Kesklinna linnaosa, 10111 Tallinn, Harju maakond, Republic of Estonia
+Email: info@travely.ee
+GitHub: https://github.com/Travely-ee/travely-widget-wordpress
+
+For licensing inquiries, modification requests, or permissions beyond the scope
+of this Agreement, please contact the Licensor.

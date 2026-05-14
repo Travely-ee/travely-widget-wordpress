@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * The plugin bootstrap file
@@ -21,7 +21,8 @@
  * Update URI:        https://github.com/Travely-ee/travely-widget-wordpress
  * Author:            Travely OU
  * Author URI:        http://travely.ee/
- * License:           Commerce
+ * License:           Proprietary
+ * License URI:       https://github.com/Travely-ee/travely-widget-wordpress/tree/main/travely-widget/LICENSE.txt
  * Text Domain:       travely-widget
  * Domain Path:       /languages
  */
