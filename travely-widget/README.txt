@@ -12,7 +12,7 @@ The plugin allows you to use the Travely system widget on your website.
 
 == Installation ==
 
-1. Download the plugin archive (`travely-widget.zip`) from the GitHub releases page.
+1. Download the plugin archive (`travely-widget-v*.zip`) from the GitHub releases page.
 2. Go to your WordPress admin panel.
 3. Navigate to Plugins → Add New → Upload Plugin.
 4. Upload the archive and activate the plugin.
