@@ -3,10 +3,10 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.13\n"
+"Project-Id-Version: Travely Widget 1.0.14\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
-"POT-Creation-Date: 2026-05-13 18:16+0300\n"
-"PO-Revision-Date: 2026-05-13 18:23+0300\n"
+"POT-Creation-Date: 2026-05-14 11:01+0300\n"
+"PO-Revision-Date: 2026-05-14 11:15+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Estonian\n"
 "Language: et\n"
@@ -46,13 +46,34 @@ msgstr "http://travely.ee/"
 msgid "Travely Widget Settings"
 msgstr "Travely vidina seaded"
 
-#: admin/class-travely-widget-admin.php:109
+#: admin/class-travely-widget-admin.php:90
+msgid ""
+"Configure your Travely Widget public key and the page path where search "
+"results should be displayed."
+msgstr ""
+"Seadista Travely mooduli avalik võti ja lehe tee, kus otsingutulemusi "
+"kuvatakse."
+
+#: admin/class-travely-widget-admin.php:137
 msgid "API Key"
 msgstr "API võti"
 
-#: admin/class-travely-widget-admin.php:117
+#: admin/class-travely-widget-admin.php:145
 msgid "Path to Search"
 msgstr "Otsingu tee"
+
+#: admin/class-travely-widget-admin.php:153
+msgid "Remove data on uninstall"
+msgstr "Eemalda andmed desinstallimisel"
+
+#: admin/class-travely-widget-admin.php:186
+msgid "Remove plugin settings when uninstalling the plugin."
+msgstr "Plugina desinstallimisel eemaldage pluginate sätted."
+
+#: includes/class-travely-widget-activator.php:37
+msgid "Travely Widget requires WordPress 5.8 or higher."
+msgstr ""
+"Travely Widget kasutamiseks on vaja WordPressi versiooni 5.8 või uuemat."
 
 #: includes/class-travely-widget-updater.php:112
 msgid "GitHub API request failed."
@@ -69,3 +90,23 @@ msgstr "Uuendus on saadaval GitHubist."
 #: includes/class-travely-widget-updater.php:279
 msgid "View on GitHub"
 msgstr "Vaata GitHubis"
+
+#: blocks/results/block.json
+msgctxt "block title"
+msgid "Travely Results Widget"
+msgstr "Travely tulemuste moodul"
+
+#: blocks/results/block.json
+msgctxt "block description"
+msgid "Displays the Travely search results widget."
+msgstr "Kuvab Travely otsingutulemuste mooduli."
+
+#: blocks/search/block.json
+msgctxt "block title"
+msgid "Travely Search Widget"
+msgstr "Travely otsingumoodul"
+
+#: blocks/search/block.json
+msgctxt "block description"
+msgid "Displays the Travely search widget."
+msgstr "Kuvab Travely otsingumooduli."

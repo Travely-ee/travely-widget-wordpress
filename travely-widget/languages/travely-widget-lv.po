@@ -3,10 +3,10 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.13\n"
+"Project-Id-Version: Travely Widget 1.0.14\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
-"POT-Creation-Date: 2026-05-13 18:16+0300\n"
-"PO-Revision-Date: 2026-05-13 18:22+0300\n"
+"POT-Creation-Date: 2026-05-14 11:01+0300\n"
+"PO-Revision-Date: 2026-05-14 11:20+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Latvian\n"
 "Language: lv\n"
@@ -47,13 +47,33 @@ msgstr "http://travely.ee/"
 msgid "Travely Widget Settings"
 msgstr "Travely logrīka iestatījumi"
 
-#: admin/class-travely-widget-admin.php:109
+#: admin/class-travely-widget-admin.php:90
+msgid ""
+"Configure your Travely Widget public key and the page path where search "
+"results should be displayed."
+msgstr ""
+"Konfigurējiet Travely logrīka publisko atslēgu un lapas ceļu, kurā jāattēlo "
+"meklēšanas rezultāti."
+
+#: admin/class-travely-widget-admin.php:137
 msgid "API Key"
 msgstr "API atslēga"
 
-#: admin/class-travely-widget-admin.php:117
+#: admin/class-travely-widget-admin.php:145
 msgid "Path to Search"
 msgstr "Meklēšanas ceļš"
+
+#: admin/class-travely-widget-admin.php:153
+msgid "Remove data on uninstall"
+msgstr "Dzēst datus atinstalēšanas laikā"
+
+#: admin/class-travely-widget-admin.php:186
+msgid "Remove plugin settings when uninstalling the plugin."
+msgstr "Dzēst spraudņa iestatījumus, atinstalējot spraudni."
+
+#: includes/class-travely-widget-activator.php:37
+msgid "Travely Widget requires WordPress 5.8 or higher."
+msgstr "Travely logrīkam nepieciešams WordPress 5.8 vai jaunāka versija."
 
 #: includes/class-travely-widget-updater.php:112
 msgid "GitHub API request failed."
@@ -70,3 +90,23 @@ msgstr "Atjauninājums ir pieejams GitHub platformā."
 #: includes/class-travely-widget-updater.php:279
 msgid "View on GitHub"
 msgstr "Skatīt GitHub"
+
+#: blocks/results/block.json
+msgctxt "block title"
+msgid "Travely Results Widget"
+msgstr "Travely rezultātu logrīks"
+
+#: blocks/results/block.json
+msgctxt "block description"
+msgid "Displays the Travely search results widget."
+msgstr "Parāda Travely meklēšanas rezultātu logrīku."
+
+#: blocks/search/block.json
+msgctxt "block title"
+msgid "Travely Search Widget"
+msgstr "Travely meklēšanas logrīks"
+
+#: blocks/search/block.json
+msgctxt "block description"
+msgid "Displays the Travely search widget."
+msgstr "Parāda Travely meklēšanas logrīku."
