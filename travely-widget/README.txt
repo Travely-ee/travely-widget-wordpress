@@ -2,7 +2,8 @@
 Requires at least: 5.8
 Tested up to: 5.8
 Stable tag: 1.0.14
-License: Commerce
+License: Proprietary
+License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
 The plugin allows you to use the Travely system widget on your website.
 
