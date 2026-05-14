@@ -40,6 +40,10 @@ This is a commercial software product. Nothing in this Agreement shall be
 construed as placing the Software, in whole or in part, in the public domain or
 as licensing it under any open-source or free-software license.
 
+The availability of the Software source code in a public or private repository,
+including GitHub, does not grant You any rights beyond those expressly stated
+in this Agreement.
+
 ================================================================================
 3. GRANT OF LICENSE
 ================================================================================
@@ -78,7 +82,26 @@ contact the Licensor. Any such modification, if approved, may be performed only
 by the Licensor or with its prior written consent.
 
 ================================================================================
-5. NO WARRANTY
+5. THIRD-PARTY COMPONENTS AND PLATFORMS
+================================================================================
+
+The Software may include, depend on, or interact with third-party components,
+platforms, libraries, applications, services, or APIs, including WordPress and
+remote Travely service components. Such third-party components, platforms, or
+services may be subject to their own license terms, terms of service, privacy
+policies, or other legal conditions.
+
+This Agreement does not grant You any rights to third-party components,
+platforms, or services except to the extent expressly provided by their
+respective owners. This Agreement also does not limit any rights that You may
+have under applicable third-party license terms.
+
+You are responsible for ensuring that Your use of WordPress, Your website,
+hosting environment, third-party plugins, themes, and any other third-party
+components is lawful and compliant with their applicable terms.
+
+================================================================================
+6. NO WARRANTY
 ================================================================================
 
 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED
@@ -89,10 +112,11 @@ FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
 
 THE LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL BE UNINTERRUPTED, ERROR-
 FREE, SECURE, OR FREE OF HARMFUL COMPONENTS, OR THAT IT WILL BE COMPATIBLE WITH
-ANY PARTICULAR HARDWARE, SOFTWARE, OR CONFIGURATION.
+ANY PARTICULAR HARDWARE, SOFTWARE, WORDPRESS VERSION, PLUGIN, THEME, HOSTING
+ENVIRONMENT, OR CONFIGURATION.
 
 ================================================================================
-6. LIMITATION OF LIABILITY
+7. LIMITATION OF LIABILITY
 ================================================================================
 
 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, TRAVELY SOLUTIONS OÜ SHALL
@@ -111,17 +135,17 @@ any liability that cannot be excluded or limited under applicable mandatory
 law, including liability for intentional misconduct or gross negligence.
 
 ================================================================================
-7. TERMINATION
+8. TERMINATION
 ================================================================================
 
 This Agreement is effective until terminated. It terminates automatically,
 without notice, if You breach any of its terms. The Licensor may also terminate
 this license if Your arrangement or agreement with the Licensor ends. Upon
 termination, You must cease all Use of the Software and delete all copies in
-Your possession or control. Sections 2, 5, 6, 8, and 9 survive termination.
+Your possession or control. Sections 2, 5, 6, 7, 9, and 10 survive termination.
 
 ================================================================================
-8. GOVERNING LAW AND JURISDICTION
+9. GOVERNING LAW AND JURISDICTION
 ================================================================================
 
 This Agreement is governed by and construed in accordance with the laws of the
@@ -131,7 +155,7 @@ resolved amicably shall be subject to the exclusive jurisdiction of the courts
 of the Republic of Estonia, unless mandatory law provides otherwise.
 
 ================================================================================
-9. ENTIRE AGREEMENT
+10. ENTIRE AGREEMENT
 ================================================================================
 
 This Agreement constitutes the entire agreement between You and the Licensor
@@ -140,7 +164,7 @@ understandings. If any provision of this Agreement is held to be unenforceable,
 the remaining provisions shall remain in full force and effect.
 
 ================================================================================
-10. CONTACT
+11. CONTACT
 ================================================================================
 
 Travely Solutions OÜ
