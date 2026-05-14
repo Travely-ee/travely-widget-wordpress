@@ -31,6 +31,10 @@ class Travely_Widget_Activator {
 	 */
     public static function activate() {
         if ( version_compare( get_bloginfo( 'version' ), '5.8', '<' ) ) {
+            if ( ! function_exists( 'deactivate_plugins' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            }
+
             deactivate_plugins( plugin_basename( dirname( __DIR__ ) . '/travely-widget.php' ) );
 
             wp_die(
