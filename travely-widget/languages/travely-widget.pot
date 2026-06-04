@@ -40,7 +40,43 @@ msgid "Travely Widget Settings"
 msgstr ""
 
 #: admin/class-travely-widget-admin.php:90
-msgid "Configure your Travely Widget public key and the page path where search results should be displayed."
+msgid "Configure your Travely Widget public key, search results page path and language behavior."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:171
+msgid "Default language"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:179
+msgid "Force default language"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:233
+msgid "Used when language cannot be detected automatically."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:248
+msgid "Always use the selected default language."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:253
+msgid "When enabled, URL language, Polylang/WPML language and WordPress locale are ignored."
+msgstr ""
+
+#: includes/class-travely-widget-language.php:26
+msgid "Estonian"
+msgstr ""
+
+#: includes/class-travely-widget-language.php:27
+msgid "English"
+msgstr ""
+
+#: includes/class-travely-widget-language.php:28
+msgid "Russian"
+msgstr ""
+
+#: includes/class-travely-widget-language.php:29
+msgid "Latvian"
 msgstr ""
 
 #: admin/class-travely-widget-admin.php:137
