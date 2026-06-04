@@ -159,40 +159,40 @@ msgstr "Shortcode atribūts language pārraksta automātisko valodas noteikšanu
 
 #: admin/class-travely-widget-admin.php:205
 msgid "Path mode"
-msgstr "Ce?a re??ms"
+msgstr "Ceļa režīms"
 
 #: admin/class-travely-widget-admin.php:257
 msgid "Single path for all languages"
-msgstr "Viens ce?? vis?m valod?m"
+msgstr "Viens ceļš visām valodām"
 
 #: admin/class-travely-widget-admin.php:258
 msgid "Separate path for each language"
-msgstr "Atsevi??s ce?? katrai valodai"
+msgstr "Atsevišķs ceļš katrai valodai"
 
 #: admin/class-travely-widget-admin.php:197
 msgid "Language-specific paths"
-msgstr "Valodai specifiski ce?i"
+msgstr "Valodai specifiski ceļi"
 
 #: admin/class-travely-widget-admin.php:276
 msgid "Choose whether all widget languages use the same search results page path or each language has its own path."
-msgstr "Izv?lieties, vai visas logr?ka valodas izmanto vienu mekl??anas rezult?tu lapas ce?u vai katrai valodai ir savs ce??."
+msgstr "Izvēlieties, vai visas logrīka valodas izmanto vienu meklēšanas rezultātu lapas ceļu vai katrai valodai ir savs ceļš."
 
 #: admin/class-travely-widget-admin.php:337
 msgid "Used only when Path mode is set to Separate path for each language."
-msgstr "Izmanto tikai tad, ja ce?a re??ms ir iestat?ts uz atsevi??u ce?u katrai valodai."
+msgstr "Izmanto tikai tad, ja ceļa režīms ir iestatīts uz atsevišķu ceļu katrai valodai."
 
 #: admin/class-travely-widget-admin.php:214
 msgid "Estonian search path"
-msgstr "Igau?u mekl??anas ce??"
+msgstr "Igauņu meklēšanas ceļš"
 
 #: admin/class-travely-widget-admin.php:223
 msgid "English search path"
-msgstr "Ang?u mekl??anas ce??"
+msgstr "Angļu meklēšanas ceļš"
 
 #: admin/class-travely-widget-admin.php:232
 msgid "Russian search path"
-msgstr "Krievu mekl??anas ce??"
+msgstr "Krievu meklēšanas ceļš"
 
 #: admin/class-travely-widget-admin.php:241
 msgid "Latvian search path"
-msgstr "Latvie?u mekl??anas ce??"
+msgstr "Latviešu meklēšanas ceļš"
