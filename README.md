@@ -37,6 +37,33 @@ When `Force default language` is disabled, the plugin resolves the page language
 
 The language is selected at page level. Shortcodes on the same page use the same resolved language.
 
+The `language` shortcode attribute overrides automatic language detection unless `Force default language` is enabled. Use `language="auto"` to keep the automatic detection order.
+
+Shortcode examples:
+
+```text
+[travely-widget-search language="auto"]
+[travely-widget-search language="rus"]
+[travely-widget-search language="eng"]
+[travely-widget-search language="est"]
+[travely-widget-search language="lav"]
+
+[travely-widget-search-country language="eng"]
+[travely-widget-country language="rus"]
+[travely-widget-results language="est"]
+```
+
+Do not mix different Travely Widget languages on the same page. The widget is loaded as a UMD bundle and exposes a global `window.TravelySearch` object, so only one language build can be safely used per page.
+
+Search results path mode:
+
+- `Single path for all languages` uses the common `Path to Search` setting for every resolved language.
+- `Separate path for each language` uses `Estonian search path`, `English search path`, `Russian search path` and `Latvian search path`.
+
+When a language-specific path is empty, the plugin falls back to the common `Path to Search`. If the common path is empty, it falls back to `/tour-search`.
+
+The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.
+
 Supported widget languages:
 
 - `est` - Estonian
@@ -55,7 +82,7 @@ URL examples:
 - `?lang=ru`
 - `?lang=lv`
 
-For multilingual sites where search results pages have language-specific URLs, use the `travely_widget_path_to_search` filter:
+For advanced multilingual path customization, use the `travely_widget_path_to_search` filter. The filter runs after the final path is selected:
 
 ```php
 add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
@@ -110,6 +137,33 @@ Kui `Force default language` ei ole sisse lülitatud, määrab plugin lehe keele
 
 Keel valitakse lehe tasemel. Kõik sama lehe lühikoodid kasutavad sama tuvastatud keelt.
 
+Shortcode'i atribuut `language` alistab automaatse keele tuvastamise, välja arvatud juhul, kui `Force default language` on lubatud. Kasutage `language="auto"`, et säilitada automaatne tuvastamise järjekord.
+
+Lühikoodi näited:
+
+```text
+[travely-widget-search language="auto"]
+[travely-widget-search language="rus"]
+[travely-widget-search language="eng"]
+[travely-widget-search language="est"]
+[travely-widget-search language="lav"]
+
+[travely-widget-search-country language="eng"]
+[travely-widget-country language="rus"]
+[travely-widget-results language="est"]
+```
+
+Ärge kasutage samal lehel Travely Widgeti erinevaid keeli. Vidin laaditakse UMD-bundle'ina ja loob globaalse objekti `window.TravelySearch`, seega saab ühel lehel turvaliselt kasutada ainult ühte keelebuild'i.
+
+Otsingutulemuste tee režiim:
+
+- `Single path for all languages` kasutab kõigi tuvastatud keelte jaoks ühist `Path to Search` seadistust.
+- `Separate path for each language` kasutab välju `Estonian search path`, `English search path`, `Russian search path` ja `Latvian search path`.
+
+Kui keelepõhine tee on tühi, kasutab plugin ühist `Path to Search` väärtust. Kui ka ühine tee on tühi, kasutatakse `/tour-search`.
+
+Tee valitakse pärast lõpliku keele tuvastamist. Näiteks `[travely-widget-search language="rus"]` kasutab vene otsinguteed, `[travely-widget-search language="est"]` kasutab eesti otsinguteed ja `language="auto"` tuvastab esmalt lehe keele ning valib seejärel sobiva tee. Kui `Force default language` on lubatud, valitakse tee sunnitud vaikimisi keele järgi.
+
 Toetatud vidina keeled:
 
 - `est` - eesti
@@ -128,7 +182,7 @@ URL-i näited:
 - `?lang=ru`
 - `?lang=lv`
 
-Kui mitmekeelsel saidil on otsingutulemuste lehtedel keelepõhised URL-id, kasutage filtrit `travely_widget_path_to_search`:
+Täpsemaks mitmekeelse tee kohandamiseks kasutage filtrit `travely_widget_path_to_search`. Filter käivitatakse pärast lõpliku tee valimist:
 
 ```php
 add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
@@ -183,6 +237,33 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 
 Язык выбирается на уровне страницы. Все шорткоды на одной странице используют один и тот же определённый язык.
 
+Атрибут shortcode `language` переопределяет автоматическое определение языка, если не включён режим `Force default language`. Используйте `language="auto"`, чтобы сохранить автоматический порядок определения.
+
+Примеры shortcode:
+
+```text
+[travely-widget-search language="auto"]
+[travely-widget-search language="rus"]
+[travely-widget-search language="eng"]
+[travely-widget-search language="est"]
+[travely-widget-search language="lav"]
+
+[travely-widget-search-country language="eng"]
+[travely-widget-country language="rus"]
+[travely-widget-results language="est"]
+```
+
+Не смешивайте разные языки Travely Widget на одной странице. Виджет загружается как UMD-бандл и создаёт глобальный объект `window.TravelySearch`, поэтому на одной странице безопасно использовать только один языковой билд.
+
+Режим пути к странице результатов поиска:
+
+- `Single path for all languages` использует общий `Path to Search` для всех определённых языков.
+- `Separate path for each language` использует отдельные поля `Estonian search path`, `English search path`, `Russian search path` и `Latvian search path`.
+
+Если языковой path пустой, плагин использует общий `Path to Search`. Если общий path тоже пустой, используется `/tour-search`.
+
+Path выбирается после итогового определения языка. Например, `[travely-widget-search language="rus"]` использует русский path, `[travely-widget-search language="est"]` использует эстонский path, а `language="auto"` сначала определяет язык страницы и затем выбирает соответствующий path. Если включён `Force default language`, path выбирается для принудительного языка по умолчанию.
+
 Поддерживаемые языки виджета:
 
 - `est` - эстонский
@@ -201,7 +282,7 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 - `?lang=ru`
 - `?lang=lv`
 
-Для многоязычных сайтов, где страницы результатов поиска имеют языковые URL, используйте filter `travely_widget_path_to_search`:
+Для тонкой настройки многоязычных URL используйте filter `travely_widget_path_to_search`. Filter применяется после выбора итогового path:
 
 ```php
 add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {

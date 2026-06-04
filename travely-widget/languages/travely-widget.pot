@@ -134,3 +134,55 @@ msgstr ""
 msgctxt "block description"
 msgid "Displays the Travely search widget."
 msgstr ""
+
+#: public/class-travely-widget-public.php:140
+msgid "Travely Widget: multiple languages on one page are not supported. Requested \"%s\", using \"%s\"."
+msgstr ""
+
+#. Documentation warning
+msgid "Do not mix different Travely Widget languages on the same page."
+msgstr ""
+
+#. Documentation note
+msgid "The language shortcode attribute overrides automatic language detection unless Force default language is enabled."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:205
+msgid "Path mode"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:257
+msgid "Single path for all languages"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:258
+msgid "Separate path for each language"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:197
+msgid "Language-specific paths"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:276
+msgid "Choose whether all widget languages use the same search results page path or each language has its own path."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:337
+msgid "Used only when Path mode is set to Separate path for each language."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:214
+msgid "Estonian search path"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:223
+msgid "English search path"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:232
+msgid "Russian search path"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php:241
+msgid "Latvian search path"
+msgstr ""

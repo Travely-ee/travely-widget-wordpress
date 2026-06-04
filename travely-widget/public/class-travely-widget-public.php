@@ -41,6 +41,15 @@ class Travely_Widget_Public {
     private $version;
 
     /**
+     * The resolved Travely widget language for the current page.
+     *
+     * @since    1.0.15
+     * @access   private
+     * @var      string    $resolved_page_language    The page-level Travely language.
+     */
+    private $resolved_page_language = '';
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since    1.0.1
@@ -115,14 +124,73 @@ class Travely_Widget_Public {
         return $prefix . uniqid();
     }
 
-    public function render_search() {
-        $language = Travely_Widget_Language::resolve_language();
+    private function get_page_language( $language ) {
+        $language = Travely_Widget_Language::normalize( $language );
+
+        if ( '' === $this->resolved_page_language ) {
+            $this->resolved_page_language = $language;
+
+            return $language;
+        }
+
+        if ( $this->resolved_page_language !== $language ) {
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                trigger_error(
+                    sprintf(
+                        esc_html__(
+                            'Travely Widget: multiple languages on one page are not supported. Requested "%s", using "%s".',
+                            'travely-widget'
+                        ),
+                        esc_html( $language ),
+                        esc_html( $this->resolved_page_language )
+                    ),
+                    E_USER_WARNING
+                );
+            }
+
+            return $this->resolved_page_language;
+        }
+
+        return $language;
+    }
+
+    private function get_path_to_search( $language ) {
+        $language  = Travely_Widget_Language::normalize( $language );
+        $path_mode = get_option( 'travely_widget_path_mode', 'single' );
+        $path      = get_option( 'travely_widget_path_to_search', '/tour-search' );
+
+        if ( 'language' === $path_mode ) {
+            $language_path_default = 'est' === $language ? '/tour-search' : '';
+            $language_path         = get_option( 'travely_widget_path_to_search_' . $language, $language_path_default );
+
+            if ( '' !== trim( (string) $language_path ) ) {
+                $path = $language_path;
+            }
+        }
+
+        if ( '' === trim( (string) $path ) ) {
+            $path = '/tour-search';
+        }
+
+        return apply_filters( 'travely_widget_path_to_search', $path, $language );
+    }
+
+    public function render_search( $atts = array() ) {
+        $atts = shortcode_atts(
+            array(
+                'language' => 'auto',
+            ),
+            $atts,
+            'travely-widget-search'
+        );
+
+        $language = Travely_Widget_Language::resolve_language( $atts );
+        $language = $this->get_page_language( $language );
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
 
         ob_start();
         ?>
@@ -131,14 +199,22 @@ class Travely_Widget_Public {
         return ob_get_clean();
     }
 
-    public function render_search_country() {
-        $language = Travely_Widget_Language::resolve_language();
+    public function render_search_country( $atts = array() ) {
+        $atts = shortcode_atts(
+            array(
+                'language' => 'auto',
+            ),
+            $atts,
+            'travely-widget-search-country'
+        );
+
+        $language = Travely_Widget_Language::resolve_language( $atts );
+        $language = $this->get_page_language( $language );
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-country-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
 
         ob_start();
         ?>
@@ -147,14 +223,22 @@ class Travely_Widget_Public {
         return ob_get_clean();
     }
 
-    public function render_country() {
-        $language = Travely_Widget_Language::resolve_language();
+    public function render_country( $atts = array() ) {
+        $atts = shortcode_atts(
+            array(
+                'language' => 'auto',
+            ),
+            $atts,
+            'travely-widget-country'
+        );
+
+        $language = Travely_Widget_Language::resolve_language( $atts );
+        $language = $this->get_page_language( $language );
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-country-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
 
         ob_start();
         ?>
@@ -163,14 +247,22 @@ class Travely_Widget_Public {
         return ob_get_clean();
     }
 
-    public function render_results() {
-        $language = Travely_Widget_Language::resolve_language();
+    public function render_results( $atts = array() ) {
+        $atts = shortcode_atts(
+            array(
+                'language' => 'auto',
+            ),
+            $atts,
+            'travely-widget-results'
+        );
+
+        $language = Travely_Widget_Language::resolve_language( $atts );
+        $language = $this->get_page_language( $language );
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-results-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
         $key  = get_option( 'travely_widget_key', '' );
 
         ob_start();

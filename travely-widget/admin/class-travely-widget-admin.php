@@ -122,6 +122,56 @@ class Travely_Widget_Admin {
 
         register_setting(
             'travely_widget_option_group',
+            'travely_widget_path_mode',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_path_mode' ),
+                'default'           => 'single',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
+            'travely_widget_path_to_search_est',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_optional_path_to_search' ),
+                'default'           => '/tour-search',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
+            'travely_widget_path_to_search_eng',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_optional_path_to_search' ),
+                'default'           => '',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
+            'travely_widget_path_to_search_rus',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_optional_path_to_search' ),
+                'default'           => '',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
+            'travely_widget_path_to_search_lav',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_optional_path_to_search' ),
+                'default'           => '',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
             'travely_widget_default_language',
             array(
                 'type'              => 'string',
@@ -151,6 +201,12 @@ class Travely_Widget_Admin {
         );
 
         add_settings_section( 'travely_widget_setting_section', '', null, 'travely-widget-admin' );
+        add_settings_section(
+            'travely_widget_language_paths_section',
+            esc_html__( 'Language-specific paths', 'travely-widget' ),
+            null,
+            'travely-widget-admin'
+        );
 
         add_settings_field(
             'travely_widget_key',
@@ -166,6 +222,46 @@ class Travely_Widget_Admin {
             array( $this, 'path_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_mode',
+            esc_html__( 'Path mode', 'travely-widget' ),
+            array( $this, 'path_mode_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_to_search_est',
+            esc_html__( 'Estonian search path', 'travely-widget' ),
+            array( $this, 'path_est_callback' ),
+            'travely-widget-admin',
+            'travely_widget_language_paths_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_to_search_eng',
+            esc_html__( 'English search path', 'travely-widget' ),
+            array( $this, 'path_eng_callback' ),
+            'travely-widget-admin',
+            'travely_widget_language_paths_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_to_search_rus',
+            esc_html__( 'Russian search path', 'travely-widget' ),
+            array( $this, 'path_rus_callback' ),
+            'travely-widget-admin',
+            'travely_widget_language_paths_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_to_search_lav',
+            esc_html__( 'Latvian search path', 'travely-widget' ),
+            array( $this, 'path_lav_callback' ),
+            'travely-widget-admin',
+            'travely_widget_language_paths_section'
         );
 
         add_settings_field(
@@ -209,6 +305,36 @@ class Travely_Widget_Admin {
 
     }
 
+    public function path_mode_callback() {
+        $value = $this->sanitize_path_mode( get_option( 'travely_widget_path_mode', 'single' ) );
+
+        $options = array(
+            'single'   => __( 'Single path for all languages', 'travely-widget' ),
+            'language' => __( 'Separate path for each language', 'travely-widget' ),
+        );
+
+        echo '<select id="travely_widget_path_mode" name="travely_widget_path_mode">';
+
+        foreach ( $options as $mode => $label ) {
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr( $mode ),
+                selected( $value, $mode, false ),
+                esc_html( $label )
+            );
+        }
+
+        echo '</select>';
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__(
+                'Choose whether all widget languages use the same search results page path or each language has its own path.',
+                'travely-widget'
+            )
+        );
+    }
+
     public function default_language_callback() {
         $value     = Travely_Widget_Language::normalize( get_option( 'travely_widget_default_language', 'est' ) );
         $languages = Travely_Widget_Language::allowed_languages();
@@ -249,6 +375,52 @@ class Travely_Widget_Admin {
         );
     }
 
+    private function language_path_input( $option_name, $label_description = '', $default = '' ) {
+        $value = get_option( $option_name, $default );
+
+        printf(
+            '<input type="text" id="%1$s" name="%1$s" value="%2$s" />',
+            esc_attr( $option_name ),
+            esc_attr( $value )
+        );
+
+        if ( '' !== $label_description ) {
+            printf(
+                '<p class="description">%s</p>',
+                esc_html( $label_description )
+            );
+        }
+    }
+
+    public function path_est_callback() {
+        $this->language_path_input(
+            'travely_widget_path_to_search_est',
+            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' ),
+            '/tour-search'
+        );
+    }
+
+    public function path_eng_callback() {
+        $this->language_path_input(
+            'travely_widget_path_to_search_eng',
+            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' )
+        );
+    }
+
+    public function path_rus_callback() {
+        $this->language_path_input(
+            'travely_widget_path_to_search_rus',
+            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' )
+        );
+    }
+
+    public function path_lav_callback() {
+        $this->language_path_input(
+            'travely_widget_path_to_search_lav',
+            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' )
+        );
+    }
+
     public function remove_data_callback() {
         $value = (bool) get_option( 'travely_widget_remove_data_on_uninstall', false );
 
@@ -285,6 +457,32 @@ class Travely_Widget_Admin {
         }
 
         return $value;
+    }
+
+    public function sanitize_optional_path_to_search( $value ) {
+        $value = sanitize_text_field( $value );
+        $value = trim( $value );
+
+        if ( '' === $value ) {
+            return '';
+        }
+
+        if ( preg_match( '#^https?://#i', $value ) ) {
+            $path  = wp_parse_url( $value, PHP_URL_PATH );
+            $value = $path ? $path : '';
+        }
+
+        if ( '' !== $value && '/' !== substr( $value, 0, 1 ) ) {
+            $value = '/' . $value;
+        }
+
+        return $value;
+    }
+
+    public function sanitize_path_mode( $value ) {
+        $value = sanitize_text_field( $value );
+
+        return in_array( $value, array( 'single', 'language' ), true ) ? $value : 'single';
     }
 
     public function sanitize_language( $value ) {

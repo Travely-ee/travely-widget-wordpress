@@ -144,3 +144,55 @@ msgstr "Kuvab Travely otsingumooduli."
 
 #~ msgid "Travely OU"
 #~ msgstr "Travely OÜ"
+
+#: public/class-travely-widget-public.php:140
+msgid "Travely Widget: multiple languages on one page are not supported. Requested \"%s\", using \"%s\"."
+msgstr "Travely Widget: mitu keelt samal lehel ei ole toetatud. Taotleti \"%s\", kasutatakse \"%s\"."
+
+#. Documentation warning
+msgid "Do not mix different Travely Widget languages on the same page."
+msgstr "Ärge kasutage samal lehel Travely Widgeti erinevaid keeli."
+
+#. Documentation note
+msgid "The language shortcode attribute overrides automatic language detection unless Force default language is enabled."
+msgstr "Shortcode'i atribuut language alistab automaatse keele tuvastamise, välja arvatud juhul, kui vaikimisi keele sundkasutus on lubatud."
+
+#: admin/class-travely-widget-admin.php:205
+msgid "Path mode"
+msgstr "Tee re?iim"
+
+#: admin/class-travely-widget-admin.php:257
+msgid "Single path for all languages"
+msgstr "?ks tee k?igi keelte jaoks"
+
+#: admin/class-travely-widget-admin.php:258
+msgid "Separate path for each language"
+msgstr "Eraldi tee iga keele jaoks"
+
+#: admin/class-travely-widget-admin.php:197
+msgid "Language-specific paths"
+msgstr "Keelep?hised teed"
+
+#: admin/class-travely-widget-admin.php:276
+msgid "Choose whether all widget languages use the same search results page path or each language has its own path."
+msgstr "Valige, kas k?ik vidina keeled kasutavad sama otsingutulemuste lehe teed v?i on igal keelel oma tee."
+
+#: admin/class-travely-widget-admin.php:337
+msgid "Used only when Path mode is set to Separate path for each language."
+msgstr "Kasutatakse ainult siis, kui tee re?iimiks on valitud eraldi tee iga keele jaoks."
+
+#: admin/class-travely-widget-admin.php:214
+msgid "Estonian search path"
+msgstr "Eestikeelne otsingu tee"
+
+#: admin/class-travely-widget-admin.php:223
+msgid "English search path"
+msgstr "Ingliskeelne otsingu tee"
+
+#: admin/class-travely-widget-admin.php:232
+msgid "Russian search path"
+msgstr "Venekeelne otsingu tee"
+
+#: admin/class-travely-widget-admin.php:241
+msgid "Latvian search path"
+msgstr "L?tikeelne otsingu tee"
