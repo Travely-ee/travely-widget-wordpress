@@ -44,7 +44,7 @@ msgstr "Travely vidina seaded"
 
 #: admin/class-travely-widget-admin.php:90
 msgid "Configure your Travely Widget public key, search results page path and language behavior."
-msgstr "Seadistage Travely Widgeti avalik v?ti, otsingutulemuste lehe tee ja keelek?itumine."
+msgstr "Seadistage Travely Widgeti avalik võti, otsingutulemuste lehe tee ja keelekäitumine."
 
 #: admin/class-travely-widget-admin.php:171
 msgid "Default language"
@@ -56,7 +56,7 @@ msgstr "Kasuta alati vaikimisi keelt"
 
 #: admin/class-travely-widget-admin.php:233
 msgid "Used when language cannot be detected automatically."
-msgstr "Kasutatakse siis, kui keelt ei ?nnestu automaatselt tuvastada."
+msgstr "Kasutatakse siis, kui keelt ei õnnestu automaatselt tuvastada."
 
 #: admin/class-travely-widget-admin.php:248
 msgid "Always use the selected default language."
@@ -80,7 +80,7 @@ msgstr "Vene"
 
 #: includes/class-travely-widget-language.php:29
 msgid "Latvian"
-msgstr "L?ti"
+msgstr "Läti"
 
 #: admin/class-travely-widget-admin.php:137
 msgid "API Key"

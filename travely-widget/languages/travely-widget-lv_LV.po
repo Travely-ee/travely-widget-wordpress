@@ -45,35 +45,35 @@ msgstr "Travely logrīka iestatījumi"
 
 #: admin/class-travely-widget-admin.php:90
 msgid "Configure your Travely Widget public key, search results page path and language behavior."
-msgstr "Konfigur?jiet Travely Widget publisko atsl?gu, mekl??anas rezult?tu lapas ce?u un valodas darb?bu."
+msgstr "Konfigurējiet Travely Widget publisko atslēgu, meklēšanas rezultātu lapas ceļu un valodas darbību."
 
 #: admin/class-travely-widget-admin.php:171
 msgid "Default language"
-msgstr "Noklus?juma valoda"
+msgstr "Noklusējuma valoda"
 
 #: admin/class-travely-widget-admin.php:179
 msgid "Force default language"
-msgstr "Vienm?r izmantot noklus?juma valodu"
+msgstr "Vienmēr izmantot noklusējuma valodu"
 
 #: admin/class-travely-widget-admin.php:233
 msgid "Used when language cannot be detected automatically."
-msgstr "Tiek izmantota, ja valodu nevar noteikt autom?tiski."
+msgstr "Tiek izmantota, ja valodu nevar noteikt automātiski."
 
 #: admin/class-travely-widget-admin.php:248
 msgid "Always use the selected default language."
-msgstr "Vienm?r izmantot izv?l?to noklus?juma valodu."
+msgstr "Vienmēr izmantot izvēlēto noklusējuma valodu."
 
 #: admin/class-travely-widget-admin.php:253
 msgid "When enabled, URL language, Polylang/WPML language and WordPress locale are ignored."
-msgstr "Ja iesp?jots, URL valoda, Polylang/WPML valoda un WordPress lok?le tiek ignor?ta."
+msgstr "Ja iespējots, URL valoda, Polylang/WPML valoda un WordPress lokāle tiek ignorēta."
 
 #: includes/class-travely-widget-language.php:26
 msgid "Estonian"
-msgstr "Igau?u"
+msgstr "Igauņu"
 
 #: includes/class-travely-widget-language.php:27
 msgid "English"
-msgstr "Ang?u"
+msgstr "Angļu"
 
 #: includes/class-travely-widget-language.php:28
 msgid "Russian"
@@ -81,7 +81,7 @@ msgstr "Krievu"
 
 #: includes/class-travely-widget-language.php:29
 msgid "Latvian"
-msgstr "Latvie?u"
+msgstr "Latviešu"
 
 #: admin/class-travely-widget-admin.php:137
 msgid "API Key"
