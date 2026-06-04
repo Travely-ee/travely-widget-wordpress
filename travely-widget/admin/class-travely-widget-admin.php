@@ -87,7 +87,7 @@ class Travely_Widget_Admin {
         ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Travely Widget Settings', 'travely-widget' ); ?></h1>
-            <p><?php esc_html_e( 'Configure your Travely Widget public key and the page path where search results should be displayed.', 'travely-widget' ); ?></p>
+            <p><?php esc_html_e( 'Configure your Travely Widget public key, search results page path and language behavior.', 'travely-widget' ); ?></p>
             <form method="post" action="options.php">
                 <?php
                 settings_fields( 'travely_widget_option_group' );
@@ -122,6 +122,26 @@ class Travely_Widget_Admin {
 
         register_setting(
             'travely_widget_option_group',
+            'travely_widget_default_language',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_language' ),
+                'default'           => 'est',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
+            'travely_widget_force_default_language',
+            array(
+                'type'              => 'boolean',
+                'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
+                'default'           => false,
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
             'travely_widget_remove_data_on_uninstall',
             array(
                 'type'              => 'boolean',
@@ -149,6 +169,22 @@ class Travely_Widget_Admin {
         );
 
         add_settings_field(
+            'travely_widget_default_language',
+            esc_html__( 'Default language', 'travely-widget' ),
+            array( $this, 'default_language_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_force_default_language',
+            esc_html__( 'Force default language', 'travely-widget' ),
+            array( $this, 'force_default_language_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
             'travely_widget_remove_data_on_uninstall',
             __( 'Remove data on uninstall', 'travely-widget' ),
             array( $this, 'remove_data_callback' ),
@@ -171,6 +207,46 @@ class Travely_Widget_Admin {
             esc_attr( $value )
         );
 
+    }
+
+    public function default_language_callback() {
+        $value     = Travely_Widget_Language::normalize( get_option( 'travely_widget_default_language', 'est' ) );
+        $languages = Travely_Widget_Language::allowed_languages();
+
+        echo '<select id="travely_widget_default_language" name="travely_widget_default_language">';
+
+        foreach ( $languages as $code => $label ) {
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr( $code ),
+                selected( $value, $code, false ),
+                esc_html( $label )
+            );
+        }
+
+        echo '</select>';
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__( 'Used when language cannot be detected automatically.', 'travely-widget' )
+        );
+    }
+
+    public function force_default_language_callback() {
+        $value = (bool) get_option( 'travely_widget_force_default_language', false );
+
+        echo '<input type="hidden" name="travely_widget_force_default_language" value="0" />';
+
+        printf(
+            '<label><input type="checkbox" name="travely_widget_force_default_language" value="1" %s /> %s</label>',
+            checked( true, $value, false ),
+            esc_html__( 'Always use the selected default language.', 'travely-widget' )
+        );
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__( 'When enabled, URL language, Polylang/WPML language and WordPress locale are ignored.', 'travely-widget' )
+        );
     }
 
     public function remove_data_callback() {
@@ -211,8 +287,11 @@ class Travely_Widget_Admin {
         return $value;
     }
 
+    public function sanitize_language( $value ) {
+        return Travely_Widget_Language::normalize( $value );
+    }
+
     public function sanitize_checkbox( $value ) {
         return ! empty( $value );
     }
 }
-

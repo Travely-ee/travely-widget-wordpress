@@ -81,9 +81,24 @@ class Travely_Widget_Public {
         );
     }
 
-    private function enqueue_remote_assets() {
-        wp_enqueue_style( 'travely-widget-remote-css', 'https://wgsearch.travely.ee/est/static/css/main.css', array(), $this->version );
-        wp_enqueue_script( 'travely-widget-remote-js', 'https://wgsearch.travely.ee/est/static/js/main.js', array(), $this->version, true );
+    private function enqueue_remote_assets( $language ) {
+        $language = Travely_Widget_Language::normalize( $language );
+        $base_url = 'https://wgsearch.travely.ee';
+
+        wp_enqueue_style(
+            'travely-widget-remote-css',
+            $base_url . '/' . $language . '/static/css/main.css',
+            array(),
+            $this->version
+        );
+
+        wp_enqueue_script(
+            'travely-widget-remote-js',
+            $base_url . '/' . $language . '/static/js/main.js',
+            array(),
+            $this->version,
+            true
+        );
     }
 
     private function enqueue_local_assets() {
@@ -101,54 +116,66 @@ class Travely_Widget_Public {
     }
 
     public function render_search() {
-        $this->enqueue_remote_assets();
+        $language = Travely_Widget_Language::resolve_language();
+
+        $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-' );
-        $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
+        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }
 
     public function render_search_country() {
-        $this->enqueue_remote_assets();
+        $language = Travely_Widget_Language::resolve_language();
+
+        $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-country-' );
-        $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
+        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }
 
     public function render_country() {
-        $this->enqueue_remote_assets();
+        $language = Travely_Widget_Language::resolve_language();
+
+        $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-country-' );
-        $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
+        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
+        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }
 
     public function render_results() {
-        $this->enqueue_remote_assets();
+        $language = Travely_Widget_Language::resolve_language();
+
+        $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-results-' );
-        $path = esc_js( get_option( 'travely_widget_path_to_search', '/tour-search' ) );
-        $key  = esc_js( get_option( 'travely_widget_key', '' ) );
+        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
+        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $key  = get_option( 'travely_widget_key', '' );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }

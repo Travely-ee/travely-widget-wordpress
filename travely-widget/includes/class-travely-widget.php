@@ -112,6 +112,11 @@ class Travely_Widget {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-travely-widget-i18n.php';
 
         /**
+         * The class responsible for resolving Travely widget language.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-travely-widget-language.php';
+
+        /**
          * The class responsible for defining all actions that occur in the admin area.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-travely-widget-admin.php';

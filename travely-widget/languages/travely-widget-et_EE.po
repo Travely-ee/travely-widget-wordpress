@@ -1,4 +1,4 @@
-# Latvian translation for Travely Widget
+# Estonian translation for Travely Widget
 # Copyright (C) 2026 Travely Solutions OÜ
 # This file is distributed under the Commerce.
 msgid ""
@@ -8,20 +8,19 @@ msgstr ""
 "POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
 "PO-Revision-Date: 2026-05-14 12:28+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
-"Language-Team: Latvian\n"
-"Language: lv\n"
+"Language-Team: Estonian\n"
+"Language: et_EE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==0 || (n%100>=11 && n%100<=19) ? 0 : "
-"n%10==1 && n%100!=11 ? 1 : 2);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.9\n"
 "X-Domain: travely-widget\n"
 
 #. Plugin Name of the plugin
 #: travely-widget.php
 msgid "Travely Widget"
-msgstr "Travely logrīks"
+msgstr "Travely vidin"
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
@@ -32,7 +31,7 @@ msgstr "https://travely-solutions.eu"
 #. Description of the plugin
 #: travely-widget.php
 msgid "The plugin allows you to use the Travely system widget on your website."
-msgstr "Spraudnis ļauj izmantot Travely sistēmas logrīku jūsu tīmekļa vietnē."
+msgstr "Plugin võimaldab kasutada Travely süsteemi vidinat teie veebisaidil."
 
 #. Author of the plugin
 #: travely-widget.php
@@ -41,74 +40,107 @@ msgstr "Travely Solutions OÜ"
 
 #: admin/class-travely-widget-admin.php:89
 msgid "Travely Widget Settings"
-msgstr "Travely logrīka iestatījumi"
+msgstr "Travely vidina seaded"
 
 #: admin/class-travely-widget-admin.php:90
-msgid ""
-"Configure your Travely Widget public key and the page path where search "
-"results should be displayed."
-msgstr ""
-"Konfigurējiet Travely logrīka publisko atslēgu un lapas ceļu, kurā jāattēlo "
-"meklēšanas rezultāti."
+msgid "Configure your Travely Widget public key, search results page path and language behavior."
+msgstr "Seadistage Travely Widgeti avalik võti, otsingutulemuste lehe tee ja keelekäitumine."
+
+#: admin/class-travely-widget-admin.php:171
+msgid "Default language"
+msgstr "Vaikimisi keel"
+
+#: admin/class-travely-widget-admin.php:179
+msgid "Force default language"
+msgstr "Kasuta alati vaikimisi keelt"
+
+#: admin/class-travely-widget-admin.php:233
+msgid "Used when language cannot be detected automatically."
+msgstr "Kasutatakse siis, kui keelt ei õnnestu automaatselt tuvastada."
+
+#: admin/class-travely-widget-admin.php:248
+msgid "Always use the selected default language."
+msgstr "Kasuta alati valitud vaikimisi keelt."
+
+#: admin/class-travely-widget-admin.php:253
+msgid "When enabled, URL language, Polylang/WPML language and WordPress locale are ignored."
+msgstr "Kui see on lubatud, eiratakse URL-i keelt, Polylang/WPML-i keelt ja WordPressi lokaati."
+
+#: includes/class-travely-widget-language.php:26
+msgid "Estonian"
+msgstr "Eesti"
+
+#: includes/class-travely-widget-language.php:27
+msgid "English"
+msgstr "Inglise"
+
+#: includes/class-travely-widget-language.php:28
+msgid "Russian"
+msgstr "Vene"
+
+#: includes/class-travely-widget-language.php:29
+msgid "Latvian"
+msgstr "Läti"
 
 #: admin/class-travely-widget-admin.php:137
 msgid "API Key"
-msgstr "API atslēga"
+msgstr "API võti"
 
 #: admin/class-travely-widget-admin.php:145
 msgid "Path to Search"
-msgstr "Meklēšanas ceļš"
+msgstr "Otsingu tee"
 
 #: admin/class-travely-widget-admin.php:153
 msgid "Remove data on uninstall"
-msgstr "Dzēst datus atinstalēšanas laikā"
+msgstr "Eemalda andmed desinstallimisel"
 
 #: admin/class-travely-widget-admin.php:186
 msgid "Remove plugin settings when uninstalling the plugin."
-msgstr "Dzēst spraudņa iestatījumus, atinstalējot spraudni."
+msgstr "Plugina desinstallimisel eemaldage pluginate sätted."
 
 #: includes/class-travely-widget-activator.php:41
 msgid "Travely Widget requires WordPress 5.8 or higher."
-msgstr "Travely logrīkam nepieciešams WordPress 5.8 vai jaunāka versija."
+msgstr ""
+"Travely Widget kasutamiseks on vaja WordPressi versiooni 5.8 või uuemat."
 
 #: includes/class-travely-widget-updater.php:112
 msgid "GitHub API request failed."
-msgstr "GitHub API pieprasījums neizdevās."
+msgstr "GitHub API päring ebaõnnestus."
 
 #: includes/class-travely-widget-updater.php:118
 msgid "Invalid GitHub API response."
-msgstr "Nederīga GitHub API atbilde."
+msgstr "Vigane GitHub API vastus."
 
 #: includes/class-travely-widget-updater.php:226
 msgid "Update available from GitHub."
-msgstr "Atjauninājums ir pieejams GitHub platformā."
+msgstr "Uuendus on saadaval GitHubist."
 
 #: includes/class-travely-widget-updater.php:279
 msgid "View on GitHub"
-msgstr "Skatīt GitHub"
+msgstr "Vaata GitHubis"
 
 #: blocks/results/block.json
 msgctxt "block title"
 msgid "Travely Results Widget"
-msgstr "Travely rezultātu logrīks"
+msgstr "Travely tulemuste moodul"
 
 #: blocks/results/block.json
 msgctxt "block description"
 msgid "Displays the Travely search results widget."
-msgstr "Parāda Travely meklēšanas rezultātu logrīku."
+msgstr "Kuvab Travely otsingutulemuste mooduli."
 
 #: blocks/search/block.json
 msgctxt "block title"
 msgid "Travely Search Widget"
-msgstr "Travely meklēšanas logrīks"
+msgstr "Travely otsingumoodul"
 
 #: blocks/search/block.json
 msgctxt "block description"
 msgid "Displays the Travely search widget."
-msgstr "Parāda Travely meklēšanas logrīku."
+msgstr "Kuvab Travely otsingumooduli."
 
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"
 
 #~ msgid "Travely OU"
-#~ msgstr "Travely OU"
+#~ msgstr "Travely OÜ"
