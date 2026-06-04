@@ -6,6 +6,12 @@
   "icon": "list-view",
   "description": "Displays the Travely search results widget.",
   "textdomain": "travely-widget",
+  "attributes": {
+    "language": {
+      "type": "string",
+      "default": "auto"
+    }
+  },
   "supports": {
     "html": false
   }

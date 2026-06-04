@@ -13,6 +13,8 @@ The plugin allows you to use the Travely system widget on your website.
 
 The widget language is selected at page level. All Travely shortcodes on the same page use the same resolved language.
 
+Do not mix different Travely Widget languages on the same page. The widget is loaded as a UMD bundle and exposes a global `window.TravelySearch` object, so only one language build can be safely used per page.
+
 Supported widget languages:
 
 * `est` - Estonian
@@ -47,6 +49,19 @@ When `Force default language` is disabled, the plugin resolves language in this 
 6. Default language
 
 When `Force default language` is enabled, the plugin always uses the selected default language and ignores URL language, Polylang/WPML and WordPress locale.
+
+The language shortcode attribute overrides automatic language detection unless `Force default language` is enabled. Use `language="auto"` to keep the automatic detection order.
+
+Shortcode examples:
+
+* `[travely-widget-search language="auto"]`
+* `[travely-widget-search language="rus"]`
+* `[travely-widget-search language="eng"]`
+* `[travely-widget-search language="est"]`
+* `[travely-widget-search language="lav"]`
+* `[travely-widget-search-country language="eng"]`
+* `[travely-widget-country language="rus"]`
+* `[travely-widget-results language="est"]`
 
 URL examples:
 

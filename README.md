@@ -37,6 +37,24 @@ When `Force default language` is disabled, the plugin resolves the page language
 
 The language is selected at page level. Shortcodes on the same page use the same resolved language.
 
+The `language` shortcode attribute overrides automatic language detection unless `Force default language` is enabled. Use `language="auto"` to keep the automatic detection order.
+
+Shortcode examples:
+
+```text
+[travely-widget-search language="auto"]
+[travely-widget-search language="rus"]
+[travely-widget-search language="eng"]
+[travely-widget-search language="est"]
+[travely-widget-search language="lav"]
+
+[travely-widget-search-country language="eng"]
+[travely-widget-country language="rus"]
+[travely-widget-results language="est"]
+```
+
+Do not mix different Travely Widget languages on the same page. The widget is loaded as a UMD bundle and exposes a global `window.TravelySearch` object, so only one language build can be safely used per page.
+
 Supported widget languages:
 
 - `est` - Estonian
@@ -110,6 +128,24 @@ Kui `Force default language` ei ole sisse lülitatud, määrab plugin lehe keele
 
 Keel valitakse lehe tasemel. Kõik sama lehe lühikoodid kasutavad sama tuvastatud keelt.
 
+Shortcode'i atribuut `language` alistab automaatse keele tuvastamise, välja arvatud juhul, kui `Force default language` on lubatud. Kasutage `language="auto"`, et säilitada automaatne tuvastamise järjekord.
+
+Lühikoodi näited:
+
+```text
+[travely-widget-search language="auto"]
+[travely-widget-search language="rus"]
+[travely-widget-search language="eng"]
+[travely-widget-search language="est"]
+[travely-widget-search language="lav"]
+
+[travely-widget-search-country language="eng"]
+[travely-widget-country language="rus"]
+[travely-widget-results language="est"]
+```
+
+Ärge kasutage samal lehel Travely Widgeti erinevaid keeli. Vidin laaditakse UMD-bundle'ina ja loob globaalse objekti `window.TravelySearch`, seega saab ühel lehel turvaliselt kasutada ainult ühte keelebuild'i.
+
 Toetatud vidina keeled:
 
 - `est` - eesti
@@ -182,6 +218,24 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 6. Default language
 
 Язык выбирается на уровне страницы. Все шорткоды на одной странице используют один и тот же определённый язык.
+
+Атрибут shortcode `language` переопределяет автоматическое определение языка, если не включён режим `Force default language`. Используйте `language="auto"`, чтобы сохранить автоматический порядок определения.
+
+Примеры shortcode:
+
+```text
+[travely-widget-search language="auto"]
+[travely-widget-search language="rus"]
+[travely-widget-search language="eng"]
+[travely-widget-search language="est"]
+[travely-widget-search language="lav"]
+
+[travely-widget-search-country language="eng"]
+[travely-widget-country language="rus"]
+[travely-widget-results language="est"]
+```
+
+Не смешивайте разные языки Travely Widget на одной странице. Виджет загружается как UMD-бандл и создаёт глобальный объект `window.TravelySearch`, поэтому на одной странице безопасно использовать только один языковой билд.
 
 Поддерживаемые языки виджета:
 

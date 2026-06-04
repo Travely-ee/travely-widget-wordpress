@@ -145,3 +145,15 @@ msgstr "Отображает виджет поиска Travely."
 
 #~ msgid "Travely OU"
 #~ msgstr "Travely OU"
+
+#: public/class-travely-widget-public.php:140
+msgid "Travely Widget: multiple languages on one page are not supported. Requested \"%s\", using \"%s\"."
+msgstr "Travely Widget: несколько языков на одной странице не поддерживаются. Запрошен \"%s\", используется \"%s\"."
+
+#. Documentation warning
+msgid "Do not mix different Travely Widget languages on the same page."
+msgstr "Не смешивайте разные языки Travely Widget на одной странице."
+
+#. Documentation note
+msgid "The language shortcode attribute overrides automatic language detection unless Force default language is enabled."
+msgstr "Атрибут shortcode language переопределяет автоматическое определение языка, если не включено принудительное использование языка по умолчанию."

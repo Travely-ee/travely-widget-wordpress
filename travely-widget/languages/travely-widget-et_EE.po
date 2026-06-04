@@ -144,3 +144,15 @@ msgstr "Kuvab Travely otsingumooduli."
 
 #~ msgid "Travely OU"
 #~ msgstr "Travely OÜ"
+
+#: public/class-travely-widget-public.php:140
+msgid "Travely Widget: multiple languages on one page are not supported. Requested \"%s\", using \"%s\"."
+msgstr "Travely Widget: mitu keelt samal lehel ei ole toetatud. Taotleti \"%s\", kasutatakse \"%s\"."
+
+#. Documentation warning
+msgid "Do not mix different Travely Widget languages on the same page."
+msgstr "Ärge kasutage samal lehel Travely Widgeti erinevaid keeli."
+
+#. Documentation note
+msgid "The language shortcode attribute overrides automatic language detection unless Force default language is enabled."
+msgstr "Shortcode'i atribuut language alistab automaatse keele tuvastamise, välja arvatud juhul, kui vaikimisi keele sundkasutus on lubatud."

@@ -68,6 +68,37 @@ class Travely_Widget_Language {
     }
 
     /**
+     * Normalize a shortcode language attribute.
+     *
+     * @param string $language Shortcode language attribute.
+     * @return string
+     */
+    public static function normalize_shortcode_language( $language ) {
+        $language = strtolower( sanitize_text_field( (string) $language ) );
+
+        if ( 'auto' === $language || '' === $language ) {
+            return 'auto';
+        }
+
+        $map = array(
+            'et'  => 'est',
+            'ee'  => 'est',
+            'est' => 'est',
+
+            'en'  => 'eng',
+            'eng' => 'eng',
+
+            'ru'  => 'rus',
+            'rus' => 'rus',
+
+            'lv'  => 'lav',
+            'lav' => 'lav',
+        );
+
+        return isset( $map[ $language ] ) ? $map[ $language ] : 'auto';
+    }
+
+    /**
      * Get configured default language.
      *
      * @return string
@@ -160,11 +191,19 @@ class Travely_Widget_Language {
      *
      * @return string
      */
-    public static function resolve_language() {
+    public static function resolve_language( $atts = array() ) {
         $default_language = self::get_default_language();
 
         if ( self::is_force_default_language() ) {
             return $default_language;
+        }
+
+        if ( is_array( $atts ) && isset( $atts['language'] ) ) {
+            $shortcode_language = self::normalize_shortcode_language( $atts['language'] );
+
+            if ( 'auto' !== $shortcode_language ) {
+                return $shortcode_language;
+            }
         }
 
         $query_language = self::get_query_language();
