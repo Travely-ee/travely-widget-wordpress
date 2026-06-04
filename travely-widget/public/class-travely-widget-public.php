@@ -154,6 +154,27 @@ class Travely_Widget_Public {
         return $language;
     }
 
+    private function get_path_to_search( $language ) {
+        $language  = Travely_Widget_Language::normalize( $language );
+        $path_mode = get_option( 'travely_widget_path_mode', 'single' );
+        $path      = get_option( 'travely_widget_path_to_search', '/tour-search' );
+
+        if ( 'language' === $path_mode ) {
+            $language_path_default = 'est' === $language ? '/tour-search' : '';
+            $language_path         = get_option( 'travely_widget_path_to_search_' . $language, $language_path_default );
+
+            if ( '' !== trim( (string) $language_path ) ) {
+                $path = $language_path;
+            }
+        }
+
+        if ( '' === trim( (string) $path ) ) {
+            $path = '/tour-search';
+        }
+
+        return apply_filters( 'travely_widget_path_to_search', $path, $language );
+    }
+
     public function render_search( $atts = array() ) {
         $atts = shortcode_atts(
             array(
@@ -169,8 +190,7 @@ class Travely_Widget_Public {
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
 
         ob_start();
         ?>
@@ -194,8 +214,7 @@ class Travely_Widget_Public {
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-country-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
 
         ob_start();
         ?>
@@ -219,8 +238,7 @@ class Travely_Widget_Public {
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-country-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
 
         ob_start();
         ?>
@@ -244,8 +262,7 @@ class Travely_Widget_Public {
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-results-' );
-        $path = get_option( 'travely_widget_path_to_search', '/tour-search' );
-        $path = apply_filters( 'travely_widget_path_to_search', $path, $language );
+        $path = $this->get_path_to_search( $language );
         $key  = get_option( 'travely_widget_key', '' );
 
         ob_start();

@@ -52,6 +52,15 @@ When `Force default language` is enabled, the plugin always uses the selected de
 
 The language shortcode attribute overrides automatic language detection unless `Force default language` is enabled. Use `language="auto"` to keep the automatic detection order.
 
+Path mode controls how `Path to Search` is selected:
+
+* `Single path for all languages` uses the common `Path to Search` setting for every resolved language.
+* `Separate path for each language` uses `Estonian search path`, `English search path`, `Russian search path` and `Latvian search path`.
+
+When a language-specific path is empty, the plugin falls back to the common `Path to Search`. If the common path is empty, it falls back to `/tour-search`.
+
+The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.
+
 Shortcode examples:
 
 * `[travely-widget-search language="auto"]`
@@ -74,7 +83,7 @@ URL examples:
 * `?lang=ru`
 * `?lang=lv`
 
-For multilingual sites where search results pages have language-specific URLs, use the `travely_widget_path_to_search` filter:
+For advanced multilingual path customization, use the `travely_widget_path_to_search` filter. The filter runs after the final path is selected:
 
 `apply_filters( 'travely_widget_path_to_search', $path, $language );`
 
