@@ -4,7 +4,7 @@
  * Plugin updater class for GitHub releases.
  *
  * @link       https://travely-solutions.eu
- * @since      1.0.14
+ * @since      1.0.15
  *
  * @package    Travely_Widget
  * @subpackage Travely_Widget/includes
