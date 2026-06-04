@@ -60,6 +60,8 @@ Search results path mode:
 - `Single path for all languages` uses the common `Path to Search` setting for every resolved language.
 - `Separate path for each language` uses `Estonian search path`, `English search path`, `Russian search path` and `Latvian search path`.
 
+`Path mode` also controls which path fields are shown in the settings page. In `Single path for all languages`, only the common `Path to Search` field is shown. In `Separate path for each language`, only the `Language-specific paths` section is shown.
+
 When a language-specific path is empty, the plugin falls back to the common `Path to Search`. If the common path is empty, it falls back to `/tour-search`.
 
 The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.
@@ -160,6 +162,8 @@ Otsingutulemuste tee režiim:
 - `Single path for all languages` kasutab kõigi tuvastatud keelte jaoks ühist `Path to Search` seadistust.
 - `Separate path for each language` kasutab välju `Estonian search path`, `English search path`, `Russian search path` ja `Latvian search path`.
 
+`Path mode` määrab ka, millised tee väljad seadistuste lehel kuvatakse. Režiimis `Single path for all languages` kuvatakse ainult üldine `Path to Search` väli. Režiimis `Separate path for each language` kuvatakse ainult `Language-specific paths` sektsioon.
+
 Kui keelepõhine tee on tühi, kasutab plugin ühist `Path to Search` väärtust. Kui ka ühine tee on tühi, kasutatakse `/tour-search`.
 
 Tee valitakse pärast lõpliku keele tuvastamist. Näiteks `[travely-widget-search language="rus"]` kasutab vene otsinguteed, `[travely-widget-search language="est"]` kasutab eesti otsinguteed ja `language="auto"` tuvastab esmalt lehe keele ning valib seejärel sobiva tee. Kui `Force default language` on lubatud, valitakse tee sunnitud vaikimisi keele järgi.
@@ -259,6 +263,8 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 
 - `Single path for all languages` использует общий `Path to Search` для всех определённых языков.
 - `Separate path for each language` использует отдельные поля `Estonian search path`, `English search path`, `Russian search path` и `Latvian search path`.
+
+`Path mode` также определяет, какие поля path отображаются на странице настроек. В режиме `Single path for all languages` показывается только общее поле `Path to Search`. В режиме `Separate path for each language` показывается только секция `Language-specific paths`.
 
 Если языковой path пустой, плагин использует общий `Path to Search`. Если общий path тоже пустой, используется `/tour-search`.
 

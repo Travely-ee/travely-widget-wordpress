@@ -14,7 +14,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Travely Widget
- * Plugin URI:        https://travely-solutions.eu
+ * Plugin URI:        https://github.com/Travely-ee/travely-widget-wordpress
  * Description:       The plugin allows you to use the Travely system widget on your website.
  * Version:           1.0.16
  * Requires at least: 5.8

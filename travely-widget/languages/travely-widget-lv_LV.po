@@ -196,3 +196,11 @@ msgstr "Krievu meklēšanas ceļš"
 #: admin/class-travely-widget-admin.php:241
 msgid "Latvian search path"
 msgstr "Latviešu meklēšanas ceļš"
+
+#: admin/class-travely-widget-admin.php
+msgid "Used when Path mode is set to Single path for all languages. In language-specific mode it is kept as a fallback."
+msgstr "Izmanto, ja ceļa režīms ir iestatīts uz vienu ceļu visām valodām. Valodai specifisku ceļu režīmā tas tiek saglabāts kā rezerves vērtība."
+
+#: admin/class-travely-widget-admin.php
+msgid "Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path."
+msgstr "Izmanto tikai tad, ja ceļa režīms ir iestatīts uz atsevišķu ceļu katrai valodai. Atstājiet tukšu, lai izmantotu noklusējuma meklēšanas ceļu."

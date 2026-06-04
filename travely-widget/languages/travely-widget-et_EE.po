@@ -196,3 +196,11 @@ msgstr "Venekeelne otsingu tee"
 #: admin/class-travely-widget-admin.php:241
 msgid "Latvian search path"
 msgstr "Lätikeelne otsingu tee"
+
+#: admin/class-travely-widget-admin.php
+msgid "Used when Path mode is set to Single path for all languages. In language-specific mode it is kept as a fallback."
+msgstr "Kasutatakse siis, kui tee režiimiks on valitud üks tee kõigi keelte jaoks. Keelepõhiste teede režiimis säilitatakse see varuvariandina."
+
+#: admin/class-travely-widget-admin.php
+msgid "Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path."
+msgstr "Kasutatakse ainult siis, kui tee režiimiks on valitud eraldi tee iga keele jaoks. Jätke tühjaks, et kasutada vaikimisi otsinguteed."

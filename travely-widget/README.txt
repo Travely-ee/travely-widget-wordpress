@@ -57,6 +57,8 @@ Path mode controls how `Path to Search` is selected:
 * `Single path for all languages` uses the common `Path to Search` setting for every resolved language.
 * `Separate path for each language` uses `Estonian search path`, `English search path`, `Russian search path` and `Latvian search path`.
 
+`Path mode` also controls which path fields are shown in the settings page. In `Single path for all languages`, only the common `Path to Search` field is shown. In `Separate path for each language`, only the `Language-specific paths` section is shown.
+
 When a language-specific path is empty, the plugin falls back to the common `Path to Search`. If the common path is empty, it falls back to `/tour-search`.
 
 The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.

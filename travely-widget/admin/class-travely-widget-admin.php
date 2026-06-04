@@ -70,7 +70,18 @@ class Travely_Widget_Admin {
      *
      * @since    1.0.0
      */
-    public function enqueue_scripts() {
+    public function enqueue_scripts( $hook ) {
+        if ( 'settings_page_travely-widget' !== $hook ) {
+            return;
+        }
+
+        wp_enqueue_script(
+            $this->plugin_name . '-admin',
+            plugin_dir_url( __FILE__ ) . 'js/travely-widget-admin.js',
+            array(),
+            $this->version,
+            true
+        );
     }
 
     public function add_plugin_page() {
@@ -204,7 +215,7 @@ class Travely_Widget_Admin {
         add_settings_section(
             'travely_widget_language_paths_section',
             esc_html__( 'Language-specific paths', 'travely-widget' ),
-            null,
+            array( $this, 'language_paths_section_callback' ),
             'travely-widget-admin'
         );
 
@@ -217,17 +228,17 @@ class Travely_Widget_Admin {
         );
 
         add_settings_field(
-            'travely_widget_path_to_search',
-            __( 'Path to Search', 'travely-widget' ),
-            array( $this, 'path_callback' ),
+            'travely_widget_path_mode',
+            esc_html__( 'Path mode', 'travely-widget' ),
+            array( $this, 'path_mode_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );
 
         add_settings_field(
-            'travely_widget_path_mode',
-            esc_html__( 'Path mode', 'travely-widget' ),
-            array( $this, 'path_mode_callback' ),
+            'travely_widget_path_to_search',
+            __( 'Path to Search', 'travely-widget' ),
+            array( $this, 'path_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );
@@ -303,6 +314,14 @@ class Travely_Widget_Admin {
             esc_attr( $value )
         );
 
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__(
+                'Used when Path mode is set to Single path for all languages. In language-specific mode it is kept as a fallback.',
+                'travely-widget'
+            )
+        );
+
     }
 
     public function path_mode_callback() {
@@ -333,6 +352,10 @@ class Travely_Widget_Admin {
                 'travely-widget'
             )
         );
+    }
+
+    public function language_paths_section_callback() {
+        echo '<div id="travely-widget-language-paths-section"></div>';
     }
 
     public function default_language_callback() {
@@ -395,7 +418,7 @@ class Travely_Widget_Admin {
     public function path_est_callback() {
         $this->language_path_input(
             'travely_widget_path_to_search_est',
-            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' ),
+            __( 'Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path.', 'travely-widget' ),
             '/tour-search'
         );
     }
@@ -403,21 +426,21 @@ class Travely_Widget_Admin {
     public function path_eng_callback() {
         $this->language_path_input(
             'travely_widget_path_to_search_eng',
-            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' )
+            __( 'Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path.', 'travely-widget' )
         );
     }
 
     public function path_rus_callback() {
         $this->language_path_input(
             'travely_widget_path_to_search_rus',
-            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' )
+            __( 'Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path.', 'travely-widget' )
         );
     }
 
     public function path_lav_callback() {
         $this->language_path_input(
             'travely_widget_path_to_search_lav',
-            __( 'Used only when Path mode is set to Separate path for each language.', 'travely-widget' )
+            __( 'Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path.', 'travely-widget' )
         );
     }
 
