@@ -95,6 +95,8 @@ class Travely_Widget_Admin {
     }
 
     public function create_admin_page() {
+        $i18n = new Travely_Widget_i18n();
+        $i18n->load_plugin_textdomain( true );
         ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Travely Widget Settings', 'travely-widget' ); ?></h1>
@@ -228,22 +230,6 @@ class Travely_Widget_Admin {
         );
 
         add_settings_field(
-            'travely_widget_path_mode',
-            esc_html__( 'Path mode', 'travely-widget' ),
-            array( $this, 'path_mode_callback' ),
-            'travely-widget-admin',
-            'travely_widget_setting_section'
-        );
-
-        add_settings_field(
-            'travely_widget_path_to_search',
-            __( 'Path to Search', 'travely-widget' ),
-            array( $this, 'path_callback' ),
-            'travely-widget-admin',
-            'travely_widget_setting_section'
-        );
-
-        add_settings_field(
             'travely_widget_path_to_search_est',
             esc_html__( 'Estonian search path', 'travely-widget' ),
             array( $this, 'path_est_callback' ),
@@ -295,6 +281,22 @@ class Travely_Widget_Admin {
             'travely_widget_remove_data_on_uninstall',
             __( 'Remove data on uninstall', 'travely-widget' ),
             array( $this, 'remove_data_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_mode',
+            esc_html__( 'Path mode', 'travely-widget' ),
+            array( $this, 'path_mode_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_path_to_search',
+            __( 'Path to Search', 'travely-widget' ),
+            array( $this, 'path_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );

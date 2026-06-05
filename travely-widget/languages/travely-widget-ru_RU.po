@@ -3,18 +3,17 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.17\n"
+"Project-Id-Version: Travely Widget 1.0.18\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
 "POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
-"PO-Revision-Date: 2026-05-14 12:29+0300\n"
+"PO-Revision-Date: 2026-06-05 11:47+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 "X-Domain: travely-widget\n"
 
@@ -101,8 +100,7 @@ msgstr "При удалении плагина удалите его настр�
 
 #: includes/class-travely-widget-activator.php:41
 msgid "Travely Widget requires WordPress 5.8 or higher."
-msgstr ""
-"Для работы виджета Travely Widget требуется WordPress версии 5.8 или выше."
+msgstr "Для работы виджета Travely Widget требуется WordPress версии 5.8 или выше."
 
 #: includes/class-travely-widget-updater.php:112
 msgid "GitHub API request failed."
@@ -139,12 +137,6 @@ msgstr "Виджет поиска Travely"
 msgctxt "block description"
 msgid "Displays the Travely search widget."
 msgstr "Отображает виджет поиска Travely."
-
-#~ msgid "http://travely.ee/"
-#~ msgstr "http://travely.ee/"
-
-#~ msgid "Travely OU"
-#~ msgstr "Travely OU"
 
 #: public/class-travely-widget-public.php:140
 msgid "Travely Widget: multiple languages on one page are not supported. Requested \"%s\", using \"%s\"."
@@ -205,3 +197,9 @@ msgstr "Используется, когда режим пути установ�
 #: admin/class-travely-widget-admin.php
 msgid "Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path."
 msgstr "Используется только когда режим пути установлен в значение «Отдельный путь для каждого языка». Оставьте пустым, чтобы использовать путь поиска по умолчанию."
+
+#~ msgid "http://travely.ee/"
+#~ msgstr "http://travely.ee/"
+
+#~ msgid "Travely OU"
+#~ msgstr "Travely OU"

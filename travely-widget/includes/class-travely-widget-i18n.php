@@ -22,102 +22,108 @@
  * @since      1.0.0
  * @package    Travely_Widget
  * @subpackage Travely_Widget/includes
- * @author     Travely Solutions OÜ <info@travely.ee>
+ * @author     Travely Solutions OU <info@travely.ee>
  */
 class Travely_Widget_i18n {
 
+    /**
+     * Whether this i18n instance has already loaded the textdomain.
+     *
+     * @var bool
+     */
+    private $loaded = false;
 
     /**
      * Load the plugin text domain for translation.
      *
      * @since    1.0.0
+     * @param bool $force Force bundled .mo loading even if the textdomain is already loaded.
+     * @return bool
      */
-    public function load_plugin_textdomain() {
-        $domain   = 'travely-widget';
-        $locale   = determine_locale();
-        $rel_path = dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/';
-        $mofile   = plugin_dir_path( dirname( __FILE__ ) ) . 'languages/' . $domain . '-' . $locale . '.mo';
+    public function load_plugin_textdomain( $force = false ) {
+        $domain = 'travely-widget';
 
-        $mofile_exists = file_exists( $mofile );
-        $unloaded      = false;
+        if ( $this->loaded && ! $force ) {
+            return true;
+        }
+
+        $relative_path = $this->get_relative_languages_path();
         $loaded_direct = false;
-        $loaded_plugin = false;
 
-        if ( $mofile_exists ) {
+        foreach ( $this->get_mofile_candidates( $domain ) as $mofile ) {
+            if ( ! file_exists( $mofile ) ) {
+                continue;
+            }
+
             if ( is_textdomain_loaded( $domain ) && function_exists( 'unload_textdomain' ) ) {
-                $unloaded = unload_textdomain( $domain );
+                unload_textdomain( $domain );
             }
 
             $loaded_direct = load_textdomain( $domain, $mofile );
+
+            if ( $loaded_direct ) {
+                break;
+            }
         }
 
         if ( ! $loaded_direct ) {
-            $loaded_plugin = load_plugin_textdomain(
+            load_plugin_textdomain(
                 $domain,
                 false,
-                $rel_path
+                $relative_path
             );
         }
 
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            $this->log_diagnostics(
-                $domain,
-                $locale,
-                $rel_path,
-                $mofile,
-                $mofile_exists,
-                $unloaded,
-                $loaded_direct,
-                $loaded_plugin
-            );
-        }
+        $this->loaded = is_textdomain_loaded( $domain );
 
+        return $this->loaded;
     }
 
     /**
-     * Log translation loading diagnostics when WP_DEBUG is enabled.
+     * Get candidate locales for bundled .mo loading.
      *
-     * @param string $domain Textdomain.
-     * @param string $locale Current locale.
-     * @param string $rel_path Relative plugin languages path.
-     * @param string $mofile Absolute bundled .mo path.
-     * @param bool   $mofile_exists Whether bundled .mo exists.
-     * @param bool   $unloaded Whether an existing textdomain was unloaded before direct loading.
-     * @param bool   $loaded_direct Result of load_textdomain().
-     * @param bool   $loaded_plugin Result of load_plugin_textdomain().
+     * @return array
      */
-    private function log_diagnostics( $domain, $locale, $rel_path, $mofile, $mofile_exists, $unloaded, $loaded_direct, $loaded_plugin ) {
-        error_log( 'Travely Widget i18n locale: ' . $locale );
-        error_log( 'Travely Widget i18n relative path: ' . $rel_path );
-        error_log( 'Travely Widget i18n bundled mofile: ' . $mofile );
-        error_log( 'Travely Widget i18n bundled mofile exists: ' . ( $mofile_exists ? 'yes' : 'no' ) );
-        error_log( 'Travely Widget i18n unloaded existing textdomain: ' . ( $unloaded ? 'yes' : 'no' ) );
-        error_log( 'Travely Widget i18n load_textdomain result: ' . ( $loaded_direct ? 'yes' : 'no' ) );
+    private function get_locale_candidates() {
+        $candidates = array();
 
-        if ( ! $loaded_direct ) {
-            error_log( 'Travely Widget i18n load_plugin_textdomain result: ' . ( $loaded_plugin ? 'yes' : 'no' ) );
+        if ( function_exists( 'determine_locale' ) ) {
+            $candidates[] = determine_locale();
         }
 
-        error_log( 'Travely Widget i18n textdomain loaded: ' . ( is_textdomain_loaded( $domain ) ? 'yes' : 'no' ) );
-        $this->log_translation_probe( $domain );
+        if ( is_admin() && function_exists( 'get_user_locale' ) ) {
+            $candidates[] = get_user_locale();
+        }
+
+        $candidates[] = get_locale();
+
+        return array_values( array_unique( array_filter( $candidates ) ) );
     }
 
     /**
-     * Log selected translation probes when WP_DEBUG is enabled.
+     * Get absolute bundled .mo file candidates.
      *
      * @param string $domain Textdomain.
+     * @return array
      */
-    private function log_translation_probe( $domain ) {
-        $probes = array(
-            'Travely Widget Settings',
-            'Default language',
-            'Path mode',
-            'API Key',
-        );
+    private function get_mofile_candidates( $domain ) {
+        $candidates = array();
+        $base_path  = plugin_dir_path( dirname( __FILE__ ) ) . 'languages/';
 
-        foreach ( $probes as $probe ) {
-            error_log( 'Travely Widget i18n probe: ' . $probe . ' => ' . __( $probe, $domain ) );
+        foreach ( $this->get_locale_candidates() as $locale ) {
+            $candidates[] = $base_path . $domain . '-' . $locale . '.mo';
         }
+
+        return array_values( array_unique( $candidates ) );
+    }
+
+    /**
+     * Get plugin languages path relative to the plugins directory.
+     *
+     * @return string
+     */
+    private function get_relative_languages_path() {
+        return dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/';
     }
 
 }

@@ -3,10 +3,10 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.17\n"
+"Project-Id-Version: Travely Widget 1.0.18\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
 "POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
-"PO-Revision-Date: 2026-05-14 12:28+0300\n"
+"PO-Revision-Date: 2026-06-05 11:48+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
@@ -100,8 +100,7 @@ msgstr "Plugina desinstallimisel eemaldage pluginate sätted."
 
 #: includes/class-travely-widget-activator.php:41
 msgid "Travely Widget requires WordPress 5.8 or higher."
-msgstr ""
-"Travely Widget kasutamiseks on vaja WordPressi versiooni 5.8 või uuemat."
+msgstr "Travely Widget kasutamiseks on vaja WordPressi versiooni 5.8 või uuemat."
 
 #: includes/class-travely-widget-updater.php:112
 msgid "GitHub API request failed."
@@ -138,12 +137,6 @@ msgstr "Travely otsingumoodul"
 msgctxt "block description"
 msgid "Displays the Travely search widget."
 msgstr "Kuvab Travely otsingumooduli."
-
-#~ msgid "http://travely.ee/"
-#~ msgstr "http://travely.ee/"
-
-#~ msgid "Travely OU"
-#~ msgstr "Travely OÜ"
 
 #: public/class-travely-widget-public.php:140
 msgid "Travely Widget: multiple languages on one page are not supported. Requested \"%s\", using \"%s\"."
@@ -204,3 +197,9 @@ msgstr "Kasutatakse siis, kui tee režiimiks on valitud üks tee kõigi keelte j
 #: admin/class-travely-widget-admin.php
 msgid "Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path."
 msgstr "Kasutatakse ainult siis, kui tee režiimiks on valitud eraldi tee iga keele jaoks. Jätke tühjaks, et kasutada vaikimisi otsinguteed."
+
+#~ msgid "http://travely.ee/"
+#~ msgstr "http://travely.ee/"
+
+#~ msgid "Travely OU"
+#~ msgstr "Travely OÜ"

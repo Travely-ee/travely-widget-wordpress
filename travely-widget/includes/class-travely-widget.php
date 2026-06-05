@@ -144,7 +144,9 @@ class Travely_Widget {
 
         $plugin_i18n = new Travely_Widget_i18n();
 
-        $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+        $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain', 0 );
+        $this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain', 0 );
+        $this->loader->add_action( 'admin_init', $plugin_i18n, 'load_plugin_textdomain', 0 );
 
     }
 
