@@ -1,7 +1,7 @@
 === Travely Widget ===
 Requires at least: 5.8
 Tested up to: 5.8
-Stable tag: 1.0.18
+Stable tag: 1.0.19
 License: Proprietary
 License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 

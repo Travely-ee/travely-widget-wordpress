@@ -3,10 +3,10 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.18\n"
+"Project-Id-Version: Travely Widget 1.0.19\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
 "POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
-"PO-Revision-Date: 2026-06-05 11:48+0300\n"
+"PO-Revision-Date: 2026-06-30 11:17+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
