@@ -63,6 +63,14 @@ When a language-specific path is empty, the plugin falls back to the common `Pat
 
 The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.
 
+`Results background` sets the background colour of the embedded results iframe. Leave empty for transparent. Supported values: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
+
+The `background` shortcode attribute on `[travely-widget-results]` overrides the global setting for that individual shortcode:
+
+* `[travely-widget-results background="transparent"]`
+* `[travely-widget-results background="#ffffff"]`
+* `[travely-widget-results background="rgba(255,255,255,0.9)"]`
+
 Shortcode examples:
 
 * `[travely-widget-search language="auto"]`

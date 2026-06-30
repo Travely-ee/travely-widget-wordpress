@@ -66,6 +66,16 @@ When a language-specific path is empty, the plugin falls back to the common `Pat
 
 The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.
 
+`Results background` sets the background colour of the embedded results iframe. Leave empty for transparent. Supported values: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
+
+The `background` shortcode attribute on `[travely-widget-results]` overrides the global setting for that individual shortcode:
+
+```text
+[travely-widget-results background="transparent"]
+[travely-widget-results background="#ffffff"]
+[travely-widget-results background="rgba(255,255,255,0.9)"]
+```
+
 Supported widget languages:
 
 - `est` - Estonian
@@ -168,6 +178,16 @@ Kui keelepõhine tee on tühi, kasutab plugin ühist `Path to Search` väärtust
 
 Tee valitakse pärast lõpliku keele tuvastamist. Näiteks `[travely-widget-search language="rus"]` kasutab vene otsinguteed, `[travely-widget-search language="est"]` kasutab eesti otsinguteed ja `language="auto"` tuvastab esmalt lehe keele ning valib seejärel sobiva tee. Kui `Force default language` on lubatud, valitakse tee sunnitud vaikimisi keele järgi.
 
+`Results background` ehk tulemuste taustavärv määrab manustatud tulemuste iframe'i taustavärvi. Jätke tühjaks läbipaistvuse jaoks. Toetatud väärtused: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
+
+Atribuut `background` shortcode'is `[travely-widget-results]` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
+
+```text
+[travely-widget-results background="transparent"]
+[travely-widget-results background="#ffffff"]
+[travely-widget-results background="rgba(255,255,255,0.9)"]
+```
+
 Toetatud vidina keeled:
 
 - `est` - eesti
@@ -269,6 +289,16 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 Если языковой path пустой, плагин использует общий `Path to Search`. Если общий path тоже пустой, используется `/tour-search`.
 
 Path выбирается после итогового определения языка. Например, `[travely-widget-search language="rus"]` использует русский path, `[travely-widget-search language="est"]` использует эстонский path, а `language="auto"` сначала определяет язык страницы и затем выбирает соответствующий path. Если включён `Force default language`, path выбирается для принудительного языка по умолчанию.
+
+`Results background` задаёт цвет фона встраиваемого iframe с результатами. Оставьте пустым для прозрачного фона. Поддерживаемые значения: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
+
+Атрибут `background` в шорткоде `[travely-widget-results]` переопределяет глобальную настройку для конкретного шорткода:
+
+```text
+[travely-widget-results background="transparent"]
+[travely-widget-results background="#ffffff"]
+[travely-widget-results background="rgba(255,255,255,0.9)"]
+```
 
 Поддерживаемые языки виджета:
 
