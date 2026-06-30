@@ -8,7 +8,8 @@
         var mode = node.getAttribute('data-mode') || '';
         var path = node.getAttribute('data-path') || '/tour-search';
         var key = node.getAttribute('data-key') || '';
-        return {node: node, mode: mode, path: path, key: key};
+        var background = node.getAttribute('data-background') || '';
+        return {node: node, mode: mode, path: path, key: key, background: background};
     }
 
     function ensureTravelySearch(){
@@ -23,7 +24,7 @@
             return;
         }
         if(cfg.mode === 'results'){
-            window.TravelySearch.initIframe(cfg.node.id, cfg.key, cfg.path);
+            window.TravelySearch.initIframe(cfg.node.id, cfg.key, cfg.path, cfg.background);
         }else{
             var options = cfg.mode.split(',').filter(Boolean);
             window.TravelySearch.initSearch(cfg.node.id, cfg.path, options);

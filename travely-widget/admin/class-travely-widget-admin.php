@@ -205,6 +205,16 @@ class Travely_Widget_Admin {
 
         register_setting(
             'travely_widget_option_group',
+            'travely_widget_results_background',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_results_background' ),
+                'default'           => '',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
             'travely_widget_remove_data_on_uninstall',
             array(
                 'type'              => 'boolean',
@@ -273,6 +283,14 @@ class Travely_Widget_Admin {
             'travely_widget_force_default_language',
             esc_html__( 'Force default language', 'travely-widget' ),
             array( $this, 'force_default_language_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_results_background',
+            esc_html__( 'Results background', 'travely-widget' ),
+            array( $this, 'results_background_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );
@@ -446,6 +464,23 @@ class Travely_Widget_Admin {
         );
     }
 
+    public function results_background_callback() {
+        $value = get_option( 'travely_widget_results_background', '' );
+
+        printf(
+            '<input type="text" id="travely_widget_results_background" name="travely_widget_results_background" value="%s" placeholder="transparent or #ffffff" />',
+            esc_attr( $value )
+        );
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__(
+                'Optional background for the embedded results iframe. Leave empty for transparent. Supported values: transparent, HEX, rgb(), rgba(), hsl(), hsla().',
+                'travely-widget'
+            )
+        );
+    }
+
     public function remove_data_callback() {
         $value = (bool) get_option( 'travely_widget_remove_data_on_uninstall', false );
 
@@ -502,6 +537,29 @@ class Travely_Widget_Admin {
         }
 
         return $value;
+    }
+
+    public function sanitize_results_background( $value ) {
+        $value = sanitize_text_field( $value );
+        $value = trim( $value );
+
+        if ( '' === $value ) {
+            return '';
+        }
+
+        if ( 'transparent' === strtolower( $value ) ) {
+            return 'transparent';
+        }
+
+        if ( preg_match( '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {
+            return $value;
+        }
+
+        if ( preg_match( '/^rgba?\([0-9\s,\.%]+\)$/i', $value ) || preg_match( '/^hsla?\([0-9\s,\.%a-z+-]+\)$/i', $value ) ) {
+            return $value;
+        }
+
+        return '';
     }
 
     public function sanitize_path_mode( $value ) {

@@ -175,6 +175,41 @@ class Travely_Widget_Public {
         return apply_filters( 'travely_widget_path_to_search', $path, $language );
     }
 
+    private function sanitize_widget_background( $value ) {
+        $value = sanitize_text_field( $value );
+        $value = trim( $value );
+
+        if ( '' === $value ) {
+            return '';
+        }
+
+        if ( 'transparent' === strtolower( $value ) ) {
+            return 'transparent';
+        }
+
+        if ( preg_match( '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {
+            return $value;
+        }
+
+        if ( preg_match( '/^rgba?\([0-9\s,\.%]+\)$/i', $value ) || preg_match( '/^hsla?\([0-9\s,\.%a-z+-]+\)$/i', $value ) ) {
+            return $value;
+        }
+
+        return '';
+    }
+
+    private function get_results_background( $shortcode_background = '' ) {
+        $shortcode_background = $this->sanitize_widget_background( $shortcode_background );
+
+        if ( '' !== $shortcode_background ) {
+            return $shortcode_background;
+        }
+
+        return $this->sanitize_widget_background(
+            get_option( 'travely_widget_results_background', '' )
+        );
+    }
+
     public function render_search( $atts = array() ) {
         $atts = shortcode_atts(
             array(
@@ -251,6 +286,7 @@ class Travely_Widget_Public {
         $atts = shortcode_atts(
             array(
                 'language' => 'auto',
+                'background' => '',
             ),
             $atts,
             'travely-widget-results'
@@ -264,10 +300,11 @@ class Travely_Widget_Public {
         $id   = $this->unique_id( 'travely-widget-results-' );
         $path = $this->get_path_to_search( $language );
         $key  = get_option( 'travely_widget_key', '' );
+        $background = $this->get_results_background( $atts['background'] );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-background="<?php echo esc_attr( $background ); ?>"></div>
         <?php
         return ob_get_clean();
     }
