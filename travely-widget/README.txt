@@ -1,7 +1,8 @@
 === Travely Widget ===
 Requires at least: 5.8
-Tested up to: 5.8
-Stable tag: 1.0.20
+Requires PHP: 7.0
+Tested up to: 7.0
+Stable tag: 1.0.21
 License: Proprietary
 License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
