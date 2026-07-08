@@ -132,9 +132,9 @@ Use the `[travely-widget-search]`, `[travely-widget-country]`, and `[travely-wid
 
 1. Avage **Seaded -> Travely Widget**, et vidinat seadistada.
 2. Sisestage oma API-võti ja otsingutulemuste lehe tee.
-3. Looge uus leht lühikoodiga `[travely-widget-results]` ning kasutage sama slug'i/lehe teed, mille määrasite seadetes. Sellel lehel kuvatakse otsingutulemused.
+3. Looge uus leht shortcode'iga `[travely-widget-results]` ning kasutage sama slug'i/lehe teed, mille määrasite seadetes. Sellel lehel kuvatakse otsingutulemused.
 
-`Default language` ehk vaikimisi keel kasutatakse siis, kui keelt ei õnnestu automaatselt tuvastada.
+`Default language` ehk vaikimisi keelt kasutatakse siis, kui keelt ei õnnestu automaatselt tuvastada.
 
 `Force default language` ehk alati vaikimisi keele kasutamine tähendab, et plugin kasutab alati valitud vaikimisi keelt ning eirab URL-i keelt, Polylang/WPML-i keelt ja WordPressi lokaati.
 
@@ -147,11 +147,11 @@ Kui `Force default language` ei ole sisse lülitatud, määrab plugin lehe keele
 5. WordPressi lokaat
 6. Default language
 
-Keel valitakse lehe tasemel. Kõik sama lehe lühikoodid kasutavad sama tuvastatud keelt.
+Keel valitakse lehe tasemel. Kõik sama lehe shortcode'id kasutavad sama tuvastatud keelt.
 
 Shortcode'i atribuut `language` alistab automaatse keele tuvastamise, välja arvatud juhul, kui `Force default language` on lubatud. Kasutage `language="auto"`, et säilitada automaatne tuvastamise järjekord.
 
-Lühikoodi näited:
+Shortcode'i näited:
 
 ```text
 [travely-widget-search language="auto"]
@@ -226,7 +226,7 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 
 ### Kasutamine
 
-Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[travely-widget-search-country]` ükskõik millises postituses või lehel, et kuvada Travely vidinaid.
+Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[travely-widget-search-country]` ükskõik millises postituses või lehel, et kuvada Travely vidinaid.
 
 ---
 
@@ -261,9 +261,9 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 
 Язык выбирается на уровне страницы. Все шорткоды на одной странице используют один и тот же определённый язык.
 
-Атрибут shortcode `language` переопределяет автоматическое определение языка, если не включён режим `Force default language`. Используйте `language="auto"`, чтобы сохранить автоматический порядок определения.
+Атрибут шорткода `language` переопределяет автоматическое определение языка, если не включён режим `Force default language`. Используйте `language="auto"`, чтобы сохранить автоматический порядок определения.
 
-Примеры shortcode:
+Примеры шорткодов:
 
 ```text
 [travely-widget-search language="auto"]
@@ -284,11 +284,11 @@ Kasutage lühikoode `[travely-widget-search]`, `[travely-widget-country]` ja `[t
 - `Single path for all languages` использует общий `Path to Search` для всех определённых языков.
 - `Separate path for each language` использует отдельные поля `Estonian search path`, `English search path`, `Russian search path` и `Latvian search path`.
 
-`Path mode` также определяет, какие поля path отображаются на странице настроек. В режиме `Single path for all languages` показывается только общее поле `Path to Search`. В режиме `Separate path for each language` показывается только секция `Language-specific paths`.
+`Path mode` также определяет, какие поля пути отображаются на странице настроек. В режиме `Single path for all languages` показывается только общее поле `Path to Search`. В режиме `Separate path for each language` показывается только секция `Language-specific paths`.
 
-Если языковой path пустой, плагин использует общий `Path to Search`. Если общий path тоже пустой, используется `/tour-search`.
+Если языковой путь пустой, плагин использует общий `Path to Search`. Если общий путь тоже пустой, используется `/tour-search`.
 
-Path выбирается после итогового определения языка. Например, `[travely-widget-search language="rus"]` использует русский path, `[travely-widget-search language="est"]` использует эстонский path, а `language="auto"` сначала определяет язык страницы и затем выбирает соответствующий path. Если включён `Force default language`, path выбирается для принудительного языка по умолчанию.
+Путь выбирается после итогового определения языка. Например, `[travely-widget-search language="rus"]` использует русский путь, `[travely-widget-search language="est"]` использует эстонский путь, а `language="auto"` сначала определяет язык страницы и затем выбирает соответствующий путь. Если включён `Force default language`, путь выбирается для принудительного языка по умолчанию.
 
 `Results background` задаёт цвет фона встраиваемого iframe с результатами. Оставьте пустым для прозрачного фона. Поддерживаемые значения: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
@@ -318,7 +318,7 @@ Path выбирается после итогового определения �
 - `?lang=ru`
 - `?lang=lv`
 
-Для тонкой настройки многоязычных URL используйте filter `travely_widget_path_to_search`. Filter применяется после выбора итогового path:
+Для тонкой настройки многоязычных путей используйте фильтр `travely_widget_path_to_search`. Фильтр применяется после выбора итогового пути:
 
 ```php
 add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
