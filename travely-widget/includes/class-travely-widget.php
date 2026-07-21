@@ -179,6 +179,7 @@ class Travely_Widget {
 
                $this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
                $this->loader->add_action( 'init', $plugin_public, 'register_blocks' );
+               $this->loader->add_filter( 'wp_headers', $plugin_public, 'filter_permissions_policy_header' );
 
     }
 
