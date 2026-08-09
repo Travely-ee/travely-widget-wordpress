@@ -27,7 +27,7 @@
             window.TravelySearch.initIframe(cfg.node.id, cfg.key, cfg.path, cfg.background);
         }else{
             var options = cfg.mode.split(',').filter(Boolean);
-            window.TravelySearch.initSearch(cfg.node.id, cfg.path, options);
+            window.TravelySearch.initSearch(cfg.node.id, cfg.path, options, cfg.key);
         }
         state.add(cfg.node);
     }

@@ -124,6 +124,10 @@ class Travely_Widget_Public {
         return $prefix . uniqid();
     }
 
+    private function get_widget_key() {
+        return trim( (string) get_option( 'travely_widget_key', '' ) );
+    }
+
     private function get_page_language( $language ) {
         $language = Travely_Widget_Language::normalize( $language );
 
@@ -371,10 +375,11 @@ class Travely_Widget_Public {
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-' );
         $path = $this->get_path_to_search( $language );
+        $key  = $this->get_widget_key();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -395,10 +400,11 @@ class Travely_Widget_Public {
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-search-country-' );
         $path = $this->get_path_to_search( $language );
+        $key  = $this->get_widget_key();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -419,10 +425,11 @@ class Travely_Widget_Public {
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-country-' );
         $path = $this->get_path_to_search( $language );
+        $key  = $this->get_widget_key();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -444,7 +451,7 @@ class Travely_Widget_Public {
         $this->enqueue_local_assets();
         $id   = $this->unique_id( 'travely-widget-results-' );
         $path = $this->get_path_to_search( $language );
-        $key  = get_option( 'travely_widget_key', '' );
+        $key  = $this->get_widget_key();
         $background = $this->get_results_background( $atts['background'] );
 
         ob_start();
