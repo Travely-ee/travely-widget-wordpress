@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Travely Widget 1.0.26\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
 "POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
-"PO-Revision-Date: 2026-08-18 10:27+0300\n"
+"PO-Revision-Date: 2026-08-18 12:33+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -213,6 +213,14 @@ msgstr "4 колонки"
 #: admin/class-travely-widget-admin.php
 msgid "Number of columns in the country widget grid. The columns shortcode attribute overrides this setting."
 msgstr "Количество колонок в сетке виджета стран. Атрибут шорткода columns переопределяет эту настройку."
+
+#: admin/class-travely-widget-admin.php
+msgid "Results background"
+msgstr "Фон результатов"
+
+#: admin/class-travely-widget-admin.php
+msgid "Optional background for the embedded results iframe. Leave empty for transparent. Supported values: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
+msgstr "Необязательный фон встраиваемого iframe с результатами. Оставьте пустым для прозрачного фона. Поддерживаемые значения: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
 
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"

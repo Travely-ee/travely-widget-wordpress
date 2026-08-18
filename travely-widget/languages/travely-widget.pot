@@ -210,3 +210,11 @@ msgstr ""
 #: admin/class-travely-widget-admin.php
 msgid "Number of columns in the country widget grid. The columns shortcode attribute overrides this setting."
 msgstr ""
+
+#: admin/class-travely-widget-admin.php
+msgid "Results background"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php
+msgid "Optional background for the embedded results iframe. Leave empty for transparent. Supported values: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
+msgstr ""

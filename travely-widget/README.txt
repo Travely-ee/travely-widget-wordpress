@@ -79,7 +79,7 @@ The `columns` shortcode attribute on `[travely-widget-country]` and `[travely-wi
 * `[travely-widget-country columns="4"]`
 * `[travely-widget-search-country columns="3"]`
 
-Unsupported values fall back to `3`. The 4 column grid needs the full desktop width and is used on screens wider than 1280px. Narrower screens automatically fall back to 3 columns, and tablet and mobile layouts stay unchanged.
+Unsupported values fall back to `3`. The 4 column grid is used on screens wider than 1024px. Tablets and phones automatically fall back to the 3 column and single column layouts.
 
 Shortcode examples:
 
