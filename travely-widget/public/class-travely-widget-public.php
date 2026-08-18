@@ -486,6 +486,7 @@ class Travely_Widget_Public {
             array(
                 'language' => 'auto',
                 'background' => '',
+                'columns'  => '',
             ),
             $atts,
             'travely-widget-results'
@@ -496,14 +497,17 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id   = $this->unique_id( 'travely-widget-results-' );
-        $path = $this->get_path_to_search( $language );
-        $key  = $this->get_widget_key();
+        $id         = $this->unique_id( 'travely-widget-results-' );
+        $path       = $this->get_path_to_search( $language );
+        $key        = $this->get_widget_key();
         $background = $this->get_results_background( $atts['background'] );
+        // The embedded booking application shows the country widget on its home
+        // page, so it needs the column setting as well.
+        $columns    = $this->get_country_columns( $atts['columns'] );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-background="<?php echo esc_attr( $background ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-background="<?php echo esc_attr( $background ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>"></div>
         <?php
         return ob_get_clean();
     }

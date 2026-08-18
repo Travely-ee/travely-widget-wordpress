@@ -78,12 +78,15 @@ The `background` shortcode attribute on `[travely-widget-results]` overrides the
 
 `Country widget columns` sets the number of columns in the country widget grid. Supported values: `3` (default) and `4`.
 
-The `columns` shortcode attribute on `[travely-widget-country]` and `[travely-widget-search-country]` overrides the global setting for that individual shortcode:
+The `columns` shortcode attribute on `[travely-widget-country]`, `[travely-widget-search-country]` and `[travely-widget-results]` overrides the global setting for that individual shortcode:
 
 ```text
 [travely-widget-country columns="4"]
 [travely-widget-search-country columns="3"]
+[travely-widget-results columns="4"]
 ```
+
+`[travely-widget-results]` needs the setting as well: without search parameters the embedded booking application shows its home page with the same country widget.
 
 Unsupported values fall back to `3`. The 4 column grid is used on screens wider than 1024px. Tablets and phones automatically fall back to the 3 column and single column layouts.
 
@@ -201,12 +204,15 @@ Atribuut `background` shortcode'is `[travely-widget-results]` alistab globaalse 
 
 `Country widget columns` määrab riigividina ruudustiku veergude arvu. Toetatud väärtused: `3` (vaikimisi) ja `4`.
 
-Shortcode'ide `[travely-widget-country]` ja `[travely-widget-search-country]` atribuut `columns` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
+Shortcode'ide `[travely-widget-country]`, `[travely-widget-search-country]` ja `[travely-widget-results]` atribuut `columns` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
 
 ```text
 [travely-widget-country columns="4"]
 [travely-widget-search-country columns="3"]
+[travely-widget-results columns="4"]
 ```
+
+Ka `[travely-widget-results]` vajab seda seadistust: ilma otsinguparameetriteta kuvab manustatud broneerimisrakendus oma avalehte sama riigividinaga.
 
 Toetamata väärtuste korral kasutatakse `3`. Neljaveeruline ruudustik kuvatakse ekraanidel, mis on laiemad kui 1024 px. Tahvelarvutites ja mobiilis kasutatakse automaatselt 3 veergu ja üheveerulist paigutust.
 
@@ -324,12 +330,15 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 
 `Country widget columns` задаёт количество колонок в сетке виджета стран. Поддерживаемые значения: `3` (по умолчанию) и `4`.
 
-Атрибут `columns` в шорткодах `[travely-widget-country]` и `[travely-widget-search-country]` переопределяет глобальную настройку для конкретного шорткода:
+Атрибут `columns` в шорткодах `[travely-widget-country]`, `[travely-widget-search-country]` и `[travely-widget-results]` переопределяет глобальную настройку для конкретного шорткода:
 
 ```text
 [travely-widget-country columns="4"]
 [travely-widget-search-country columns="3"]
+[travely-widget-results columns="4"]
 ```
+
+Настройка нужна и шорткоду `[travely-widget-results]`: без параметров поиска встраиваемое приложение бронирования показывает свою главную страницу с тем же виджетом стран.
 
 Неподдерживаемые значения заменяются на `3`. Сетка из 4 колонок применяется на экранах шире 1024px. На планшетах и телефонах автоматически используется вёрстка в 3 колонки и в одну колонку.
 
