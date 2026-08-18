@@ -2,7 +2,7 @@
 Requires at least: 5.8
 Requires PHP: 7.0
 Tested up to: 7.0.2
-Stable tag: 1.0.26
+Stable tag: 1.0.27
 License: Proprietary
 License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
@@ -74,10 +74,13 @@ The `background` shortcode attribute on `[travely-widget-results]` overrides the
 
 `Country widget columns` sets the number of columns in the country widget grid. Supported values: `3` (default) and `4`.
 
-The `columns` shortcode attribute on `[travely-widget-country]` and `[travely-widget-search-country]` overrides the global setting for that individual shortcode:
+The `columns` shortcode attribute on `[travely-widget-country]`, `[travely-widget-search-country]` and `[travely-widget-results]` overrides the global setting for that individual shortcode:
 
 * `[travely-widget-country columns="4"]`
 * `[travely-widget-search-country columns="3"]`
+* `[travely-widget-results columns="4"]`
+
+`[travely-widget-results]` needs the setting as well: without search parameters the embedded booking application shows its home page with the same country widget.
 
 Unsupported values fall back to `3`. The 4 column grid is used on screens wider than 1024px. Tablets and phones automatically fall back to the 3 column and single column layouts.
 
