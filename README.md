@@ -85,7 +85,7 @@ The `columns` shortcode attribute on `[travely-widget-country]` and `[travely-wi
 [travely-widget-search-country columns="3"]
 ```
 
-Unsupported values fall back to `3`. The column count is applied to the desktop layout only, tablet and mobile layouts stay unchanged.
+Unsupported values fall back to `3`. The 4 column grid needs the full desktop width and is used on screens wider than 1280px. Narrower screens automatically fall back to 3 columns, and tablet and mobile layouts stay unchanged.
 
 Supported widget languages:
 
@@ -208,7 +208,7 @@ Shortcode'ide `[travely-widget-country]` ja `[travely-widget-search-country]` at
 [travely-widget-search-country columns="3"]
 ```
 
-Toetamata väärtuste korral kasutatakse `3`. Veergude arv rakendub ainult töölaua vaates, tahvelarvuti ja mobiili paigutused jäävad samaks.
+Toetamata väärtuste korral kasutatakse `3`. Neljaveeruline ruudustik vajab täislaiusega töölauavaadet ja kuvatakse ekraanidel, mis on laiemad kui 1280 px. Kitsamatel ekraanidel kasutatakse automaatselt 3 veergu ning tahvelarvuti ja mobiili paigutused jäävad samaks.
 
 Toetatud vidina keeled:
 
@@ -331,7 +331,7 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 [travely-widget-search-country columns="3"]
 ```
 
-Неподдерживаемые значения заменяются на `3`. Количество колонок применяется только к десктопной вёрстке, планшетная и мобильная вёрстка не меняются.
+Неподдерживаемые значения заменяются на `3`. Сетка из 4 колонок требует полной ширины десктопного контейнера и применяется на экранах шире 1280px. На более узких экранах автоматически используется 3 колонки, планшетная и мобильная вёрстка не меняются.
 
 Поддерживаемые языки виджета:
 
