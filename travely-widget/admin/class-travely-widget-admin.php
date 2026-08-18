@@ -215,6 +215,16 @@ class Travely_Widget_Admin {
 
         register_setting(
             'travely_widget_option_group',
+            'travely_widget_country_columns',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_country_columns' ),
+                'default'           => '3',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
             'travely_widget_remove_data_on_uninstall',
             array(
                 'type'              => 'boolean',
@@ -291,6 +301,14 @@ class Travely_Widget_Admin {
             'travely_widget_results_background',
             esc_html__( 'Results background', 'travely-widget' ),
             array( $this, 'results_background_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_country_columns',
+            esc_html__( 'Country widget columns', 'travely-widget' ),
+            array( $this, 'country_columns_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );
@@ -481,6 +499,39 @@ class Travely_Widget_Admin {
         );
     }
 
+    public function country_columns_callback() {
+        $value = $this->sanitize_country_columns( get_option( 'travely_widget_country_columns', '3' ) );
+
+        $options = array(
+            '3' => __( '3 columns', 'travely-widget' ),
+            '4' => __( '4 columns', 'travely-widget' ),
+        );
+
+        echo '<select id="travely_widget_country_columns" name="travely_widget_country_columns">';
+
+        foreach ( $options as $columns => $label ) {
+            // Numeric array keys are cast to integers by PHP.
+            $columns = (string) $columns;
+
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr( $columns ),
+                selected( $value, $columns, false ),
+                esc_html( $label )
+            );
+        }
+
+        echo '</select>';
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__(
+                'Number of columns in the country widget grid. The columns shortcode attribute overrides this setting.',
+                'travely-widget'
+            )
+        );
+    }
+
     public function remove_data_callback() {
         $value = (bool) get_option( 'travely_widget_remove_data_on_uninstall', false );
 
@@ -560,6 +611,12 @@ class Travely_Widget_Admin {
         }
 
         return '';
+    }
+
+    public function sanitize_country_columns( $value ) {
+        $value = trim( sanitize_text_field( $value ) );
+
+        return in_array( $value, array( '3', '4' ), true ) ? $value : '3';
     }
 
     public function sanitize_path_mode( $value ) {

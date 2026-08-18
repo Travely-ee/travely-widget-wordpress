@@ -2,7 +2,7 @@
 Requires at least: 5.8
 Requires PHP: 7.0
 Tested up to: 7.0.2
-Stable tag: 1.0.25
+Stable tag: 1.0.26
 License: Proprietary
 License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
@@ -72,6 +72,15 @@ The `background` shortcode attribute on `[travely-widget-results]` overrides the
 * `[travely-widget-results background="#ffffff"]`
 * `[travely-widget-results background="rgba(255,255,255,0.9)"]`
 
+`Country widget columns` sets the number of columns in the country widget grid. Supported values: `3` (default) and `4`.
+
+The `columns` shortcode attribute on `[travely-widget-country]` and `[travely-widget-search-country]` overrides the global setting for that individual shortcode:
+
+* `[travely-widget-country columns="4"]`
+* `[travely-widget-search-country columns="3"]`
+
+Unsupported values fall back to `3`. The column count is applied to the desktop layout only, tablet and mobile layouts stay unchanged.
+
 Shortcode examples:
 
 * `[travely-widget-search language="auto"]`
@@ -79,8 +88,8 @@ Shortcode examples:
 * `[travely-widget-search language="eng"]`
 * `[travely-widget-search language="est"]`
 * `[travely-widget-search language="lav"]`
-* `[travely-widget-search-country language="eng"]`
-* `[travely-widget-country language="rus"]`
+* `[travely-widget-search-country language="eng" columns="4"]`
+* `[travely-widget-country language="rus" columns="4"]`
 * `[travely-widget-results language="est"]`
 
 URL examples:

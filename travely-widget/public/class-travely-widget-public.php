@@ -179,6 +179,49 @@ class Travely_Widget_Public {
         return apply_filters( 'travely_widget_path_to_search', $path, $language );
     }
 
+    /**
+     * Normalize a country widget column count.
+     *
+     * @since 1.0.26
+     * @param string $value Raw column count.
+     * @return string Supported column count or an empty string.
+     */
+    private function sanitize_country_columns( $value ) {
+        $value = trim( sanitize_text_field( (string) $value ) );
+
+        return in_array( $value, array( '3', '4' ), true ) ? $value : '';
+    }
+
+    /**
+     * Resolve the country widget column count.
+     *
+     * The shortcode attribute has priority over the global setting. Unsupported
+     * values fall back to the default three column layout.
+     *
+     * @since 1.0.26
+     * @param string $shortcode_columns Column count from the shortcode attribute.
+     * @return string
+     */
+    private function get_country_columns( $shortcode_columns = '' ) {
+        $columns = $this->sanitize_country_columns( $shortcode_columns );
+
+        if ( '' === $columns ) {
+            $columns = $this->sanitize_country_columns(
+                get_option( 'travely_widget_country_columns', '3' )
+            );
+        }
+
+        if ( '' === $columns ) {
+            $columns = '3';
+        }
+
+        $columns = $this->sanitize_country_columns(
+            apply_filters( 'travely_widget_country_columns', $columns )
+        );
+
+        return '' === $columns ? '3' : $columns;
+    }
+
     private function sanitize_widget_background( $value ) {
         $value = sanitize_text_field( $value );
         $value = trim( $value );
@@ -388,6 +431,7 @@ class Travely_Widget_Public {
         $atts = shortcode_atts(
             array(
                 'language' => 'auto',
+                'columns'  => '',
             ),
             $atts,
             'travely-widget-search-country'
@@ -398,13 +442,14 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id   = $this->unique_id( 'travely-widget-search-country-' );
-        $path = $this->get_path_to_search( $language );
-        $key  = $this->get_widget_key();
+        $id      = $this->unique_id( 'travely-widget-search-country-' );
+        $path    = $this->get_path_to_search( $language );
+        $key     = $this->get_widget_key();
+        $columns = $this->get_country_columns( $atts['columns'] );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -413,6 +458,7 @@ class Travely_Widget_Public {
         $atts = shortcode_atts(
             array(
                 'language' => 'auto',
+                'columns'  => '',
             ),
             $atts,
             'travely-widget-country'
@@ -423,13 +469,14 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id   = $this->unique_id( 'travely-widget-country-' );
-        $path = $this->get_path_to_search( $language );
-        $key  = $this->get_widget_key();
+        $id      = $this->unique_id( 'travely-widget-country-' );
+        $path    = $this->get_path_to_search( $language );
+        $key     = $this->get_widget_key();
+        $columns = $this->get_country_columns( $atts['columns'] );
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>"></div>
         <?php
         return ob_get_clean();
     }

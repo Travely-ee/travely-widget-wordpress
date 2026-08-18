@@ -48,8 +48,8 @@ Shortcode examples:
 [travely-widget-search language="est"]
 [travely-widget-search language="lav"]
 
-[travely-widget-search-country language="eng"]
-[travely-widget-country language="rus"]
+[travely-widget-search-country language="eng" columns="4"]
+[travely-widget-country language="rus" columns="4"]
 [travely-widget-results language="est"]
 ```
 
@@ -75,6 +75,17 @@ The `background` shortcode attribute on `[travely-widget-results]` overrides the
 [travely-widget-results background="#ffffff"]
 [travely-widget-results background="rgba(255,255,255,0.9)"]
 ```
+
+`Country widget columns` sets the number of columns in the country widget grid. Supported values: `3` (default) and `4`.
+
+The `columns` shortcode attribute on `[travely-widget-country]` and `[travely-widget-search-country]` overrides the global setting for that individual shortcode:
+
+```text
+[travely-widget-country columns="4"]
+[travely-widget-search-country columns="3"]
+```
+
+Unsupported values fall back to `3`. The column count is applied to the desktop layout only, tablet and mobile layouts stay unchanged.
 
 Supported widget languages:
 
@@ -160,8 +171,8 @@ Shortcode'i näited:
 [travely-widget-search language="est"]
 [travely-widget-search language="lav"]
 
-[travely-widget-search-country language="eng"]
-[travely-widget-country language="rus"]
+[travely-widget-search-country language="eng" columns="4"]
+[travely-widget-country language="rus" columns="4"]
 [travely-widget-results language="est"]
 ```
 
@@ -187,6 +198,17 @@ Atribuut `background` shortcode'is `[travely-widget-results]` alistab globaalse 
 [travely-widget-results background="#ffffff"]
 [travely-widget-results background="rgba(255,255,255,0.9)"]
 ```
+
+`Country widget columns` määrab riigividina ruudustiku veergude arvu. Toetatud väärtused: `3` (vaikimisi) ja `4`.
+
+Shortcode'ide `[travely-widget-country]` ja `[travely-widget-search-country]` atribuut `columns` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
+
+```text
+[travely-widget-country columns="4"]
+[travely-widget-search-country columns="3"]
+```
+
+Toetamata väärtuste korral kasutatakse `3`. Veergude arv rakendub ainult töölaua vaates, tahvelarvuti ja mobiili paigutused jäävad samaks.
 
 Toetatud vidina keeled:
 
@@ -272,8 +294,8 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 [travely-widget-search language="est"]
 [travely-widget-search language="lav"]
 
-[travely-widget-search-country language="eng"]
-[travely-widget-country language="rus"]
+[travely-widget-search-country language="eng" columns="4"]
+[travely-widget-country language="rus" columns="4"]
 [travely-widget-results language="est"]
 ```
 
@@ -299,6 +321,17 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 [travely-widget-results background="#ffffff"]
 [travely-widget-results background="rgba(255,255,255,0.9)"]
 ```
+
+`Country widget columns` задаёт количество колонок в сетке виджета стран. Поддерживаемые значения: `3` (по умолчанию) и `4`.
+
+Атрибут `columns` в шорткодах `[travely-widget-country]` и `[travely-widget-search-country]` переопределяет глобальную настройку для конкретного шорткода:
+
+```text
+[travely-widget-country columns="4"]
+[travely-widget-search-country columns="3"]
+```
+
+Неподдерживаемые значения заменяются на `3`. Количество колонок применяется только к десктопной вёрстке, планшетная и мобильная вёрстка не меняются.
 
 Поддерживаемые языки виджета:
 
