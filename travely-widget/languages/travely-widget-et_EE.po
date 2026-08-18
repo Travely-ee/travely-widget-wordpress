@@ -3,10 +3,10 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.25\n"
+"Project-Id-Version: Travely Widget 1.0.26\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
 "POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
-"PO-Revision-Date: 2026-08-09 03:54+0300\n"
+"PO-Revision-Date: 2026-08-18 12:33+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
@@ -197,6 +197,30 @@ msgstr "Kasutatakse siis, kui tee režiimiks on valitud üks tee kõigi keelte j
 #: admin/class-travely-widget-admin.php
 msgid "Used only when Path mode is set to Separate path for each language. Leave empty to fall back to the default search path."
 msgstr "Kasutatakse ainult siis, kui tee režiimiks on valitud eraldi tee iga keele jaoks. Jätke tühjaks, et kasutada vaikimisi otsinguteed."
+
+#: admin/class-travely-widget-admin.php
+msgid "Country widget columns"
+msgstr "Riigividina veergude arv"
+
+#: admin/class-travely-widget-admin.php
+msgid "3 columns"
+msgstr "3 veergu"
+
+#: admin/class-travely-widget-admin.php
+msgid "4 columns"
+msgstr "4 veergu"
+
+#: admin/class-travely-widget-admin.php
+msgid "Number of columns in the country widget grid. The columns shortcode attribute overrides this setting."
+msgstr "Veergude arv riigividina ruudustikus. Shortcode'i atribuut columns alistab selle seadistuse."
+
+#: admin/class-travely-widget-admin.php
+msgid "Results background"
+msgstr "Tulemuste taust"
+
+#: admin/class-travely-widget-admin.php
+msgid "Optional background for the embedded results iframe. Leave empty for transparent. Supported values: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
+msgstr "Valikuline taust manustatud tulemuste iframe'ile. Jätke tühjaks läbipaistva tausta jaoks. Toetatud väärtused: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
 
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"
