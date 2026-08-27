@@ -527,7 +527,7 @@ class Travely_Widget_Admin {
         $value = $this->sanitize_primary_color( get_option( 'travely_widget_primary_color', '' ) );
 
         printf(
-            '<input type="text" id="travely_widget_primary_color" name="travely_widget_primary_color" class="travely-widget-color-field" value="%s" />',
+            '<input type="text" id="travely_widget_primary_color" name="travely_widget_primary_color" class="travely-widget-color-field" value="%s" data-default-color="#ff7a00" />',
             esc_attr( $value )
         );
 
