@@ -66,9 +66,9 @@ The path is selected after the final language is resolved. For example, `[travel
 
 `Results background` sets the background colour of the embedded results iframe. Leave empty for transparent. Supported values: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
-`Primary color` is an optional global brand color for buttons, prices, active controls and other primary accents in every Travely Widget instance. Use a six-digit HEX value such as `#cc1c21`. Three-digit HEX values are accepted and expanded to six digits when saved. Leave the field empty to use the Travely Widget built-in orange palette (`#ff7a00`). This setting does not change warning or error colors.
+Set `Primary color` in **Settings -> Travely Widget -> Primary color** using the native WordPress color picker. It is an optional global brand color for buttons, prices, active controls and other primary accents in every Travely Widget instance. Use a six-digit HEX value such as `#cc1c21`. Three-digit HEX values are accepted and expanded to six digits when saved. Leave the field empty to use the Travely Widget built-in orange palette (`#ff7a00`). This setting does not change warning or error colors.
 
-The `travely_widget_primary_color` filter can override the stored value. Its result is validated again: three-digit HEX values are expanded, six-digit values are lowercased, and other invalid values disable the override:
+The `travely_widget_primary_color` filter is an optional programmatic override and takes priority over the value selected in the admin settings. Its result is validated again: three-digit HEX values are expanded, six-digit values are lowercased, and other invalid values disable the override:
 
 `
 add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
