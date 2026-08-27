@@ -74,9 +74,9 @@ The path is selected after the final language is resolved. For example, `[travel
 
 `Results background` sets the background colour of the embedded results iframe. Leave empty for transparent. Supported values: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
-`Primary color` is an optional global brand color for buttons, prices, active controls and other primary accents in every Travely Widget instance. Use an exact six-digit HEX value such as `#cc1c21`. Leave it empty to use the Travely Widget built-in orange palette (`#ff7a00`). This setting does not change warning or error colors.
+`Primary color` is an optional global brand color for buttons, prices, active controls and other primary accents in every Travely Widget instance. Use a six-digit HEX value such as `#cc1c21`. Three-digit HEX values are accepted and expanded to six digits when saved. Leave the field empty to use the Travely Widget built-in orange palette (`#ff7a00`). This setting does not change warning or error colors.
 
-The `travely_widget_primary_color` filter can override the stored value. Its result is validated again and must be an exact six-digit HEX color; invalid values disable the override:
+The `travely_widget_primary_color` filter can override the stored value. Its result is validated again: three-digit HEX values are expanded, six-digit values are lowercased, and other invalid values disable the override:
 
 ```php
 add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
@@ -212,9 +212,9 @@ Tee valitakse pärast lõpliku keele tuvastamist. Näiteks `[travely-widget-sear
 
 `Results background` ehk tulemuste taustavärv määrab manustatud tulemuste iframe'i taustavärvi. Jätke tühjaks läbipaistvuse jaoks. Toetatud väärtused: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
-`Primary color` ehk põhivärv on valikuline üldine brändivärv nuppudele, hindadele, aktiivsetele juhtelementidele ja muudele põhivärvi aktsentidele kõigis Travely Widgeti eksemplarides. Kasutage täpselt kuuekohalist HEX-väärtust, näiteks `#cc1c21`. Jätke väli tühjaks, et kasutada Travely Widgeti sisseehitatud oranži paletti (`#ff7a00`). Seadistus ei muuda hoiatus- ega veavärve.
+`Primary color` ehk põhivärv on valikuline üldine brändivärv nuppudele, hindadele, aktiivsetele juhtelementidele ja muudele põhivärvi aktsentidele kõigis Travely Widgeti eksemplarides. Kasutage kuuekohalist HEX-väärtust, näiteks `#cc1c21`. Kolmekohalised HEX-väärtused aktsepteeritakse ja laiendatakse salvestamisel kuuekohaliseks. Jätke väli tühjaks, et kasutada Travely Widgeti sisseehitatud oranži paletti (`#ff7a00`). Seadistus ei muuda hoiatus- ega veavärve.
 
-Filter `travely_widget_primary_color` võib salvestatud väärtuse alistada. Filtri tulemus valideeritakse uuesti ja peab olema täpselt kuuekohaline HEX-värv; vigane väärtus keelab kohandatud värvi:
+Filter `travely_widget_primary_color` võib salvestatud väärtuse alistada. Filtri tulemus valideeritakse uuesti: kolmekohalised HEX-värvid laiendatakse, kuuekohalised väärtused normaliseeritakse väiketähtedeks ja muud vigased väärtused keelavad kohandatud värvi:
 
 ```php
 add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
@@ -350,9 +350,9 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 
 `Results background` задаёт цвет фона встраиваемого iframe с результатами. Оставьте пустым для прозрачного фона. Поддерживаемые значения: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
-`Primary color` или основной цвет — это необязательный общий фирменный цвет для кнопок, цен, активных элементов управления и других основных акцентов во всех экземплярах Travely Widget. Укажите точное шестизначное HEX-значение, например `#cc1c21`. Оставьте поле пустым, чтобы использовать встроенную оранжевую палитру Travely Widget (`#ff7a00`). Настройка не изменяет цвета предупреждений и ошибок.
+`Primary color` или основной цвет — это необязательный общий фирменный цвет для кнопок, цен, активных элементов управления и других основных акцентов во всех экземплярах Travely Widget. Используйте шестизначное HEX-значение, например `#cc1c21`. Трёхзначные HEX-значения принимаются и при сохранении разворачиваются до шести знаков. Оставьте поле пустым, чтобы использовать встроенную оранжевую палитру Travely Widget (`#ff7a00`). Настройка не изменяет цвета предупреждений и ошибок.
 
-Фильтр `travely_widget_primary_color` может переопределить сохранённое значение. Результат фильтра повторно проверяется и должен быть точным шестизначным HEX-цветом; невалидное значение отключает переопределение:
+Фильтр `travely_widget_primary_color` может переопределить сохранённое значение. Результат фильтра повторно проверяется: трёхзначные HEX-цвета разворачиваются, шестизначные приводятся к нижнему регистру, а другие невалидные значения отключают переопределение:
 
 ```php
 add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
