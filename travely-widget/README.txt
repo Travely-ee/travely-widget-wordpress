@@ -2,7 +2,7 @@
 Requires at least: 5.8
 Requires PHP: 7.0
 Tested up to: 7.0.2
-Stable tag: 1.0.28
+Stable tag: 1.0.29
 License: Proprietary
 License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
@@ -65,6 +65,16 @@ When a language-specific path is empty, the plugin falls back to the common `Pat
 The path is selected after the final language is resolved. For example, `[travely-widget-search language="rus"]` uses the Russian search path, `[travely-widget-search language="est"]` uses the Estonian search path, and `language="auto"` first resolves the page language and then chooses the matching path. When `Force default language` is enabled, the path is selected for the forced default language.
 
 `Results background` sets the background colour of the embedded results iframe. Leave empty for transparent. Supported values: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
+
+Set `Primary color` in **Settings -> Travely Widget -> Primary color** using the native WordPress color picker. It is an optional global brand color for buttons, prices, active controls and other primary accents in every Travely Widget instance. Use a six-digit HEX value such as `#cc1c21`. Three-digit HEX values are accepted and expanded to six digits when saved. Leave the field empty to use the Travely Widget built-in orange palette (`#ff7a00`). This setting does not change warning or error colors.
+
+The `travely_widget_primary_color` filter is an optional programmatic override and takes priority over the value selected in the admin settings. Its result is validated again: three-digit HEX values are expanded, six-digit values are lowercased, and other invalid values disable the override:
+
+`
+add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
+    return '#cc1c21';
+} );
+`
 
 The `background` shortcode attribute on `[travely-widget-results]` overrides the global setting for that individual shortcode:
 
@@ -131,3 +141,10 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 == Usage ==
 
 Use the `[travely-widget-search]`, `[travely-widget-country]`, or `[travely-widget-search-country]` shortcodes in any post or page to display Travely widgets.
+
+Primary-color appearance requires a remote Travely Widget build with `WidgetAppearance` support. Deploy both remote `widget` and `booking` targets before releasing/installing this WordPress plugin; configure the site color only after that rollout.
+
+== Changelog ==
+
+= 1.0.29 =
+* Added an optional global primary color setting and secure appearance forwarding to every shortcode and Gutenberg block.

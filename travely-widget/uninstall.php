@@ -41,6 +41,7 @@ if ( get_option( 'travely_widget_remove_data_on_uninstall', false ) ) {
     delete_option( 'travely_widget_default_language' );
     delete_option( 'travely_widget_force_default_language' );
     delete_option( 'travely_widget_results_background' );
+    delete_option( 'travely_widget_primary_color' );
     delete_option( 'travely_widget_country_columns' );
     delete_option( 'travely_widget_remove_data_on_uninstall' );
     delete_transient( 'travely_widget_github_release' );
