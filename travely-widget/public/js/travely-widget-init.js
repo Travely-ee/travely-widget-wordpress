@@ -9,7 +9,9 @@
         var path = node.getAttribute('data-path') || '/tour-search';
         var key = node.getAttribute('data-key') || '';
         var background = node.getAttribute('data-background') || '';
-        return {node: node, mode: mode, path: path, key: key, background: background};
+        var columns = node.getAttribute('data-columns') || '';
+        var primaryColor = node.getAttribute('data-primary-color') || '';
+        return {node: node, mode: mode, path: path, key: key, background: background, columns: columns, primaryColor: primaryColor};
     }
 
     function ensureTravelySearch(){
@@ -23,11 +25,14 @@
         if(!ensureTravelySearch()){
             return;
         }
+        var appearance = cfg.primaryColor
+            ? {primaryColor: cfg.primaryColor}
+            : undefined;
         if(cfg.mode === 'results'){
-            window.TravelySearch.initIframe(cfg.node.id, cfg.key, cfg.path, cfg.background);
+            window.TravelySearch.initIframe(cfg.node.id, cfg.key, cfg.path, cfg.background, cfg.columns || undefined, appearance);
         }else{
             var options = cfg.mode.split(',').filter(Boolean);
-            window.TravelySearch.initSearch(cfg.node.id, cfg.path, options, cfg.key);
+            window.TravelySearch.initSearch(cfg.node.id, cfg.path, options, cfg.key, cfg.columns || undefined, appearance);
         }
         state.add(cfg.node);
     }

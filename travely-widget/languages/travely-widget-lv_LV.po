@@ -3,9 +3,9 @@
 # This file is distributed under the Commerce.
 msgid ""
 msgstr ""
-"Project-Id-Version: Travely Widget 1.0.28\n"
+"Project-Id-Version: Travely Widget 1.0.29\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/travely-widget\n"
-"POT-Creation-Date: 2026-05-14T09:27:56+00:00\n"
+"POT-Creation-Date: 2026-08-27T00:00:00+00:00\n"
 "PO-Revision-Date: 2026-08-27 11:14+0300\n"
 "Last-Translator: Travely <info@travely.ee>\n"
 "Language-Team: Latvian\n"
@@ -221,6 +221,18 @@ msgstr "Rezultātu fons"
 #: admin/class-travely-widget-admin.php
 msgid "Optional background for the embedded results iframe. Leave empty for transparent. Supported values: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
 msgstr "Neobligāts fons iegultajam rezultātu iframe. Atstājiet tukšu, lai fons būtu caurspīdīgs. Atbalstītās vērtības: transparent, HEX, rgb(), rgba(), hsl(), hsla()."
+
+#: admin/class-travely-widget-admin.php
+msgid "Primary color"
+msgstr "Pamatkrāsa"
+
+#: admin/class-travely-widget-admin.php
+msgid "Optional brand color for buttons, prices, active controls and other primary accents."
+msgstr "Neobligāta zīmola krāsa pogām, cenām, aktīvajām vadīklām un citiem galvenajiem akcentiem."
+
+#: admin/class-travely-widget-admin.php
+msgid "Leave empty to use the default Travely orange (#ff7a00)."
+msgstr "Atstājiet tukšu, lai izmantotu Travely noklusējuma oranžo krāsu (#ff7a00)."
 
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"

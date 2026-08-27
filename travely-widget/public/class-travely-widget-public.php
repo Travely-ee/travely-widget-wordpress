@@ -180,6 +180,53 @@ class Travely_Widget_Public {
     }
 
     /**
+     * Normalize a primary color to the public widget contract.
+     *
+     * @since 1.0.29
+     * @param mixed $value Raw primary color.
+     * @return string Six-digit lowercase HEX or an empty string.
+     */
+    private function sanitize_primary_color( $value ) {
+        if ( ! is_scalar( $value ) ) {
+            return '';
+        }
+
+        $color = sanitize_hex_color( trim( (string) $value ) );
+
+        if ( preg_match( '/^#[0-9a-f]{6}$/i', (string) $color ) ) {
+            return strtolower( $color );
+        }
+
+        if ( preg_match( '/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i', (string) $color, $matches ) ) {
+            return strtolower(
+                '#' . $matches[1] . $matches[1]
+                . $matches[2] . $matches[2]
+                . $matches[3] . $matches[3]
+            );
+        }
+
+        return '';
+    }
+
+    /**
+     * Resolve the optional global primary color.
+     *
+     * Filter output is normalized again before it reaches HTML.
+     *
+     * @since 1.0.29
+     * @return string Six-digit lowercase HEX or an empty string.
+     */
+    private function get_primary_color() {
+        $color = $this->sanitize_primary_color(
+            get_option( 'travely_widget_primary_color', '' )
+        );
+
+        return $this->sanitize_primary_color(
+            apply_filters( 'travely_widget_primary_color', $color )
+        );
+    }
+
+    /**
      * Normalize a country widget column count.
      *
      * @since 1.0.26
@@ -416,13 +463,14 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id   = $this->unique_id( 'travely-widget-search-' );
-        $path = $this->get_path_to_search( $language );
-        $key  = $this->get_widget_key();
+        $id            = $this->unique_id( 'travely-widget-search-' );
+        $path          = $this->get_path_to_search( $language );
+        $key           = $this->get_widget_key();
+        $primary_color = $this->get_primary_color();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search" data-travely-widget="true" data-mode="search" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-primary-color="<?php echo esc_attr( $primary_color ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -442,14 +490,15 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id      = $this->unique_id( 'travely-widget-search-country-' );
-        $path    = $this->get_path_to_search( $language );
-        $key     = $this->get_widget_key();
-        $columns = $this->get_country_columns( $atts['columns'] );
+        $id            = $this->unique_id( 'travely-widget-search-country-' );
+        $path          = $this->get_path_to_search( $language );
+        $key           = $this->get_widget_key();
+        $columns       = $this->get_country_columns( $atts['columns'] );
+        $primary_color = $this->get_primary_color();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-search-country" data-travely-widget="true" data-mode="search,country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" data-primary-color="<?php echo esc_attr( $primary_color ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -469,14 +518,15 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id      = $this->unique_id( 'travely-widget-country-' );
-        $path    = $this->get_path_to_search( $language );
-        $key     = $this->get_widget_key();
-        $columns = $this->get_country_columns( $atts['columns'] );
+        $id            = $this->unique_id( 'travely-widget-country-' );
+        $path          = $this->get_path_to_search( $language );
+        $key           = $this->get_widget_key();
+        $columns       = $this->get_country_columns( $atts['columns'] );
+        $primary_color = $this->get_primary_color();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" data-primary-color="<?php echo esc_attr( $primary_color ); ?>"></div>
         <?php
         return ob_get_clean();
     }
@@ -497,17 +547,18 @@ class Travely_Widget_Public {
 
         $this->enqueue_remote_assets( $language );
         $this->enqueue_local_assets();
-        $id         = $this->unique_id( 'travely-widget-results-' );
-        $path       = $this->get_path_to_search( $language );
-        $key        = $this->get_widget_key();
-        $background = $this->get_results_background( $atts['background'] );
+        $id            = $this->unique_id( 'travely-widget-results-' );
+        $path          = $this->get_path_to_search( $language );
+        $key           = $this->get_widget_key();
+        $background    = $this->get_results_background( $atts['background'] );
         // The embedded booking application shows the country widget on its home
         // page, so it needs the column setting as well.
-        $columns    = $this->get_country_columns( $atts['columns'] );
+        $columns       = $this->get_country_columns( $atts['columns'] );
+        $primary_color = $this->get_primary_color();
 
         ob_start();
         ?>
-        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-background="<?php echo esc_attr( $background ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>"></div>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-results" data-travely-widget="true" data-mode="results" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-background="<?php echo esc_attr( $background ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" data-primary-color="<?php echo esc_attr( $primary_color ); ?>"></div>
         <?php
         return ob_get_clean();
     }

@@ -6,6 +6,12 @@
 
 ---
 
+## Changelog
+
+### 1.0.29
+
+- Added an optional global primary color setting and secure appearance forwarding to every shortcode and Gutenberg block.
+
 <a id="english"></a>
 ## English
 
@@ -68,6 +74,16 @@ The path is selected after the final language is resolved. For example, `[travel
 
 `Results background` sets the background colour of the embedded results iframe. Leave empty for transparent. Supported values: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
+`Primary color` is an optional global brand color for buttons, prices, active controls and other primary accents in every Travely Widget instance. Use an exact six-digit HEX value such as `#cc1c21`. Leave it empty to use the Travely Widget built-in orange palette (`#ff7a00`). This setting does not change warning or error colors.
+
+The `travely_widget_primary_color` filter can override the stored value. Its result is validated again and must be an exact six-digit HEX color; invalid values disable the override:
+
+```php
+add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
+    return '#cc1c21';
+} );
+```
+
 The `background` shortcode attribute on `[travely-widget-results]` overrides the global setting for that individual shortcode:
 
 ```text
@@ -125,6 +141,8 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
     }
 }, 10, 2 );
 ```
+
+Primary-color appearance requires a remote Travely Widget build with `WidgetAppearance` support. Deploy both remote `widget` and `booking` targets before releasing/installing this WordPress plugin; configure the site color only after that rollout.
 
 ### Usage
 
@@ -194,6 +212,16 @@ Tee valitakse pärast lõpliku keele tuvastamist. Näiteks `[travely-widget-sear
 
 `Results background` ehk tulemuste taustavärv määrab manustatud tulemuste iframe'i taustavärvi. Jätke tühjaks läbipaistvuse jaoks. Toetatud väärtused: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
+`Primary color` ehk põhivärv on valikuline üldine brändivärv nuppudele, hindadele, aktiivsetele juhtelementidele ja muudele põhivärvi aktsentidele kõigis Travely Widgeti eksemplarides. Kasutage täpselt kuuekohalist HEX-väärtust, näiteks `#cc1c21`. Jätke väli tühjaks, et kasutada Travely Widgeti sisseehitatud oranži paletti (`#ff7a00`). Seadistus ei muuda hoiatus- ega veavärve.
+
+Filter `travely_widget_primary_color` võib salvestatud väärtuse alistada. Filtri tulemus valideeritakse uuesti ja peab olema täpselt kuuekohaline HEX-värv; vigane väärtus keelab kohandatud värvi:
+
+```php
+add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
+    return '#cc1c21';
+} );
+```
+
 Atribuut `background` shortcode'is `[travely-widget-results]` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
 
 ```text
@@ -251,6 +279,8 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
     }
 }, 10, 2 );
 ```
+
+Põhivärvi appearance nõuab `WidgetAppearance` toega Travely Widgeti kaugversiooni. Enne selle WordPressi plugina väljalaskmist või paigaldamist juurutage nii kaugsiht `widget` kui ka `booking`; seadistage saidi värv alles pärast seda.
 
 ### Kasutamine
 
@@ -320,6 +350,16 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 
 `Results background` задаёт цвет фона встраиваемого iframe с результатами. Оставьте пустым для прозрачного фона. Поддерживаемые значения: `transparent`, HEX (`#fff`, `#ffffff`), `rgb()`, `rgba()`, `hsl()`, `hsla()`.
 
+`Primary color` или основной цвет — это необязательный общий фирменный цвет для кнопок, цен, активных элементов управления и других основных акцентов во всех экземплярах Travely Widget. Укажите точное шестизначное HEX-значение, например `#cc1c21`. Оставьте поле пустым, чтобы использовать встроенную оранжевую палитру Travely Widget (`#ff7a00`). Настройка не изменяет цвета предупреждений и ошибок.
+
+Фильтр `travely_widget_primary_color` может переопределить сохранённое значение. Результат фильтра повторно проверяется и должен быть точным шестизначным HEX-цветом; невалидное значение отключает переопределение:
+
+```php
+add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
+    return '#cc1c21';
+} );
+```
+
 Атрибут `background` в шорткоде `[travely-widget-results]` переопределяет глобальную настройку для конкретного шорткода:
 
 ```text
@@ -377,6 +417,8 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
     }
 }, 10, 2 );
 ```
+
+Поддержка appearance основного цвета требует remote-сборку Travely Widget с поддержкой `WidgetAppearance`. Перед выпуском/установкой этого WordPress-плагина сначала разверните оба remote target — `widget` и `booking`; цвет сайта настраивайте после этого.
 
 ### Использование
 

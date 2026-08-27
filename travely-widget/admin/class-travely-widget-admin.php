@@ -61,8 +61,14 @@ class Travely_Widget_Admin {
      * Register the stylesheets for the admin area.
      *
      * @since    1.0.0
+     * @param string $hook Current admin page hook.
      */
-    public function enqueue_styles() {
+    public function enqueue_styles( $hook ) {
+        if ( 'settings_page_travely-widget' !== $hook ) {
+            return;
+        }
+
+        wp_enqueue_style( 'wp-color-picker' );
     }
 
     /**
@@ -78,7 +84,7 @@ class Travely_Widget_Admin {
         wp_enqueue_script(
             $this->plugin_name . '-admin',
             plugin_dir_url( __FILE__ ) . 'js/travely-widget-admin.js',
-            array(),
+            array( 'wp-color-picker' ),
             $this->version,
             true
         );
@@ -215,6 +221,16 @@ class Travely_Widget_Admin {
 
         register_setting(
             'travely_widget_option_group',
+            'travely_widget_primary_color',
+            array(
+                'type'              => 'string',
+                'sanitize_callback' => array( $this, 'sanitize_primary_color' ),
+                'default'           => '',
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
             'travely_widget_country_columns',
             array(
                 'type'              => 'string',
@@ -301,6 +317,14 @@ class Travely_Widget_Admin {
             'travely_widget_results_background',
             esc_html__( 'Results background', 'travely-widget' ),
             array( $this, 'results_background_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_primary_color',
+            esc_html__( 'Primary color', 'travely-widget' ),
+            array( $this, 'primary_color_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );
@@ -499,6 +523,31 @@ class Travely_Widget_Admin {
         );
     }
 
+    public function primary_color_callback() {
+        $value = $this->sanitize_primary_color( get_option( 'travely_widget_primary_color', '' ) );
+
+        printf(
+            '<input type="text" id="travely_widget_primary_color" name="travely_widget_primary_color" class="travely-widget-color-field" data-default-color="#ff7a00" value="%s" />',
+            esc_attr( $value )
+        );
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__(
+                'Optional brand color for buttons, prices, active controls and other primary accents.',
+                'travely-widget'
+            )
+        );
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__(
+                'Leave empty to use the default Travely orange (#ff7a00).',
+                'travely-widget'
+            )
+        );
+    }
+
     public function country_columns_callback() {
         $value = $this->sanitize_country_columns( get_option( 'travely_widget_country_columns', '3' ) );
 
@@ -608,6 +657,34 @@ class Travely_Widget_Admin {
 
         if ( preg_match( '/^rgba?\([0-9\s,\.%]+\)$/i', $value ) || preg_match( '/^hsla?\([0-9\s,\.%a-z+-]+\)$/i', $value ) ) {
             return $value;
+        }
+
+        return '';
+    }
+
+    public function sanitize_primary_color( $value ) {
+        if ( ! is_scalar( $value ) ) {
+            return '';
+        }
+
+        $value = trim( sanitize_text_field( (string) $value ) );
+
+        if ( '' === $value ) {
+            return '';
+        }
+
+        $color = sanitize_hex_color( $value );
+
+        if ( preg_match( '/^#[0-9a-f]{6}$/i', (string) $color ) ) {
+            return strtolower( $color );
+        }
+
+        if ( preg_match( '/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i', (string) $color, $matches ) ) {
+            return strtolower(
+                '#' . $matches[1] . $matches[1]
+                . $matches[2] . $matches[2]
+                . $matches[3] . $matches[3]
+            );
         }
 
         return '';

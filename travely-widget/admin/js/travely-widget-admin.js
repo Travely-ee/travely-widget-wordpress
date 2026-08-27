@@ -47,6 +47,10 @@
   document.addEventListener('DOMContentLoaded', function () {
     var modeSelect = document.getElementById('travely_widget_path_mode');
 
+    if (window.jQuery && typeof window.jQuery.fn.wpColorPicker === 'function') {
+      window.jQuery('.travely-widget-color-field').wpColorPicker();
+    }
+
     updatePathModeVisibility();
 
     if (modeSelect) {
