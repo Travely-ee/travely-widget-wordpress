@@ -538,7 +538,7 @@ class Travely_Widget_Public {
      * Same attributes as the country widget. Without an API key the remote
      * widget shows nothing, so Travely's own best tours never appear here.
      *
-     * @since 1.0.32
+     * @since 1.1.0
      * @param array $atts Shortcode attributes: language, columns.
      * @return string
      */

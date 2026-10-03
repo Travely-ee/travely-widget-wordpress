@@ -150,7 +150,7 @@ Primary-color appearance requires a remote Travely Widget build with `WidgetAppe
 
 == Changelog ==
 
-= 1.0.32 =
+= 1.1.0 =
 * Added the `[travely-widget-best]` shortcode: the agency's own Best Tours, with `language` and `columns` attributes like the country widget.
 
 = 1.0.29 =
