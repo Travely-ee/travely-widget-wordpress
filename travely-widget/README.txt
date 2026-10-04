@@ -144,7 +144,7 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 
 Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]`, or `[travely-widget-best]` shortcodes in any post or page to display Travely widgets.
 
-`[travely-widget-best]` shows the agency's own Best Tours, created in the Travely agency cabinet. It uses the API key from the plugin settings; without a key the block shows nothing (the browser console shows `[TravelySearch] Best tours need the agency api key.`). Attributes: `language` and `columns`. It needs a remote Travely Widget build with Best Tours support.
+`[travely-widget-best]` shows the agency's own Best Tours, created in the Travely agency cabinet. It uses the API key from the plugin settings; without a key the block shows nothing (the browser console shows `[TravelySearch] Best tours need the agency api key.`). If the key is wrong or the site domain is not allowed for it, the block shows nothing either and the console shows `[TravelySearch] Best tours request failed. Check the agency api key and that this site domain is allowed for it.`. Attributes: `language` and `columns`. It needs a remote Travely Widget build with Best Tours support.
 
 Primary-color appearance requires a remote Travely Widget build with `WidgetAppearance` support. Deploy both remote `widget` and `booking` targets before releasing/installing this WordPress plugin; configure the site color only after that rollout.
 
