@@ -84,11 +84,12 @@ The `background` shortcode attribute on `[travely-widget-results]` overrides the
 
 `Country widget columns` sets the number of columns in the country widget grid. Supported values: `3` (default) and `4`.
 
-The `columns` shortcode attribute on `[travely-widget-country]`, `[travely-widget-search-country]` and `[travely-widget-results]` overrides the global setting for that individual shortcode:
+The `columns` shortcode attribute on `[travely-widget-country]`, `[travely-widget-search-country]`, `[travely-widget-best]` and `[travely-widget-results]` overrides the global setting for that individual shortcode:
 
 * `[travely-widget-country columns="4"]`
 * `[travely-widget-search-country columns="3"]`
 * `[travely-widget-results columns="4"]`
+* `[travely-widget-best columns="4"]`
 
 `[travely-widget-results]` needs the setting as well: without search parameters the embedded booking application shows its home page with the same country widget.
 
@@ -103,6 +104,7 @@ Shortcode examples:
 * `[travely-widget-search language="lav"]`
 * `[travely-widget-search-country language="eng" columns="4"]`
 * `[travely-widget-country language="rus" columns="4"]`
+* `[travely-widget-best language="eng" columns="4"]`
 * `[travely-widget-results language="est"]`
 
 URL examples:
@@ -140,11 +142,16 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 
 == Usage ==
 
-Use the `[travely-widget-search]`, `[travely-widget-country]`, or `[travely-widget-search-country]` shortcodes in any post or page to display Travely widgets.
+Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]`, or `[travely-widget-best]` shortcodes in any post or page to display Travely widgets.
+
+`[travely-widget-best]` shows the agency's own Best Tours, created in the Travely agency cabinet. It uses the API key from the plugin settings; without a key the block shows nothing (the browser console shows `[TravelySearch] Best tours need the agency api key.`). If the key is wrong or the site domain is not allowed for it, the block shows nothing either and the console shows `[TravelySearch] Best tours request failed. Check the agency api key and that this site domain is allowed for it.`. Attributes: `language` and `columns`. It needs a remote Travely Widget build with Best Tours support.
 
 Primary-color appearance requires a remote Travely Widget build with `WidgetAppearance` support. Deploy both remote `widget` and `booking` targets before releasing/installing this WordPress plugin; configure the site color only after that rollout.
 
 == Changelog ==
+
+= 1.1.0 =
+* Added the `[travely-widget-best]` shortcode: the agency's own Best Tours, with `language` and `columns` attributes like the country widget.
 
 = 1.0.29 =
 * Added an optional global primary color setting and secure appearance forwarding to every shortcode and Gutenberg block.

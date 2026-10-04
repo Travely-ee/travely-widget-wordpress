@@ -56,6 +56,7 @@ Shortcode examples:
 
 [travely-widget-search-country language="eng" columns="4"]
 [travely-widget-country language="rus" columns="4"]
+[travely-widget-best language="eng" columns="4"]
 [travely-widget-results language="est"]
 ```
 
@@ -94,12 +95,13 @@ The `background` shortcode attribute on `[travely-widget-results]` overrides the
 
 `Country widget columns` sets the number of columns in the country widget grid. Supported values: `3` (default) and `4`.
 
-The `columns` shortcode attribute on `[travely-widget-country]`, `[travely-widget-search-country]` and `[travely-widget-results]` overrides the global setting for that individual shortcode:
+The `columns` shortcode attribute on `[travely-widget-country]`, `[travely-widget-search-country]`, `[travely-widget-best]` and `[travely-widget-results]` overrides the global setting for that individual shortcode:
 
 ```text
 [travely-widget-country columns="4"]
 [travely-widget-search-country columns="3"]
 [travely-widget-results columns="4"]
+[travely-widget-best columns="4"]
 ```
 
 `[travely-widget-results]` needs the setting as well: without search parameters the embedded booking application shows its home page with the same country widget.
@@ -146,7 +148,9 @@ Primary-color appearance requires a remote Travely Widget build with `WidgetAppe
 
 ### Usage
 
-Use the `[travely-widget-search]`, `[travely-widget-country]`, and `[travely-widget-search-country]` shortcodes in any post or page to display the Travely widgets.
+Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]`, and `[travely-widget-best]` shortcodes in any post or page to display the Travely widgets.
+
+`[travely-widget-best]` shows the agency's own Best Tours: the ones created in the Travely agency cabinet, section Best Tours. It uses the API key from the plugin settings; without a key the block shows nothing (the browser console shows `[TravelySearch] Best tours need the agency api key.`). If the key is wrong or the site domain is not allowed for it, the block shows nothing either and the console shows `[TravelySearch] Best tours request failed. Check the agency api key and that this site domain is allowed for it.`. Clicking a tour opens the results page (`Path to search`) on that tour. Attributes: `language` and `columns`, as in `[travely-widget-country]`. The block needs a remote Travely Widget build with Best Tours support: deploy the remote `widget` and `booking` targets before releasing or installing this plugin version.
 
 ---
 
@@ -194,6 +198,7 @@ Shortcode'i näited:
 
 [travely-widget-search-country language="eng" columns="4"]
 [travely-widget-country language="rus" columns="4"]
+[travely-widget-best language="eng" columns="4"]
 [travely-widget-results language="est"]
 ```
 
@@ -232,12 +237,13 @@ Atribuut `background` shortcode'is `[travely-widget-results]` alistab globaalse 
 
 `Country widget columns` määrab riigividina ruudustiku veergude arvu. Toetatud väärtused: `3` (vaikimisi) ja `4`.
 
-Shortcode'ide `[travely-widget-country]`, `[travely-widget-search-country]` ja `[travely-widget-results]` atribuut `columns` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
+Shortcode'ide `[travely-widget-country]`, `[travely-widget-search-country]`, `[travely-widget-best]` ja `[travely-widget-results]` atribuut `columns` alistab globaalse seadistuse selle konkreetse shortcode'i jaoks:
 
 ```text
 [travely-widget-country columns="4"]
 [travely-widget-search-country columns="3"]
 [travely-widget-results columns="4"]
+[travely-widget-best columns="4"]
 ```
 
 Ka `[travely-widget-results]` vajab seda seadistust: ilma otsinguparameetriteta kuvab manustatud broneerimisrakendus oma avalehte sama riigividinaga.
@@ -284,7 +290,9 @@ Põhivärvi appearance nõuab `WidgetAppearance` toega Travely Widgeti kaugversi
 
 ### Kasutamine
 
-Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[travely-widget-search-country]` ükskõik millises postituses või lehel, et kuvada Travely vidinaid.
+Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]` ja `[travely-widget-best]` ükskõik millises postituses või lehel, et kuvada Travely vidinaid.
+
+`[travely-widget-best]` kuvab agentuuri enda parimaid reise: need, mis on loodud Travely agentuuri kabinetis jaotises Best Tours. Kasutab plugina seadetes olevat API võtit; ilma võtmeta plokki ei kuvata (brauseri konsoolis on `[TravelySearch] Best tours need the agency api key.`). Kui võti on vale või saidi domeen pole selle võtme jaoks lubatud, plokki samuti ei kuvata ja konsoolis on `[TravelySearch] Best tours request failed. Check the agency api key and that this site domain is allowed for it.`. Reisil klõpsamine avab tulemuste lehe (`Path to search`) selle reisiga. Atribuudid: `language` ja `columns`, nagu `[travely-widget-country]` puhul. Plokk vajab Best Tours toega Travely Widgeti kaugversiooni: enne selle plugina versiooni väljalaskmist või paigaldamist juurutage kaugsihid `widget` ja `booking`.
 
 ---
 
@@ -332,6 +340,7 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]` ja `[
 
 [travely-widget-search-country language="eng" columns="4"]
 [travely-widget-country language="rus" columns="4"]
+[travely-widget-best language="eng" columns="4"]
 [travely-widget-results language="est"]
 ```
 
@@ -370,12 +379,13 @@ add_filter( 'travely_widget_primary_color', function ( $primary_color ) {
 
 `Country widget columns` задаёт количество колонок в сетке виджета стран. Поддерживаемые значения: `3` (по умолчанию) и `4`.
 
-Атрибут `columns` в шорткодах `[travely-widget-country]`, `[travely-widget-search-country]` и `[travely-widget-results]` переопределяет глобальную настройку для конкретного шорткода:
+Атрибут `columns` в шорткодах `[travely-widget-country]`, `[travely-widget-search-country]`, `[travely-widget-best]` и `[travely-widget-results]` переопределяет глобальную настройку для конкретного шорткода:
 
 ```text
 [travely-widget-country columns="4"]
 [travely-widget-search-country columns="3"]
 [travely-widget-results columns="4"]
+[travely-widget-best columns="4"]
 ```
 
 Настройка нужна и шорткоду `[travely-widget-results]`: без параметров поиска встраиваемое приложение бронирования показывает свою главную страницу с тем же виджетом стран.
@@ -422,4 +432,6 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 
 ### Использование
 
-Используйте шорткоды `[travely-widget-search]`, `[travely-widget-country]` и `[travely-widget-search-country]` в любой записи или странице, чтобы отобразить виджеты Travely.
+Используйте шорткоды `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]` и `[travely-widget-best]` в любой записи или странице, чтобы отобразить виджеты Travely.
+
+`[travely-widget-best]` показывает лучшие туры самого агентства: те, что созданы в кабинете агентства Travely, раздел Best Tours. Использует API-ключ из настроек плагина; без ключа блок не показывается (в консоли браузера — `[TravelySearch] Best tours need the agency api key.`). Если ключ неверный или домен сайта для него не разрешён, блок тоже не показывается, а в консоли — `[TravelySearch] Best tours request failed. Check the agency api key and that this site domain is allowed for it.`. Клик по туру открывает страницу результатов (`Path to search`) сразу на этом туре. Атрибуты: `language` и `columns`, как у `[travely-widget-country]`. Блоку нужна remote-сборка Travely Widget с поддержкой Best Tours: перед выпуском/установкой этой версии плагина разверните remote target `widget` и `booking`.

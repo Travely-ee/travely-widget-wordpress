@@ -68,6 +68,7 @@ class Travely_Widget_Public {
         add_shortcode( 'travely-widget-search-country', array( $this, 'render_search_country' ) );
         add_shortcode( 'travely-widget-country', array( $this, 'render_country' ) );
         add_shortcode( 'travely-widget-results', array( $this, 'render_results' ) );
+        add_shortcode( 'travely-widget-best', array( $this, 'render_best' ) );
     }
 
     public function register_blocks() {
@@ -527,6 +528,44 @@ class Travely_Widget_Public {
         ob_start();
         ?>
         <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-country" data-travely-widget="true" data-mode="country" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" data-primary-color="<?php echo esc_attr( $primary_color ); ?>"></div>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Render the agency's own Best Tours, managed in the Travely agency cabinet.
+     *
+     * Same attributes as the country widget. Without an API key the remote
+     * widget shows nothing, so Travely's own best tours never appear here.
+     *
+     * @since 1.1.0
+     * @param array $atts Shortcode attributes: language, columns.
+     * @return string
+     */
+    public function render_best( $atts = array() ) {
+        $atts = shortcode_atts(
+            array(
+                'language' => 'auto',
+                'columns'  => '',
+            ),
+            $atts,
+            'travely-widget-best'
+        );
+
+        $language = Travely_Widget_Language::resolve_language( $atts );
+        $language = $this->get_page_language( $language );
+
+        $this->enqueue_remote_assets( $language );
+        $this->enqueue_local_assets();
+        $id            = $this->unique_id( 'travely-widget-best-' );
+        $path          = $this->get_path_to_search( $language );
+        $key           = $this->get_widget_key();
+        $columns       = $this->get_country_columns( $atts['columns'] );
+        $primary_color = $this->get_primary_color();
+
+        ob_start();
+        ?>
+        <div id="<?php echo esc_attr( $id ); ?>" class="travely-widget-best" data-travely-widget="true" data-mode="best" data-path="<?php echo esc_attr( $path ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-language="<?php echo esc_attr( $language ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" data-primary-color="<?php echo esc_attr( $primary_color ); ?>"></div>
         <?php
         return ob_get_clean();
     }
