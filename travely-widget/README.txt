@@ -2,7 +2,7 @@
 Requires at least: 5.8
 Requires PHP: 7.0
 Tested up to: 7.0.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: Proprietary
 License URI: https://github.com/Travely-ee/travely-widget-wordpress/blob/main/travely-widget/LICENSE.txt
 
