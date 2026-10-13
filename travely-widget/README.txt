@@ -140,6 +140,18 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 }, 10, 2 );
 `
 
+`Open Graph tags` (enabled by default) lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link from the results page. They do not run JavaScript and do not look inside the widget iframe, so without the tags they show the site logo. When `?path` opens a tour card or a best tour, whether the link was copied from the address bar or made with the Share tour button, the plugin adds `og:title` (hotel name, stars, resort and country), `og:description` (the first sentence of the hotel description), `og:image` with `og:image:width` and `og:image:height` (the main hotel photo, its wide version when there is one), `og:url`, `og:type` and `og:site_name` in the widget language of the page. Hotel data comes from the public Travely API and is cached for a month per hotel and language. For a best tour the plugin asks Travely which hotel the best tour is about now, with the API key from the settings, and caches the answer for an hour. If the tags cannot be built (the Travely API does not answer, the hotel or best tour is not published, the API key is missing or not accepted for the site domain, or 30 hotels and best tours that were not cached yet were already looked up in the current minute), the page is rendered as before, other plugins' tags stay, and the plugin tries again later. On these pages only, Open Graph tags printed in `wp_head` by other plugins are replaced. Facebook caches previews: after updating the plugin, after the agency changed the hotel of a best tour that was already shared, or if a link was shared while the tags could not be built, open the link in the Sharing Debugger and press Scrape Again.
+
+The `travely_widget_enable_open_graph` filter enables the tags when the results widget is rendered by a theme template; the widget's `language` attribute is not visible then, so the language is detected as for `language="auto"`. The `travely_widget_open_graph_tags` filter changes the tags before they are printed; `$best_id` is the best tour id, or 0 for a tour card:
+
+`
+add_filter( 'travely_widget_open_graph_tags', function ( $tags, $hotel, $hotel_id, $language, $best_id ) {
+    $tags['og:title'] = $hotel['name'] . ' ' . $hotel['stars'];
+
+    return $tags;
+}, 10, 5 );
+`
+
 == Usage ==
 
 Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]`, or `[travely-widget-best]` shortcodes in any post or page to display Travely widgets.
@@ -149,6 +161,9 @@ Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-
 Primary-color appearance requires a remote Travely Widget build with `WidgetAppearance` support. Deploy both remote `widget` and `booking` targets before releasing/installing this WordPress plugin; configure the site color only after that rollout.
 
 == Changelog ==
+
+= 1.2.0 =
+* Added Open Graph tags for shared tour card and best tour links: Facebook and messengers show the hotel photo, name and description instead of the site logo. On those pages, Open Graph tags from other plugins (Yoast SEO, Rank Math and others) are replaced. Enabled by default; can be turned off in Settings -> Travely Widget.
 
 = 1.1.0 =
 * Added the `[travely-widget-best]` shortcode: the agency's own Best Tours, with `language` and `columns` attributes like the country widget.

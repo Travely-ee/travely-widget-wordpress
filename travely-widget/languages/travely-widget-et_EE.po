@@ -234,6 +234,18 @@ msgstr "Valikuline brändivärv nuppudele, hindadele, aktiivsetele juhtelementid
 msgid "Leave empty to use the default Travely orange (#ff7a00)."
 msgstr "Jätke tühjaks, et kasutada Travely vaikimisi oranži värvi (#ff7a00)."
 
+#: admin/class-travely-widget-admin.php
+msgid "Open Graph tags"
+msgstr "Open Graphi sildid"
+
+#: admin/class-travely-widget-admin.php
+msgid "Add Open Graph tags to tour pages."
+msgstr "Lisa tuurilehtedele Open Graphi sildid."
+
+#: admin/class-travely-widget-admin.php
+msgid "Lets Facebook and messengers show the hotel photo, name and description when someone shares a link to a tour. On pages opened by such links, Open Graph tags from other plugins are replaced. Other pages are not changed."
+msgstr "Facebook ja sõnumirakendused näitavad tuuri lingi jagamisel hotelli fotot, nime ja kirjeldust. Selliste linkidega avatud lehtedel asendatakse teiste pluginate Open Graphi sildid. Teisi lehti ei muudeta."
+
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"
 

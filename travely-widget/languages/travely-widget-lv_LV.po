@@ -234,6 +234,18 @@ msgstr "Neobligāta zīmola krāsa pogām, cenām, aktīvajām vadīklām un cit
 msgid "Leave empty to use the default Travely orange (#ff7a00)."
 msgstr "Atstājiet tukšu, lai izmantotu Travely noklusējuma oranžo krāsu (#ff7a00)."
 
+#: admin/class-travely-widget-admin.php
+msgid "Open Graph tags"
+msgstr "Open Graph tagi"
+
+#: admin/class-travely-widget-admin.php
+msgid "Add Open Graph tags to tour pages."
+msgstr "Pievienot Open Graph tagus tūru lapām."
+
+#: admin/class-travely-widget-admin.php
+msgid "Lets Facebook and messengers show the hotel photo, name and description when someone shares a link to a tour. On pages opened by such links, Open Graph tags from other plugins are replaced. Other pages are not changed."
+msgstr "Ļauj Facebook un ziņapmaiņas lietotnēm rādīt viesnīcas foto, nosaukumu un aprakstu, kad kāds kopīgo saiti uz tūru. Lapās, kas atvērtas ar šādām saitēm, citu spraudņu Open Graph tagi tiek aizstāti. Citas lapas netiek mainītas."
+
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"
 
