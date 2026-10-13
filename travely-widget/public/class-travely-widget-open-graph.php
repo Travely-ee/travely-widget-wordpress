@@ -91,9 +91,10 @@ class Travely_Widget_Open_Graph {
     const IMAGE_PROBE_BYTES = 65536;
 
     /**
-     * Largest og:image Facebook accepts, in bytes (8 MB).
+     * Largest og:image Facebook accepts, in bytes. Facebook says "8 MB"; the
+     * decimal reading is the safe one.
      */
-    const MAX_IMAGE_BYTES = 8388608;
+    const MAX_IMAGE_BYTES = 8000000;
 
     /**
      * Maximum length of the description, in characters.
@@ -382,6 +383,17 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
+     * Shorten what a cache entry depends on to a part of its transient name.
+     *
+     * @since 1.2.0
+     * @param string $value For example the API origin and the API key.
+     * @return string Eight hex characters.
+     */
+    private static function cache_scope( $value ) {
+        return substr( md5( (string) $value ), 0, 8 );
+    }
+
+    /**
      * Get the Travely API origin, without a trailing slash.
      *
      * @since 1.2.0
@@ -395,6 +407,11 @@ class Travely_Widget_Open_Graph {
      * Build og:url: the site origin, then the request path and query as the
      * visitor sent them.
      *
+     * og:url must keep ?path: without it Facebook falls back to the canonical
+     * link, which points to the results page without the tour. When the
+     * request URI cannot be used, the page permalink and the query string
+     * are used instead.
+     *
      * @since 1.2.0
      * @return string
      */
@@ -402,11 +419,19 @@ class Travely_Widget_Open_Graph {
         $origin      = self::get_site_origin();
         $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-        if ( '' === $origin || ! is_string( $request_uri ) || '/' !== substr( $request_uri, 0, 1 ) ) {
+        if ( '' !== $origin && is_string( $request_uri ) && '/' === substr( $request_uri, 0, 1 ) ) {
+            return $origin . $request_uri;
+        }
+
+        $post      = get_queried_object();
+        $permalink = $post instanceof WP_Post ? get_permalink( $post ) : '';
+        $query     = isset( $_SERVER['QUERY_STRING'] ) ? wp_unslash( $_SERVER['QUERY_STRING'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( ! is_string( $permalink ) || '' === $permalink || ! is_string( $query ) || '' === $query ) {
             return '';
         }
 
-        return $origin . $request_uri;
+        return $permalink . ( false === strpos( $permalink, '?' ) ? '?' : '&' ) . $query;
     }
 
     /**
@@ -430,7 +455,7 @@ class Travely_Widget_Open_Graph {
         // The same best tour id can mean another best tour on another Travely
         // environment or under another agency key, so the entry is tied to
         // both: switching either never reuses an answer about another one.
-        $scope = substr( md5( self::get_api_origin() . '|' . $api_key ), 0, 8 );
+        $scope = self::cache_scope( self::get_api_origin() . '|' . $api_key );
         $best  = $this->lookup(
             self::CACHE_PREFIX . 'best_' . $scope . '_' . $best_id,
             sprintf( 'best tour %d', $best_id ),
@@ -451,8 +476,10 @@ class Travely_Widget_Open_Graph {
      * @return array Preview, empty when the hotel cannot be described.
      */
     private function get_preview( $hotel_id, $language ) {
+        // Hotel ids are per Travely environment, so the entry is tied to the
+        // API origin, like the best tour entries.
         return $this->lookup(
-            self::CACHE_PREFIX . $hotel_id . '_' . $language,
+            self::CACHE_PREFIX . self::cache_scope( self::get_api_origin() ) . '_' . $hotel_id . '_' . $language,
             sprintf( 'hotel %d (%s)', $hotel_id, $language ),
             function () use ( $hotel_id, $language ) {
                 return $this->fetch_preview( $hotel_id, $language );
@@ -788,9 +815,9 @@ class Travely_Widget_Open_Graph {
      * @param string $url Image URL.
      * @return array state: 'ok' (with width and height, 0 when unreadable),
      *               'unusable' (a 4xx other than 408 and 429, not an image,
-     *               or larger than MAX_IMAGE_BYTES) or 'unreachable' (no
-     *               response or any other status, such as 5xx, 408 or 429),
-     *               both with reason.
+     *               of unknown size or larger than MAX_IMAGE_BYTES) or
+     *               'unreachable' (no response or any other status, such as
+     *               5xx, 408 or 429), both with reason.
      */
     private function probe_image( $url ) {
         $response = wp_remote_get(
@@ -846,10 +873,19 @@ class Travely_Widget_Open_Graph {
             $total = (int) self::header_text( $response, 'content-length' );
         }
 
+        // Without a known size the 8 MB limit cannot be checked, and an image
+        // Facebook rejects would be worse than no tags.
+        if ( 0 === $total ) {
+            return array(
+                'state'  => 'unusable',
+                'reason' => 'the server did not report the file size',
+            );
+        }
+
         if ( $total > self::MAX_IMAGE_BYTES ) {
             return array(
                 'state'  => 'unusable',
-                'reason' => sprintf( 'too large for Facebook: %.1f MB, the limit is %d MB', $total / MB_IN_BYTES, self::MAX_IMAGE_BYTES / MB_IN_BYTES ),
+                'reason' => sprintf( 'too large for Facebook: %.1f MB, the limit is %.0f MB', $total / 1000000, self::MAX_IMAGE_BYTES / 1000000 ),
             );
         }
 
@@ -896,32 +932,113 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
-     * Find the results widget on the page and its language attribute.
+     * Find the results widget on the page and the language it is shown in.
+     *
+     * The widget language is chosen by the first Travely widget on the page:
+     * every later widget uses it too (see Travely_Widget_Public's
+     * get_page_language()), so a search form above the results decides the
+     * language of the results as well. Widgets rendered outside the post
+     * content, for example from a theme template, are not seen here.
+     *
+     * Synced patterns are expanded first, so a widget placed inside one is
+     * found as well.
      *
      * @since 1.2.0
      * @param string $content Post content.
-     * @return string|null The language attribute ('auto' when not set), or null when the page has no results widget.
+     * @return string|null The language attribute of the first Travely widget ('auto' when not set), or null when the page has no results widget.
      */
     public static function find_results_widget_language( $content ) {
         if ( ! is_string( $content ) || '' === $content ) {
             return null;
         }
 
-        if ( has_shortcode( $content, 'travely-widget-results' ) ) {
-            $atts = preg_match( '/' . get_shortcode_regex( array( 'travely-widget-results' ) ) . '/', $content, $matches )
-                ? shortcode_parse_atts( $matches[3] )
-                : array();
+        $content = self::expand_synced_patterns( $content, array() );
 
-            return self::language_attribute( $atts );
+        if ( ! has_shortcode( $content, 'travely-widget-results' ) && ! has_block( 'travely/widget-results', $content ) ) {
+            return null;
         }
 
-        if ( has_block( 'travely/widget-results', $content ) ) {
-            $language = self::find_block_language( parse_blocks( $content ) );
+        return self::first_widget_language( $content );
+    }
 
-            return null === $language ? 'auto' : $language;
+    /**
+     * Read the language attribute of the first Travely widget in the content.
+     *
+     * Shortcodes and blocks are both stored as text in the post content, so
+     * the one with the lower offset comes first on the page.
+     *
+     * @since 1.2.0
+     * @param string $content Post content with synced patterns expanded.
+     * @return string The attribute, or 'auto' when it is not set.
+     */
+    private static function first_widget_language( $content ) {
+        $first      = PHP_INT_MAX;
+        $attributes = null;
+        $shortcodes = array(
+            'travely-widget-search',
+            'travely-widget-search-country',
+            'travely-widget-country',
+            'travely-widget-results',
+            'travely-widget-best',
+        );
+
+        if ( preg_match_all( '/' . get_shortcode_regex( $shortcodes ) . '/', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
+            foreach ( $matches as $match ) {
+                // [[shortcode]] is escaped and printed as text.
+                if ( '[' === $match[1][0] && ']' === $match[6][0] ) {
+                    continue;
+                }
+
+                $first      = $match[0][1];
+                $attributes = shortcode_parse_atts( $match[3][0] );
+                break;
+            }
         }
 
-        return null;
+        if ( preg_match( '#<!--\s+wp:travely/widget-(?:search|results)(?:\s+(\{.*?\}))?\s+/?-->#s', $content, $match, PREG_OFFSET_CAPTURE ) && $match[0][1] < $first ) {
+            $attributes = isset( $match[1] ) && '' !== $match[1][0] ? json_decode( $match[1][0], true ) : array();
+        }
+
+        return self::language_attribute( $attributes );
+    }
+
+    /**
+     * Replace references to synced patterns with their content.
+     *
+     * @since 1.2.0
+     * @param string $content Post content.
+     * @param array  $seen    Ids of patterns already expanded on this path, against loops.
+     * @return string
+     */
+    private static function expand_synced_patterns( $content, $seen ) {
+        if ( false === strpos( $content, 'wp:block' ) || count( $seen ) >= 5 ) {
+            return $content;
+        }
+
+        $expanded = preg_replace_callback(
+            '#<!--\s+wp:block\s+(\{.*?\})\s+/-->#s',
+            function ( $match ) use ( $seen ) {
+                $attributes = json_decode( $match[1], true );
+                $ref        = ( is_array( $attributes ) && isset( $attributes['ref'] ) ) ? (int) $attributes['ref'] : 0;
+
+                if ( $ref <= 0 || in_array( $ref, $seen, true ) ) {
+                    return '';
+                }
+
+                $pattern = get_post( $ref );
+
+                if ( ! $pattern instanceof WP_Post || 'wp_block' !== $pattern->post_type || 'publish' !== $pattern->post_status ) {
+                    return '';
+                }
+
+                $seen[] = $ref;
+
+                return self::expand_synced_patterns( $pattern->post_content, $seen );
+            },
+            $content
+        );
+
+        return is_string( $expanded ) ? $expanded : $content;
     }
 
     /**
@@ -935,31 +1052,6 @@ class Travely_Widget_Open_Graph {
         return ( is_array( $attributes ) && isset( $attributes['language'] ) && is_string( $attributes['language'] ) )
             ? $attributes['language']
             : 'auto';
-    }
-
-    /**
-     * Find the language attribute of the first results block, nested blocks included.
-     *
-     * @since 1.2.0
-     * @param array $blocks Parsed blocks.
-     * @return string|null
-     */
-    private static function find_block_language( $blocks ) {
-        foreach ( $blocks as $block ) {
-            if ( isset( $block['blockName'] ) && 'travely/widget-results' === $block['blockName'] ) {
-                return self::language_attribute( isset( $block['attrs'] ) ? $block['attrs'] : null );
-            }
-
-            if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
-                $language = self::find_block_language( $block['innerBlocks'] );
-
-                if ( null !== $language ) {
-                    return $language;
-                }
-            }
-        }
-
-        return null;
     }
 
     /**
