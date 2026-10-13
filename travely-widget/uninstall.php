@@ -43,6 +43,19 @@ if ( get_option( 'travely_widget_remove_data_on_uninstall', false ) ) {
     delete_option( 'travely_widget_results_background' );
     delete_option( 'travely_widget_primary_color' );
     delete_option( 'travely_widget_country_columns' );
+    delete_option( 'travely_widget_open_graph' );
     delete_option( 'travely_widget_remove_data_on_uninstall' );
     delete_transient( 'travely_widget_github_release' );
+
+    // Open Graph previews are cached per hotel and language, so their
+    // transient names are not known in advance.
+    global $wpdb;
+
+    $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+            $wpdb->esc_like( '_transient_travely_widget_og_' ) . '%',
+            $wpdb->esc_like( '_transient_timeout_travely_widget_og_' ) . '%'
+        )
+    );
 }

@@ -241,6 +241,16 @@ class Travely_Widget_Admin {
 
         register_setting(
             'travely_widget_option_group',
+            'travely_widget_open_graph',
+            array(
+                'type'              => 'boolean',
+                'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
+                'default'           => true,
+            )
+        );
+
+        register_setting(
+            'travely_widget_option_group',
             'travely_widget_remove_data_on_uninstall',
             array(
                 'type'              => 'boolean',
@@ -333,6 +343,14 @@ class Travely_Widget_Admin {
             'travely_widget_country_columns',
             esc_html__( 'Country widget columns', 'travely-widget' ),
             array( $this, 'country_columns_callback' ),
+            'travely-widget-admin',
+            'travely_widget_setting_section'
+        );
+
+        add_settings_field(
+            'travely_widget_open_graph',
+            esc_html__( 'Open Graph tags', 'travely-widget' ),
+            array( $this, 'open_graph_callback' ),
             'travely-widget-admin',
             'travely_widget_setting_section'
         );
@@ -578,6 +596,31 @@ class Travely_Widget_Admin {
                 'Number of columns in the country widget grid. The columns shortcode attribute overrides this setting.',
                 'travely-widget'
             )
+        );
+    }
+
+    /**
+     * Render the Open Graph switch.
+     *
+     * Enabled by default, including existing installations without the
+     * option: the frontend reads it with the same default.
+     *
+     * @since 1.2.0
+     */
+    public function open_graph_callback() {
+        $value = (bool) get_option( 'travely_widget_open_graph', true );
+
+        echo '<input type="hidden" name="travely_widget_open_graph" value="0" />';
+
+        printf(
+            '<label><input type="checkbox" name="travely_widget_open_graph" value="1" %s /> %s</label>',
+            checked( true, $value, false ),
+            esc_html__( 'Add Open Graph tags to tour pages.', 'travely-widget' )
+        );
+
+        printf(
+            '<p class="description">%s</p>',
+            esc_html__( 'Lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link. On these pages, Open Graph tags from other plugins are replaced.', 'travely-widget' )
         );
     }
 

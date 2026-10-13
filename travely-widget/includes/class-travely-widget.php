@@ -127,6 +127,11 @@ class Travely_Widget {
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-travely-widget-public.php';
 
+        /**
+         * The class responsible for Open Graph tags of shared tour links.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-travely-widget-open-graph.php';
+
         $this->loader = new Travely_Widget_Loader();
 
     }
@@ -180,6 +185,13 @@ class Travely_Widget {
                $this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
                $this->loader->add_action( 'init', $plugin_public, 'register_blocks' );
                $this->loader->add_filter( 'wp_headers', $plugin_public, 'filter_permissions_policy_header' );
+
+               // The two callbacks wrap every other wp_head callback, so Open
+               // Graph tags of other plugins can be replaced on tour pages.
+               $open_graph = new Travely_Widget_Open_Graph();
+
+               $this->loader->add_action( 'wp_head', $open_graph, 'start_head', PHP_INT_MIN );
+               $this->loader->add_action( 'wp_head', $open_graph, 'finish_head', PHP_INT_MAX );
 
     }
 

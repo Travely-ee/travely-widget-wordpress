@@ -140,6 +140,18 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 }, 10, 2 );
 `
 
+`Open Graph tags` (enabled by default) lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link from the results page. They do not run JavaScript and do not look inside the widget iframe, so without the tags they show the site logo. On the results page with `?path=/tour-search/tours/…`, the plugin adds `og:title` (hotel name, stars, resort and country), `og:description` (the first sentence of the hotel description), `og:image` (the main hotel photo), `og:url`, `og:type` and `og:site_name` in the widget language of the page. Hotel data comes from the public Travely API and is cached for a month per hotel and language; if the API is unavailable, the page is rendered as before. On these pages only, Open Graph tags printed in `wp_head` by other plugins are replaced. Facebook caches previews: after updating the plugin, open an already shared link in the Sharing Debugger and press Scrape Again.
+
+The `travely_widget_enable_open_graph` filter enables the tags when the results widget is rendered by a theme template. The `travely_widget_open_graph_tags` filter changes the tags before they are printed:
+
+`
+add_filter( 'travely_widget_open_graph_tags', function ( $tags, $hotel, $hotel_id, $language ) {
+    $tags['og:title'] = $hotel['name'] . ' ' . $hotel['stars'];
+
+    return $tags;
+}, 10, 4 );
+`
+
 == Usage ==
 
 Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-search-country]`, or `[travely-widget-best]` shortcodes in any post or page to display Travely widgets.
@@ -149,6 +161,9 @@ Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-
 Primary-color appearance requires a remote Travely Widget build with `WidgetAppearance` support. Deploy both remote `widget` and `booking` targets before releasing/installing this WordPress plugin; configure the site color only after that rollout.
 
 == Changelog ==
+
+= 1.2.0 =
+* Added Open Graph tags for shared tour links: Facebook and messengers show the hotel photo, name and description instead of the site logo. Can be turned off in Settings -> Travely Widget.
 
 = 1.1.0 =
 * Added the `[travely-widget-best]` shortcode: the agency's own Best Tours, with `language` and `columns` attributes like the country widget.

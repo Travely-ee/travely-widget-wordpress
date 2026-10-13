@@ -234,6 +234,18 @@ msgstr "Необязательный фирменный цвет для кноп
 msgid "Leave empty to use the default Travely orange (#ff7a00)."
 msgstr "Оставьте пустым, чтобы использовать стандартный оранжевый цвет Travely (#ff7a00)."
 
+#: admin/class-travely-widget-admin.php
+msgid "Open Graph tags"
+msgstr "Теги Open Graph"
+
+#: admin/class-travely-widget-admin.php
+msgid "Add Open Graph tags to tour pages."
+msgstr "Добавлять теги Open Graph на страницы туров."
+
+#: admin/class-travely-widget-admin.php
+msgid "Lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link. On these pages, Open Graph tags from other plugins are replaced."
+msgstr "Facebook и мессенджеры будут показывать фото, название и описание отеля, когда кто-то делится ссылкой на тур. На этих страницах теги Open Graph других плагинов заменяются."
+
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"
 

@@ -230,3 +230,15 @@ msgstr ""
 #: admin/class-travely-widget-admin.php
 msgid "Leave empty to use the default Travely orange (#ff7a00)."
 msgstr ""
+
+#: admin/class-travely-widget-admin.php
+msgid "Open Graph tags"
+msgstr ""
+
+#: admin/class-travely-widget-admin.php
+msgid "Add Open Graph tags to tour pages."
+msgstr ""
+
+#: admin/class-travely-widget-admin.php
+msgid "Lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link. On these pages, Open Graph tags from other plugins are replaced."
+msgstr ""
