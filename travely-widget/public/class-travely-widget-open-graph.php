@@ -38,12 +38,12 @@ class Travely_Widget_Open_Graph {
     /**
      * Site-wide transient set while the Travely API does not answer.
      */
-    const API_DOWN_KEY = 'travely_widget_og_v1_api_down';
+    const API_DOWN_KEY = self::CACHE_PREFIX . 'api_down';
 
     /**
      * Site-wide transient counting API lookups in the current minute.
      */
-    const BUDGET_KEY = 'travely_widget_og_v1_budget';
+    const BUDGET_KEY = self::CACHE_PREFIX . 'budget';
 
     /**
      * Uncached hotel lookups allowed per minute for the whole site.
@@ -135,8 +135,8 @@ class Travely_Widget_Open_Graph {
     /**
      * Prepare the tags and start filtering the wp_head output.
      *
-     * Runs before every other wp_head callback. When the page is not a shared
-     * tour card, nothing is buffered and the page renders as before.
+     * Runs before every other wp_head callback. When no tags are prepared,
+     * nothing is buffered and the page renders as before.
      *
      * @since 1.2.0
      */
@@ -357,7 +357,7 @@ class Travely_Widget_Open_Graph {
      * the API knows are stored per id, which bounds them by the catalog:
      * - a complete preview is kept for a month;
      * - a preview built while the media server did not answer, and a known
-     *   hotel without a usable photo, are kept for FAILURE_TTL;
+     *   hotel without a name or a usable photo, are kept for FAILURE_TTL;
      * - unknown hotels and API errors are not stored per id;
      * - a network failure is kept once for the whole site, so an outage costs
      *   one timeout per FAILURE_TTL and not one per hotel.
@@ -369,12 +369,13 @@ class Travely_Widget_Open_Graph {
      * @return array Preview, empty when the hotel cannot be described.
      */
     private function get_preview( $hotel_id, $language ) {
-        $key    = self::CACHE_PREFIX . $hotel_id . '_' . $language;
-        $cached = get_transient( $key );
+        $key     = self::CACHE_PREFIX . $hotel_id . '_' . $language;
+        $subject = sprintf( 'hotel %d (%s)', $hotel_id, $language );
+        $cached  = get_transient( $key );
 
         if ( is_array( $cached ) ) {
             if ( empty( $cached['ok'] ) ) {
-                self::log( sprintf( 'hotel %d (%s), cached failure: %s', $hotel_id, $language, isset( $cached['reason'] ) ? $cached['reason'] : 'unknown' ) );
+                self::log( $subject . ', cached failure: ' . ( isset( $cached['reason'] ) ? $cached['reason'] : 'unknown' ) );
 
                 return array();
             }
@@ -385,13 +386,13 @@ class Travely_Widget_Open_Graph {
         $api_down = get_transient( self::API_DOWN_KEY );
 
         if ( false !== $api_down ) {
-            self::log( sprintf( 'hotel %d (%s) skipped, the Travely API did not answer recently: %s', $hotel_id, $language, (string) $api_down ) );
+            self::log( $subject . ' skipped, the Travely API did not answer recently: ' . $api_down );
 
             return array();
         }
 
         if ( ! self::take_lookup_budget() ) {
-            self::log( sprintf( 'hotel %d (%s) skipped, more than %d lookups in this minute', $hotel_id, $language, self::LOOKUPS_PER_MINUTE ) );
+            self::log( sprintf( '%s skipped, more than %d lookups in this minute', $subject, self::LOOKUPS_PER_MINUTE ) );
 
             return array();
         }
@@ -399,7 +400,7 @@ class Travely_Widget_Open_Graph {
         $preview = $this->fetch_preview( $hotel_id, $language );
 
         if ( empty( $preview['ok'] ) ) {
-            self::log( sprintf( 'hotel %d (%s): %s', $hotel_id, $language, $preview['reason'] ) );
+            self::log( $subject . ': ' . $preview['reason'] );
 
             if ( 'site' === $preview['scope'] ) {
                 set_transient( self::API_DOWN_KEY, $preview['reason'], self::FAILURE_TTL );
@@ -516,6 +517,10 @@ class Travely_Widget_Open_Graph {
      * has it, and some variants are heavier than their original, so the
      * original is the fallback.
      *
+     * When the media server does not answer for the original, the original
+     * is used unchecked and the preview is retried soon. An original the
+     * server rejected is never used.
+     *
      * @since 1.2.0
      * @param string $original_url URL of the main hotel photo.
      * @return array|null url, width, height (empty when unknown) and degraded
@@ -525,6 +530,8 @@ class Travely_Widget_Open_Graph {
     private function pick_image( $original_url ) {
         $degraded = false;
 
+        // The original is always the last candidate, so $probe holds its
+        // result after the loop.
         foreach ( array_filter( array( self::variant_url( $original_url ), $original_url ) ) as $url ) {
             $probe = $this->probe_image( $url );
 
@@ -548,7 +555,7 @@ class Travely_Widget_Open_Graph {
             }
         }
 
-        if ( ! $degraded ) {
+        if ( 'unreachable' !== $probe['state'] ) {
             return null;
         }
 
@@ -567,7 +574,7 @@ class Travely_Widget_Open_Graph {
      * @param string $url Image URL.
      * @return array state: 'ok' (with width and height, 0 when unreadable),
      *               'unusable' (missing, not an image or too large) or
-     *               'unreachable' (with reason).
+     *               'unreachable', both with reason.
      */
     private function probe_image( $url ) {
         $response = wp_remote_get(
@@ -624,7 +631,7 @@ class Travely_Widget_Open_Graph {
         if ( $total > self::MAX_IMAGE_BYTES ) {
             return array(
                 'state'  => 'unusable',
-                'reason' => sprintf( 'too large for Facebook: %.1f MB, the limit is 8 MB', $total / 1048576 ),
+                'reason' => sprintf( 'too large for Facebook: %.1f MB, the limit is %d MB', $total / MB_IN_BYTES, self::MAX_IMAGE_BYTES / MB_IN_BYTES ),
             );
         }
 
@@ -683,24 +690,33 @@ class Travely_Widget_Open_Graph {
         }
 
         if ( has_shortcode( $content, 'travely-widget-results' ) ) {
-            if ( preg_match( '/' . get_shortcode_regex( array( 'travely-widget-results' ) ) . '/', $content, $matches ) ) {
-                $atts = shortcode_parse_atts( $matches[3] );
+            $atts = preg_match( '/' . get_shortcode_regex( array( 'travely-widget-results' ) ) . '/', $content, $matches )
+                ? shortcode_parse_atts( $matches[3] )
+                : array();
 
-                if ( is_array( $atts ) && isset( $atts['language'] ) && is_string( $atts['language'] ) ) {
-                    return $atts['language'];
-                }
-            }
-
-            return 'auto';
+            return self::language_attribute( $atts );
         }
 
-        if ( function_exists( 'has_block' ) && has_block( 'travely/widget-results', $content ) ) {
+        if ( has_block( 'travely/widget-results', $content ) ) {
             $language = self::find_block_language( parse_blocks( $content ) );
 
             return null === $language ? 'auto' : $language;
         }
 
         return null;
+    }
+
+    /**
+     * Read the language attribute of a shortcode or block.
+     *
+     * @since 1.2.0
+     * @param mixed $attributes Shortcode or block attributes.
+     * @return string The attribute, or 'auto' when it is not set.
+     */
+    private static function language_attribute( $attributes ) {
+        return ( is_array( $attributes ) && isset( $attributes['language'] ) && is_string( $attributes['language'] ) )
+            ? $attributes['language']
+            : 'auto';
     }
 
     /**
@@ -713,9 +729,7 @@ class Travely_Widget_Open_Graph {
     private static function find_block_language( $blocks ) {
         foreach ( $blocks as $block ) {
             if ( isset( $block['blockName'] ) && 'travely/widget-results' === $block['blockName'] ) {
-                return ( isset( $block['attrs']['language'] ) && is_string( $block['attrs']['language'] ) )
-                    ? $block['attrs']['language']
-                    : 'auto';
+                return self::language_attribute( isset( $block['attrs'] ) ? $block['attrs'] : null );
             }
 
             if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
@@ -747,41 +761,35 @@ class Travely_Widget_Open_Graph {
             return 0;
         }
 
-        $fragment = explode( '#', $path, 2 );
-        $parts    = explode( '?', $fragment[0], 2 );
-        $route    = $parts[0];
-        $query    = isset( $parts[1] ) ? $parts[1] : '';
+        $without_hash          = explode( '#', $path, 2 );
+        list( $route, $query ) = array_pad( explode( '?', $without_hash[0], 2 ), 2, '' );
 
         if ( preg_match( '#^/tour-search/tours/[^/]+/(\d{1,9})(?:/|$)#', $route, $matches ) ) {
-            return self::positive_id( $matches[1] );
+            return (int) $matches[1];
         }
 
         // parse_str() keeps only the last of repeated keys, so the query is
         // split by hand to notice several hotels.
-        $ids = array();
+        $hotel_id = 0;
 
         foreach ( explode( '&', $query ) as $pair ) {
-            if ( '' === $pair ) {
+            list( $name, $value ) = array_pad( explode( '=', $pair, 2 ), 2, '' );
+
+            if ( ! preg_match( '/^filter\[hotelIds\](?:\[\d*\])?$/', urldecode( $name ) ) ) {
                 continue;
             }
 
-            $pair = explode( '=', $pair, 2 );
+            $value = urldecode( $value );
+            $id    = preg_match( '/^\d{1,9}$/', $value ) ? (int) $value : 0;
 
-            if ( ! preg_match( '/^filter\[hotelIds\](?:\[\d*\])?$/', urldecode( $pair[0] ) ) ) {
-                continue;
-            }
-
-            $value = isset( $pair[1] ) ? urldecode( $pair[1] ) : '';
-            $id    = preg_match( '/^\d{1,9}$/', $value ) ? self::positive_id( $value ) : 0;
-
-            if ( 0 === $id ) {
+            if ( 0 === $id || ( 0 !== $hotel_id && $id !== $hotel_id ) ) {
                 return 0;
             }
 
-            $ids[ $id ] = true;
+            $hotel_id = $id;
         }
 
-        return 1 === count( $ids ) ? (int) key( $ids ) : 0;
+        return $hotel_id;
     }
 
     /**
@@ -944,7 +952,7 @@ class Travely_Widget_Open_Graph {
      * @return bool Whether the lookup may run.
      */
     private static function take_lookup_budget() {
-        $minute = (int) floor( time() / 60 );
+        $minute = intdiv( time(), 60 );
         $budget = get_transient( self::BUDGET_KEY );
 
         if ( ! is_array( $budget ) || ! isset( $budget['minute'], $budget['count'] ) || (int) $budget['minute'] !== $minute ) {
@@ -1012,20 +1020,7 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
-     * Convert a digit string to a positive id.
-     *
-     * @since 1.2.0
-     * @param string $value Digits.
-     * @return int Id, or 0.
-     */
-    private static function positive_id( $value ) {
-        $id = (int) $value;
-
-        return $id > 0 ? $id : 0;
-    }
-
-    /**
-     * Log why the tags were not printed or were printed incomplete. Only with WP_DEBUG.
+     * Write a diagnostic message to the PHP error log. Only with WP_DEBUG.
      *
      * @since 1.2.0
      * @param string $message Message.
