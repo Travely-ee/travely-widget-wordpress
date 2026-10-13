@@ -34,15 +34,16 @@ class Travely_Widget_Open_Graph {
 
     /**
      * Transient prefix. Bump the version segment when the structure of a
-     * cached preview changes: entries under the old prefix are then ignored
-     * and expire on their own.
+     * cached entry (hotel preview or best tour) changes: entries under the old
+     * prefix are then ignored and expire on their own.
      */
     const CACHE_PREFIX = 'travely_widget_og_v1_';
 
     /**
-     * Site-wide transient, set for FAILURE_TTL when the hotel description
-     * request gets no HTTP response (DNS, connection, TLS or timeout). It is
-     * not cleared when the API recovers, and HTTP error statuses never set it.
+     * Site-wide transient, set for FAILURE_TTL when a Travely API request
+     * (hotel description or best tour) gets no HTTP response (DNS, connection,
+     * TLS or timeout). It is not cleared when the API recovers, and HTTP error
+     * statuses never set it.
      */
     const API_DOWN_KEY = self::CACHE_PREFIX . 'api_down';
 
@@ -381,6 +382,16 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
+     * Get the Travely API origin, without a trailing slash.
+     *
+     * @since 1.2.0
+     * @return string
+     */
+    private static function get_api_origin() {
+        return untrailingslashit( (string) apply_filters( 'travely_widget_api_origin', 'https://travely.ee' ) );
+    }
+
+    /**
      * Build og:url: the site origin, then the request path and query as the
      * visitor sent them.
      *
@@ -399,22 +410,32 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
-     * Find the hotel a best tour is about.
-     *
-     * The best tour, not the link, says which hotel it is about: an agency can
-     * change it after the link was shared, so the answer is kept only for
-     * BEST_TTL.
+     * Find the hotel a best tour is about; the answer is cached for BEST_TTL.
      *
      * @since 1.2.0
      * @param int $best_id Travely best tour id.
-     * @return int Hotel id, or 0 when the best tour cannot be described.
+     * @return int Hotel id, or 0 when it is not known (see lookup()).
      */
     private function get_best_hotel_id( $best_id ) {
-        $best = $this->lookup(
-            self::CACHE_PREFIX . 'best_' . $best_id,
+        $api_key = trim( (string) get_option( 'travely_widget_key', '' ) );
+
+        // Checked before lookup() so that a site without a key does not spend
+        // the lookup budget on requests it never makes.
+        if ( '' === $api_key ) {
+            self::log( sprintf( 'best tour %d: no API key in Settings -> Travely Widget; best tours need it', $best_id ) );
+
+            return 0;
+        }
+
+        // The same best tour id can mean another best tour on another Travely
+        // environment or under another agency key, so the entry is tied to
+        // both: switching either never reuses an answer about another one.
+        $scope = substr( md5( self::get_api_origin() . '|' . $api_key ), 0, 8 );
+        $best  = $this->lookup(
+            self::CACHE_PREFIX . 'best_' . $scope . '_' . $best_id,
             sprintf( 'best tour %d', $best_id ),
-            function () use ( $best_id ) {
-                return $this->fetch_best( $best_id );
+            function () use ( $best_id, $api_key ) {
+                return $this->fetch_best( $best_id, $api_key );
             }
         );
 
@@ -443,19 +464,20 @@ class Travely_Widget_Open_Graph {
      * Run a Travely API lookup through the cache.
      *
      * The ids come from the visitor's URL, so only what the API returned is
-     * stored per id; entries are bounded by the catalog and the agency's best
-     * tours:
+     * stored per id; entries are bounded by the hotel catalog times the four
+     * languages, plus the agency's own best tours:
      * - a successful result is kept for the 'ttl' it carries;
      * - a failure with scope 'entry' (a returned hotel or best tour that
      *   cannot be described) is kept for FAILURE_TTL;
-     * - a failure with scope 'request' (404, any other HTTP status, an
+     * - a failure with scope 'request' (404, 422, any other HTTP status, an
      *   unexpected body) is not stored; the next request asks again.
      * A failure with scope 'site' (no HTTP response) sets API_DOWN_KEY, which
      * stops all uncached lookups on the site for FAILURE_TTL, so an outage
      * costs about one timeout per FAILURE_TTL rather than one per id; cached
      * results keep working. Uncached lookups are limited to LOOKUPS_PER_MINUTE
      * for the whole site. Each one can hold up wp_head for API_TIMEOUT, plus
-     * two IMAGE_TIMEOUTs for a hotel preview.
+     * two IMAGE_TIMEOUTs for a hotel preview; a best tour link with nothing
+     * cached runs two lookups in a row (the best tour, then its hotel).
      *
      * @since 1.2.0
      * @param string   $key     Transient name.
@@ -485,7 +507,7 @@ class Travely_Widget_Open_Graph {
         }
 
         if ( ! self::take_lookup_budget() ) {
-            self::log( sprintf( '%s skipped, more than %d lookups in this minute', $subject, self::LOOKUPS_PER_MINUTE ) );
+            self::log( sprintf( '%s skipped, %d lookups were already made in this minute', $subject, self::LOOKUPS_PER_MINUTE ) );
 
             return array();
         }
@@ -519,7 +541,7 @@ class Travely_Widget_Open_Graph {
      * @return array 'ok' => true with 'url' and 'data', or a failure from failure().
      */
     private static function api_get( $path, $headers, $notes ) {
-        $url      = untrailingslashit( (string) apply_filters( 'travely_widget_api_origin', 'https://travely.ee' ) ) . $path;
+        $url      = self::get_api_origin() . $path;
         $response = wp_remote_get(
             $url,
             array(
@@ -531,16 +553,21 @@ class Travely_Widget_Open_Graph {
         if ( is_wp_error( $response ) ) {
             // No HTTP response (DNS, connection, TLS or timeout) says the API
             // is unreachable rather than anything about this id, so it is
-            // remembered once for the whole site. Unknown ids get a fast 404
-            // and cannot set it; only a timeout on a real one could.
+            // remembered once for the whole site. Unknown ids get a fast error
+            // status (404 for a hotel, 422 for a best tour) and cannot set it;
+            // only a timeout on a real one could.
             return self::failure( sprintf( 'GET %s failed: %s', $url, $response->get_error_message() ), 'site' );
         }
 
         $status = (int) wp_remote_retrieve_response_code( $response );
 
         if ( 200 !== $status ) {
+            // The error body names the exact cause, for example a 401 tells
+            // an unknown key from a domain missing from the key's list.
             return self::failure(
-                sprintf( 'GET %s returned HTTP %d', $url, $status ) . ( isset( $notes[ $status ] ) ? ', ' . $notes[ $status ] : '' ),
+                sprintf( 'GET %s returned HTTP %d', $url, $status )
+                    . ( isset( $notes[ $status ] ) ? ', ' . $notes[ $status ] : '' )
+                    . ': ' . self::snippet( wp_remote_retrieve_body( $response ) ),
                 'request'
             );
         }
@@ -577,29 +604,26 @@ class Travely_Widget_Open_Graph {
      * that key, as it does for the widget in the browser.
      *
      * @since 1.2.0
-     * @param int $best_id Travely best tour id.
+     * @param int    $best_id Travely best tour id.
+     * @param string $api_key Agency API key from the plugin settings.
      * @return array 'ok' => true with 'ttl' and 'hotel_id', or a failure from failure().
      */
-    private function fetch_best( $best_id ) {
-        $api_key = trim( (string) get_option( 'travely_widget_key', '' ) );
-
-        if ( '' === $api_key ) {
-            return self::failure( 'no API key in Settings -> Travely Widget; best tours need it', 'request' );
-        }
-
-        $origin   = self::get_site_origin();
+    private function fetch_best( $best_id, $api_key ) {
+        $host     = (string) wp_parse_url( self::get_site_origin(), PHP_URL_HOST );
         $response = self::api_get(
             '/api/v1/tours/best/' . $best_id,
             array(
                 'x-api-key' => $api_key,
-                'x-origin'  => $origin,
+                'x-origin'  => self::get_site_origin(),
             ),
             // The API answers 422 (STALE_SEARCH) for a best tour it does not
             // show; the booking application treats 404 and 422 alike.
             array(
-                401 => sprintf( 'the API key is unknown or the site domain (%s) is not allowed for it', $origin ),
-                404 => 'the best tour is not found, hidden or expired',
-                422 => 'the best tour is not found, hidden or expired',
+                401 => sprintf( 'the API key is unknown or the site domain %s is not allowed for it', $host ),
+                // Every best tour the API does not show is a 422, so a 404
+                // means the request did not reach the best tour endpoint.
+                404 => 'this API has no best tour endpoint; check travely_widget_api_origin',
+                422 => 'the API does not show this best tour: unknown, hidden, expired, made under another API key, or its hotel is not published',
             )
         );
 
@@ -607,11 +631,24 @@ class Travely_Widget_Open_Graph {
             return $response;
         }
 
-        $hotel_ids = isset( $response['data']['searchParams']['hotelIds'] ) ? $response['data']['searchParams']['hotelIds'] : null;
-        $hotel_id  = self::single_hotel_id( $hotel_ids );
+        $params = isset( $response['data']['searchParams'] ) ? $response['data']['searchParams'] : null;
 
+        if ( ! is_array( $params ) || ! isset( $params['hotelIds'] ) || ! is_array( $params['hotelIds'] ) ) {
+            return self::failure(
+                sprintf( 'GET %s returned a best tour without searchParams.hotelIds (keys: %s)', $response['url'], implode( ', ', array_keys( $response['data'] ) ) ),
+                'request'
+            );
+        }
+
+        $hotel_id = self::single_hotel_id( $params['hotelIds'] );
+
+        // The API answers 422 for a best tour that is not about exactly one
+        // hotel, so this only guards against a change in the API.
         if ( 0 === $hotel_id ) {
-            return self::failure( sprintf( 'GET %s: the best tour is not about exactly one hotel', $response['url'] ), 'entry' );
+            return self::failure(
+                sprintf( 'GET %s: the best tour is not about exactly one hotel (hotelIds %s)', $response['url'], wp_json_encode( $params['hotelIds'] ) ),
+                'entry'
+            );
         }
 
         return array(
@@ -930,9 +967,9 @@ class Travely_Widget_Open_Graph {
      *
      * Tour card: /tour-search/tours/<searchKey>/<hotelId>[/<tourKey>]. The
      * search key expires, so only the hotel id is used.
-     * Best tour: /tour-search/best/<bestId>. The query the booking application
-     * or the Share button adds is ignored: the best tour itself says which
-     * hotel it is about now, see get_best_hotel_id().
+     * Best tour: /tour-search/best/<bestId>. Any query after the id (the
+     * Share button copies the best tour filters there) is ignored: the best
+     * tour itself says which hotel it is about now (see BEST_TTL).
      *
      * @since 1.2.0
      * @param string $path Value of the ?path query parameter.
