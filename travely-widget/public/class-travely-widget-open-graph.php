@@ -15,12 +15,15 @@
  *
  * Facebook and messengers do not run JavaScript and never look inside the
  * booking iframe, so a shared tour link only shows what WordPress renders.
- * The opened hotel is taken from the ?path query parameter, which the widget
- * keeps in sync with the iframe route, and its public description is read
- * from the Travely API.
+ * The opened hotel is taken from the ?path query parameter: the widget writes
+ * the iframe route there while a tour card is open, and its Share button puts
+ * it into shared links, best tours included. The hotel's public description
+ * is read from the Travely API.
  *
- * Open Graph tags printed by other plugins inside wp_head are replaced on
- * these pages only. Every other page is left untouched.
+ * When our tags are printed, Open Graph tags printed by other wp_head
+ * callbacks are removed (see finish_head() for the one case where this is
+ * incomplete). Pages without our tags, including tour pages whose preview
+ * could not be built, are left untouched.
  *
  * @since      1.2.0
  * @package    Travely_Widget
@@ -30,13 +33,16 @@
 class Travely_Widget_Open_Graph {
 
     /**
-     * Transient prefix. The version segment invalidates cached previews
-     * whenever their structure changes.
+     * Transient prefix. Bump the version segment when the structure of a
+     * cached preview changes: entries under the old prefix are then ignored
+     * and expire on their own.
      */
     const CACHE_PREFIX = 'travely_widget_og_v1_';
 
     /**
-     * Site-wide transient set while the Travely API does not answer.
+     * Site-wide transient, set for FAILURE_TTL when the hotel description
+     * request gets no HTTP response (DNS, connection, TLS or timeout). It is
+     * not cleared when the API recovers, and HTTP error statuses never set it.
      */
     const API_DOWN_KEY = self::CACHE_PREFIX . 'api_down';
 
@@ -54,7 +60,10 @@ class Travely_Widget_Open_Graph {
     const LOOKUPS_PER_MINUTE = 30;
 
     /**
-     * How long a failed lookup is remembered, in seconds.
+     * How long a result worth retrying soon is cached, in seconds: the
+     * site-wide API_DOWN_KEY flag, a returned hotel without a name or a usable
+     * photo, and a preview whose image the media server did not confirm.
+     * Other failed lookups are not cached at all, see get_preview().
      */
     const FAILURE_TTL = 600;
 
@@ -69,7 +78,7 @@ class Travely_Widget_Open_Graph {
     const IMAGE_TIMEOUT = 2;
 
     /**
-     * Bytes downloaded to read the image size from its header.
+     * Bytes downloaded from the start of an image file to read its pixel size.
      */
     const IMAGE_PROBE_BYTES = 65536;
 
@@ -104,7 +113,8 @@ class Travely_Widget_Open_Graph {
     private $tags = array();
 
     /**
-     * Output buffer level opened around wp_head, or 0 when not buffering.
+     * Level of our output buffer while finish_head() may still close it; 0
+     * before buffering starts and after finish_head() has run.
      *
      * @since    1.2.0
      * @access   private
@@ -135,8 +145,9 @@ class Travely_Widget_Open_Graph {
     /**
      * Prepare the tags and start filtering the wp_head output.
      *
-     * Runs before every other wp_head callback. When no tags are prepared,
-     * nothing is buffered and the page renders as before.
+     * Runs before the other wp_head callbacks (registered at PHP_INT_MIN).
+     * When no tags are prepared, nothing is buffered and the page renders as
+     * before.
      *
      * @since 1.2.0
      */
@@ -162,9 +173,14 @@ class Travely_Widget_Open_Graph {
     /**
      * Print our tags and release the wp_head output.
      *
-     * Runs after every other wp_head callback. If another callback changed the
-     * output buffers in between, its buffer is not closed here: our buffer
-     * stays open and is filtered when PHP flushes it.
+     * Runs after the other wp_head callbacks (registered at PHP_INT_MAX). Our
+     * buffer is closed only when it is still on top (same level and handler
+     * name); closing anything else would end another callback's buffer. Two
+     * cases are left as they are:
+     * - another callback opened a buffer on top of ours: ours stays open and
+     *   is filtered when PHP flushes it at the end of the page;
+     * - another callback already closed ours: output up to then was filtered,
+     *   but Open Graph tags printed after that are not removed.
      *
      * @since 1.2.0
      */
@@ -189,9 +205,10 @@ class Travely_Widget_Open_Graph {
         } else {
             self::log(
                 sprintf(
-                    'another wp_head callback changed the output buffers (level %d, expected %d); our buffer is released at the end of the page',
+                    'another wp_head callback changed the output buffers (level %d, expected %d, top handler %s); our buffer was not closed here',
                     ob_get_level(),
-                    $this->buffer_level
+                    $this->buffer_level,
+                    isset( $status['name'] ) ? $status['name'] : 'none'
                 )
             );
         }
@@ -252,7 +269,8 @@ class Travely_Widget_Open_Graph {
         }
 
         // Sites that render the results widget from a theme template can
-        // enable the tags with this filter.
+        // enable the tags with this filter. The widget's language attribute
+        // is not visible then, so the language is resolved as for "auto".
         $enabled = (bool) apply_filters(
             'travely_widget_enable_open_graph',
             null !== $widget_language,
@@ -305,9 +323,11 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
-     * Read the ?path query parameter without changing it.
+     * Read the raw ?path query parameter (unslashed, not sanitized).
      *
-     * The value is only matched against strict patterns and never printed.
+     * The value is only matched against strict patterns. It reaches the page
+     * only as part of og:url (the full request URI), which render_tags()
+     * escapes with esc_url().
      *
      * @since 1.2.0
      * @return string
@@ -321,9 +341,9 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
-     * Get the address of the current request as the visitor sent it.
-     *
-     * The host comes from the site settings, not from the request headers.
+     * Build og:url: scheme, host and port from home_url(), then the request
+     * path and query as the visitor sent them. The host is not read from the
+     * request headers, so a forged Host header cannot change og:url.
      *
      * @since 1.2.0
      * @return string
@@ -353,15 +373,21 @@ class Travely_Widget_Open_Graph {
     /**
      * Get the hotel preview from the cache or the Travely API.
      *
-     * The hotel id comes from the visitor's URL, so only entries for hotels
-     * the API knows are stored per id, which bounds them by the catalog:
+     * The hotel id and the language come from the visitor's URL, so only
+     * hotels the API returned are stored per id; entries are bounded by the
+     * catalog times the four languages:
      * - a complete preview is kept for a month;
-     * - a preview built while the media server did not answer, and a known
-     *   hotel without a name or a usable photo, are kept for FAILURE_TTL;
-     * - unknown hotels and API errors are not stored per id;
-     * - a network failure is kept once for the whole site, so an outage costs
-     *   one timeout per FAILURE_TTL and not one per hotel.
-     * Uncached lookups are limited to LOOKUPS_PER_MINUTE for the whole site.
+     * - a preview whose image the media server did not confirm (see
+     *   pick_image()), and a returned hotel without a name or a usable photo,
+     *   are kept for FAILURE_TTL;
+     * - a 404 (unpublished or unknown hotel), any other HTTP status and an
+     *   unexpected body are not stored; the next request asks again.
+     * When the API request gets no HTTP response, API_DOWN_KEY stops all
+     * uncached lookups on the site for FAILURE_TTL, so an outage costs about
+     * one timeout per FAILURE_TTL rather than one per hotel; cached previews
+     * keep working. Uncached lookups are limited to LOOKUPS_PER_MINUTE for the
+     * whole site. Each one can hold up wp_head for API_TIMEOUT plus two
+     * IMAGE_TIMEOUTs.
      *
      * @since 1.2.0
      * @param int    $hotel_id Travely hotel id.
@@ -419,8 +445,9 @@ class Travely_Widget_Open_Graph {
     /**
      * Request the public hotel description and build the preview.
      *
-     * The endpoint is anonymous and returns only published hotels, so the
-     * agency API key is not sent.
+     * The endpoint allows anonymous calls and hotel descriptions are not per
+     * agency, so the agency API key is not sent. Anonymous callers get only
+     * published hotels; the rest answer 404.
      *
      * @since 1.2.0
      * @param int    $hotel_id Travely hotel id.
@@ -442,16 +469,19 @@ class Travely_Widget_Open_Graph {
         );
 
         if ( is_wp_error( $response ) ) {
-            // A network failure does not depend on the hotel id, so it cannot
-            // be caused by choosing one.
+            // No HTTP response (DNS, connection, TLS or timeout) says the API
+            // is unreachable rather than anything about this hotel, so it is
+            // remembered once for the whole site. Unknown ids get a fast 404
+            // and cannot set it; only a timeout on a real hotel could.
             return self::failure( sprintf( 'GET %s failed: %s', $url, $response->get_error_message() ), 'site' );
         }
 
         $status = (int) wp_remote_retrieve_response_code( $response );
 
         if ( 404 === $status ) {
-            // Hidden hotel, fewer than five photos, a hidden country, or an id
-            // that does not exist.
+            // Not published: the description is not shown (no text, no main
+            // photo or fewer than five photos), the country is hidden, or the
+            // id has no description.
             return self::failure( sprintf( 'GET %s returned HTTP 404, the hotel is not published', $url ), 'request' );
         }
 
@@ -493,7 +523,9 @@ class Travely_Widget_Open_Graph {
         $picked = $this->pick_image( $image );
 
         if ( null === $picked ) {
-            // A broken or rejected image would be worse than the site logo.
+            // The original was rejected (missing, not an image or too large).
+            // A card with a broken image would be worse than the page's usual
+            // preview, which stays because nothing is printed.
             return self::failure( sprintf( 'no usable image for main photo %s', $image ), 'hotel' );
         }
 
@@ -513,19 +545,21 @@ class Travely_Widget_Open_Graph {
      * Choose the image for the preview.
      *
      * The wide variant is close to the 1.91:1 format of Facebook link cards
-     * and usually several times smaller than the original. Not every photo
-     * has it, and some variants are heavier than their original, so the
-     * original is the fallback.
+     * and usually smaller than the original. Not every photo has one, and a
+     * variant can even exceed MAX_IMAGE_BYTES when its original does not, so
+     * the original is the next candidate when the variant is missing,
+     * rejected or unreachable.
      *
-     * When the media server does not answer for the original, the original
-     * is used unchecked and the preview is retried soon. An original the
-     * server rejected is never used.
+     * Only a checked and accepted candidate is used, with one exception: when
+     * the original is unreachable, it is used unchecked and without a size.
+     * An original the server rejected is never used.
      *
      * @since 1.2.0
      * @param string $original_url URL of the main hotel photo.
      * @return array|null url, width, height (empty when unknown) and degraded
-     *                    (the media server did not answer, retry soon);
-     *                    null when no candidate can be used.
+     *                    (true when any candidate was unreachable, so the
+     *                    preview is cached only for FAILURE_TTL); null when
+     *                    the original was rejected and no variant was accepted.
      */
     private function pick_image( $original_url ) {
         $degraded = false;
@@ -573,16 +607,20 @@ class Travely_Widget_Open_Graph {
      * @since 1.2.0
      * @param string $url Image URL.
      * @return array state: 'ok' (with width and height, 0 when unreadable),
-     *               'unusable' (missing, not an image or too large) or
-     *               'unreachable', both with reason.
+     *               'unusable' (a 4xx other than 408 and 429, not an image,
+     *               or larger than MAX_IMAGE_BYTES) or 'unreachable' (no
+     *               response or any other status, such as 5xx, 408 or 429),
+     *               both with reason.
      */
     private function probe_image( $url ) {
         $response = wp_remote_get(
             $url,
             array(
                 'timeout'             => self::IMAGE_TIMEOUT,
-                // limit_response_size alone does not stop the transfer, the
-                // Range header does. The limit stays for servers that ignore it.
+                // limit_response_size only discards bytes past the limit;
+                // WordPress still downloads the whole file. The Range header
+                // keeps the transfer short. The limit only bounds memory on
+                // servers that ignore Range.
                 'limit_response_size' => self::IMAGE_PROBE_BYTES,
                 'headers'             => array( 'Range' => 'bytes=0-' . ( self::IMAGE_PROBE_BYTES - 1 ) ),
             )
@@ -749,8 +787,12 @@ class Travely_Widget_Open_Graph {
      *
      * Tour card: /tour-search/tours/<searchKey>/<hotelId>[/<tourKey>]. The
      * search key expires, so only the hotel id is used.
-     * Best tour: /tour-search/best/<bestId>?filter[hotelIds]=<hotelId>&...;
-     * the booking application adds the best tour filters to the route.
+     * Any other route counts only when its query names exactly one hotel in
+     * filter[hotelIds] (repeats of the same id are allowed). This is how best
+     * tours arrive: the booking application adds the best tour filters to
+     * /tour-search/best/<bestId>, and the Share button copies them into the
+     * link. The host address bar of a best tour keeps the bare route, which
+     * gives 0.
      *
      * @since 1.2.0
      * @param string $path Value of the ?path query parameter.
@@ -793,7 +835,8 @@ class Travely_Widget_Open_Graph {
     }
 
     /**
-     * Build the title: hotel name and stars first, so that truncation cuts the place, not the name.
+     * Build the title: hotel name and stars first, so that when Facebook or a
+     * messenger shortens a long title, it cuts the place, not the name.
      *
      * @since 1.2.0
      * @param array $hotel name, stars, region, country.
@@ -828,7 +871,8 @@ class Travely_Widget_Open_Graph {
     /**
      * Build the description: the first sentence of the hotel description.
      *
-     * A first sentence longer than the limit is cut at a word boundary.
+     * When no sentence end is found, or the sentence is longer than the limit,
+     * the text is cut at a word boundary and ends with '…'.
      *
      * @since 1.2.0
      * @param string $html  Hotel description, HTML.
@@ -890,7 +934,8 @@ class Travely_Widget_Open_Graph {
      *
      * @since 1.2.0
      * @param string $url Original image URL.
-     * @return string Variant URL, or an empty string when the URL has no file extension.
+     * @return string Variant URL, or an empty string when the URL has no file
+     *                extension or already is the variant.
      */
     public static function variant_url( $url ) {
         if ( ! preg_match( '#^([^?\#]*/[^/?\#]+)(\.[a-z0-9]{2,5})((?:[?\#].*)?)$#i', (string) $url, $matches ) ) {
@@ -945,8 +990,9 @@ class Travely_Widget_Open_Graph {
     /**
      * Count one uncached lookup against the per-minute limit of the site.
      *
-     * The count is approximate under concurrent requests, which is enough to
-     * bound the load.
+     * The window is the clock minute. Reading and writing the count is not
+     * atomic, so concurrent requests can overshoot the limit (at worst by the
+     * number of PHP workers); the load stays bounded.
      *
      * @since 1.2.0
      * @return bool Whether the lookup may run.

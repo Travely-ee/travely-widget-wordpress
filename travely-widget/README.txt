@@ -140,9 +140,9 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 }, 10, 2 );
 `
 
-`Open Graph tags` (enabled by default) lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link from the results page. They do not run JavaScript and do not look inside the widget iframe, so without the tags they show the site logo. On the results page with `?path=/tour-search/tours/…`, the plugin adds `og:title` (hotel name, stars, resort and country), `og:description` (the first sentence of the hotel description), `og:image` (the main hotel photo), `og:url`, `og:type` and `og:site_name` in the widget language of the page. Hotel data comes from the public Travely API and is cached for a month per hotel and language; if the API is unavailable, the page is rendered as before. On these pages only, Open Graph tags printed in `wp_head` by other plugins are replaced. Facebook caches previews: after updating the plugin, open an already shared link in the Sharing Debugger and press Scrape Again.
+`Open Graph tags` (enabled by default) lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link from the results page. They do not run JavaScript and do not look inside the widget iframe, so without the tags they show the site logo. When `?path` opens one hotel (a tour card, or a best tour shared with the Share tour button; a best tour link copied from the address bar has no hotel in it), the plugin adds `og:title` (hotel name, stars, resort and country), `og:description` (the first sentence of the hotel description), `og:image` with `og:image:width` and `og:image:height` (the main hotel photo, its wide version when there is one), `og:url`, `og:type` and `og:site_name` in the widget language of the page. Hotel data comes from the public Travely API and is cached for a month per hotel and language. If the tags cannot be built (the API or the photo server does not answer, the hotel is not published, or more than 30 new hotels were looked up in the current minute), the page is rendered as before, other plugins' tags stay, and the plugin tries again later. On these pages only, Open Graph tags printed in `wp_head` by other plugins are replaced. Facebook caches previews: after updating the plugin, or if a link was shared while the tags could not be built, open the link in the Sharing Debugger and press Scrape Again.
 
-The `travely_widget_enable_open_graph` filter enables the tags when the results widget is rendered by a theme template. The `travely_widget_open_graph_tags` filter changes the tags before they are printed:
+The `travely_widget_enable_open_graph` filter enables the tags when the results widget is rendered by a theme template; the widget's `language` attribute is not visible then, so the language is detected as for `language="auto"`. The `travely_widget_open_graph_tags` filter changes the tags before they are printed:
 
 `
 add_filter( 'travely_widget_open_graph_tags', function ( $tags, $hotel, $hotel_id, $language ) {
@@ -163,7 +163,7 @@ Primary-color appearance requires a remote Travely Widget build with `WidgetAppe
 == Changelog ==
 
 = 1.2.0 =
-* Added Open Graph tags for shared tour links: Facebook and messengers show the hotel photo, name and description instead of the site logo. Can be turned off in Settings -> Travely Widget.
+* Added Open Graph tags for shared tour links: Facebook and messengers show the hotel photo, name and description instead of the site logo. On those pages, Open Graph tags from other plugins (Yoast SEO, Rank Math and others) are replaced. Enabled by default; can be turned off in Settings -> Travely Widget.
 
 = 1.1.0 =
 * Added the `[travely-widget-best]` shortcode: the agency's own Best Tours, with `language` and `columns` attributes like the country widget.

@@ -620,7 +620,7 @@ class Travely_Widget_Admin {
 
         printf(
             '<p class="description">%s</p>',
-            esc_html__( 'Lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link. On these pages, Open Graph tags from other plugins are replaced.', 'travely-widget' )
+            esc_html__( 'Lets Facebook and messengers show the hotel photo, name and description when someone shares a link to a tour. On pages opened by such links, Open Graph tags from other plugins are replaced. Other pages are not changed.', 'travely-widget' )
         );
     }
 

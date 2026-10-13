@@ -186,8 +186,9 @@ class Travely_Widget {
                $this->loader->add_action( 'init', $plugin_public, 'register_blocks' );
                $this->loader->add_filter( 'wp_headers', $plugin_public, 'filter_permissions_policy_header' );
 
-               // The two callbacks wrap every other wp_head callback, so Open
-               // Graph tags of other plugins can be replaced on tour pages.
+               // The two callbacks wrap the other wp_head callbacks (lowest and
+               // highest priority), so Open Graph tags of other plugins can be
+               // replaced on tour pages.
                $open_graph = new Travely_Widget_Open_Graph();
 
                $this->loader->add_action( 'wp_head', $open_graph, 'start_head', PHP_INT_MIN );

@@ -243,8 +243,8 @@ msgid "Add Open Graph tags to tour pages."
 msgstr "Добавлять теги Open Graph на страницы туров."
 
 #: admin/class-travely-widget-admin.php
-msgid "Lets Facebook and messengers show the hotel photo, name and description when someone shares a tour link. On these pages, Open Graph tags from other plugins are replaced."
-msgstr "Facebook и мессенджеры будут показывать фото, название и описание отеля, когда кто-то делится ссылкой на тур. На этих страницах теги Open Graph других плагинов заменяются."
+msgid "Lets Facebook and messengers show the hotel photo, name and description when someone shares a link to a tour. On pages opened by such links, Open Graph tags from other plugins are replaced. Other pages are not changed."
+msgstr "Facebook и мессенджеры будут показывать фото, название и описание отеля, когда кто-то делится ссылкой на тур. На страницах, открытых по таким ссылкам, теги Open Graph других плагинов заменяются. Остальные страницы не меняются."
 
 #~ msgid "http://travely.ee/"
 #~ msgstr "http://travely.ee/"

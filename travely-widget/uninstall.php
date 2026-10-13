@@ -47,8 +47,11 @@ if ( get_option( 'travely_widget_remove_data_on_uninstall', false ) ) {
     delete_option( 'travely_widget_remove_data_on_uninstall' );
     delete_transient( 'travely_widget_github_release' );
 
-    // Open Graph previews are cached per hotel and language, so their
-    // transient names are not known in advance.
+    // Open Graph transients (previews, the API-down flag, the lookup budget)
+    // have per-hotel names, so they are deleted by prefix. The prefix leaves
+    // out the cache version on purpose, to catch entries of older versions.
+    // With a persistent object cache they are not in wp_options and expire
+    // on their own within a month.
     global $wpdb;
 
     $wpdb->query(

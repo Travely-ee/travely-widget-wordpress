@@ -10,7 +10,7 @@
 
 ### 1.2.0
 
-- Added Open Graph tags for shared tour links: Facebook and messengers show the hotel photo, name and description instead of the site logo. Can be turned off in **Settings -> Travely Widget**.
+- Added Open Graph tags for shared tour links: Facebook and messengers show the hotel photo, name and description instead of the site logo. On those pages, Open Graph tags from other plugins (Yoast SEO, Rank Math and others) are replaced. Enabled by default; can be turned off in **Settings -> Travely Widget**.
 
 ### 1.0.29
 
@@ -158,20 +158,29 @@ Use the `[travely-widget-search]`, `[travely-widget-country]`, `[travely-widget-
 
 ### Open Graph
 
-When someone shares a tour link from the results page (a link with `?path=/tour-search/tours/…`, given by the widget's Share button and by the browser address bar), Facebook and messengers read the page HTML. They do not run JavaScript and do not look inside the widget iframe, so on their own they show the site logo. The plugin adds Open Graph tags of the opened hotel to the `<head>` of the results page:
+When someone shares a tour link from the results page, Facebook and messengers read the page HTML. They do not run JavaScript and do not look inside the widget iframe, so on their own they show the site logo. The plugin adds Open Graph tags of the opened hotel to the `<head>` of the results page when `?path` opens one hotel: a tour card (`?path=/tour-search/tours/…`, from the **Share tour** button or the address bar) or a best tour shared with the **Share tour** button. A link copied from the address bar of a best tour page does not name the hotel and gets no tags.
+
+Tags:
 
 - `og:title` — hotel name, stars, resort and country, for example `Sunrise Remal Beach 5* — Sharm-El-Sheikh, Egypt`;
 - `og:description` — the first sentence of the hotel description, up to 160 characters;
-- `og:image` — the main hotel photo;
+- `og:image` — the main hotel photo (its wide version when there is one), with `og:image:width` and `og:image:height` when the size could be read;
 - `og:url`, `og:type`, `og:site_name`.
 
-Texts use the widget language of the page. Hotel data comes from the public Travely API and is cached for a month per hotel and language. If the API is unavailable, the page is rendered as before and the request is retried after 10 minutes. There is no price or date: prices change daily, while Facebook caches the preview.
+Texts use the widget language of the page. Hotel data comes from the public Travely API and is cached for a month per hotel and language. When the tags cannot be built, the page is rendered as before (tags of other plugins stay) and the plugin tries again later:
+
+- the Travely API did not answer (no connection or timeout): no new hotels are looked up on the whole site for 10 minutes; hotels already cached keep their tags;
+- the API answered with an error, or the hotel is not published: on the next visit;
+- the hotel has no name or no usable main photo: after 10 minutes;
+- more than 30 hotels that are not cached yet were looked up in the current minute: in the next minute.
+
+If the photo server did not answer while the tags were built, they are built again after 10 minutes. There is no price or date: prices change daily, while Facebook caches the preview.
 
 On these pages only, Open Graph tags printed in `wp_head` by other plugins (Yoast SEO, Rank Math and others) are replaced. Other pages are not changed. Tags hard-coded in a theme template outside `wp_head` are not replaced.
 
 `Open Graph tags` in **Settings -> Travely Widget** turns this off. It is enabled by default.
 
-Facebook caches previews. After updating the plugin, open an already shared link in the [Sharing Debugger](https://developers.facebook.com/tools/debug/) and press **Scrape Again**.
+Facebook caches previews. After updating the plugin, or if a link was shared while the tags could not be built, open it in the [Sharing Debugger](https://developers.facebook.com/tools/debug/) and press **Scrape Again**.
 
 Filters:
 
@@ -188,6 +197,8 @@ add_filter( 'travely_widget_open_graph_tags', function ( $tags, $hotel, $hotel_i
     return $tags;
 }, 10, 4 );
 ```
+
+With `travely_widget_enable_open_graph`, the plugin cannot see the widget's `language` attribute, so the language is detected as for `language="auto"`.
 
 `travely_widget_api_origin` changes the Travely API address (default `https://travely.ee`). For testing only.
 
@@ -335,20 +346,29 @@ Kasutage shortcode'e `[travely-widget-search]`, `[travely-widget-country]`, `[tr
 
 ### Open Graph
 
-Kui keegi jagab tulemuste lehelt tuuri linki (link kujul `?path=/tour-search/tours/…`, mille annavad vidina jagamisnupp ja brauseri aadressiriba), loevad Facebook ja sõnumirakendused lehe HTML-i. Nad ei käivita JavaScripti ega vaata vidina iframe'i sisse, seega näitavad nad muidu saidi logo. Plugin lisab tulemuste lehe `<head>`-i avatud hotelli Open Graphi sildid:
+Kui keegi jagab tulemuste lehelt tuuri linki, loevad Facebook ja sõnumirakendused lehe HTML-i. Nad ei käivita JavaScripti ega vaata vidina iframe'i sisse, seega näitavad nad muidu saidi logo. Plugin lisab tulemuste lehe `<head>`-i avatud hotelli Open Graphi sildid, kui `?path` avab ühe hotelli: tuuri kaardi (`?path=/tour-search/tours/…`, nupust **Jaga reisi** või aadressiribalt) või parima reisi, mida jagati nupuga **Jaga reisi**. Parima reisi lehe aadressiribalt kopeeritud link ei sisalda hotelli ja silte ei saa.
+
+Sildid:
 
 - `og:title` — hotelli nimi, tärnid, kuurort ja riik, näiteks `Sunrise Remal Beach 5* — Sharm-El-Sheikh, Egiptus`;
 - `og:description` — hotelli kirjelduse esimene lause, kuni 160 märki;
-- `og:image` — hotelli põhifoto;
+- `og:image` — hotelli põhifoto (selle lai versioon, kui see on olemas), koos `og:image:width` ja `og:image:height` siltidega, kui suurus õnnestus lugeda;
 - `og:url`, `og:type`, `og:site_name`.
 
-Tekstid on lehe vidina keeles. Hotelli andmed tulevad Travely avalikust API-st ja neid hoitakse vahemälus kuu aega iga hotelli ja keele kohta. Kui API pole saadaval, kuvatakse leht nagu varem ja päringut korratakse 10 minuti pärast. Hinda ja kuupäevi ei lisata: hinnad muutuvad iga päev, Facebook aga hoiab eelvaadet vahemälus.
+Tekstid on lehe vidina keeles. Hotelli andmed tulevad Travely avalikust API-st ja neid hoitakse vahemälus kuu aega iga hotelli ja keele kohta. Kui silte ei saa koostada, kuvatakse leht nagu varem (teiste pluginate sildid jäävad alles) ja plugin proovib hiljem uuesti:
+
+- Travely API ei vastanud (ühendus puudub või aegus): 10 minuti jooksul ei küsita kogu saidil ühtegi uut hotelli; vahemälus olevate hotellide sildid jäävad alles;
+- API vastas veaga või hotell pole avaldatud: järgmisel külastusel;
+- hotellil pole nime või sobivat põhifotot: 10 minuti pärast;
+- jooksval minutil on küsitud juba üle 30 vahemälust puuduva hotelli: järgmisel minutil.
+
+Kui fotoserver siltide koostamise ajal ei vastanud, koostatakse need 10 minuti pärast uuesti. Hinda ja kuupäevi ei lisata: hinnad muutuvad iga päev, Facebook aga hoiab eelvaadet vahemälus.
 
 Ainult nendel lehtedel asendatakse Open Graphi sildid, mida teised pluginad (Yoast SEO, Rank Math jt) `wp_head`-is väljastavad. Teisi lehti ei muudeta. Teema mallis väljaspool `wp_head`-i kirjutatud silte ei asendata.
 
-Seade `Open Graph tags` jaotises **Settings -> Travely Widget** lülitab selle välja. Vaikimisi on see sees.
+Seade `Open Graph tags` jaotises **Seaded -> Travely Widget** lülitab selle välja. Vaikimisi on see sees.
 
-Facebook hoiab eelvaateid vahemälus. Pärast plugina uuendamist avage juba jagatud link [Sharing Debuggeris](https://developers.facebook.com/tools/debug/) ja vajutage **Scrape Again**.
+Facebook hoiab eelvaateid vahemälus. Pärast plugina uuendamist või kui linki jagati ajal, mil silte ei saanud koostada, avage link [Sharing Debuggeris](https://developers.facebook.com/tools/debug/) ja vajutage **Scrape Again**.
 
 Filtrid:
 
@@ -365,6 +385,8 @@ add_filter( 'travely_widget_open_graph_tags', function ( $tags, $hotel, $hotel_i
     return $tags;
 }, 10, 4 );
 ```
+
+Filtri `travely_widget_enable_open_graph` korral ei näe plugin vidina atribuuti `language`, seega määratakse keel nagu `language="auto"` puhul.
 
 `travely_widget_api_origin` muudab Travely API aadressi (vaikimisi `https://travely.ee`). Ainult testimiseks.
 
@@ -512,20 +534,29 @@ add_filter( 'travely_widget_path_to_search', function ( $path, $language ) {
 
 ### Open Graph
 
-Когда кто-то делится ссылкой на тур со страницы результатов (ссылка вида `?path=/tour-search/tours/…`, которую дают кнопка «Поделиться» виджета и адресная строка браузера), Facebook и мессенджеры читают HTML страницы. JavaScript они не выполняют и внутрь iframe виджета не заглядывают, поэтому сами по себе показывают логотип сайта. Плагин добавляет в `<head>` страницы результатов теги Open Graph открытого отеля:
+Когда кто-то делится ссылкой на тур со страницы результатов, Facebook и мессенджеры читают HTML страницы. JavaScript они не выполняют и внутрь iframe виджета не заглядывают, поэтому сами по себе показывают логотип сайта. Плагин добавляет в `<head>` страницы результатов теги Open Graph открытого отеля, когда `?path` открывает один отель: карточку тура (`?path=/tour-search/tours/…`, по кнопке **«Поделиться туром»** или из адресной строки) или бест-тур, которым поделились кнопкой **«Поделиться туром»**. Ссылка, скопированная из адресной строки на странице бест-тура, отель не содержит, и тегов у неё не будет.
+
+Теги:
 
 - `og:title` — название отеля, звёзды, курорт и страна, например `Sunrise Remal Beach 5* — Шарм-Эль-Шейх, Египет`;
 - `og:description` — первое предложение описания отеля, до 160 символов;
-- `og:image` — главное фото отеля;
+- `og:image` — главное фото отеля (его широкая версия, если она есть), плюс `og:image:width` и `og:image:height`, если размер удалось прочитать;
 - `og:url`, `og:type`, `og:site_name`.
 
-Тексты — на языке виджета этой страницы. Данные отеля берутся из публичного API Travely и кэшируются на месяц для каждого отеля и языка. Если API недоступен, страница выводится как раньше, а запрос повторяется через 10 минут. Цены и дат нет: цены меняются каждый день, а Facebook кэширует превью.
+Тексты — на языке виджета этой страницы. Данные отеля берутся из публичного API Travely и кэшируются на месяц для каждого отеля и языка. Если теги собрать не удалось, страница выводится как раньше (теги других плагинов остаются), а плагин пробует снова позже:
+
+- API Travely не ответил (нет соединения или таймаут): 10 минут новые отели не запрашиваются на всём сайте; у уже закэшированных отелей теги остаются;
+- API ответил ошибкой или отель не опубликован: при следующем заходе;
+- у отеля нет названия или пригодного главного фото: через 10 минут;
+- за текущую минуту уже запрошено больше 30 отелей, которых нет в кэше: в следующую минуту.
+
+Если при сборке тегов не ответил сервер фотографий, теги собираются заново через 10 минут. Цен и дат нет: цены меняются каждый день, а Facebook кэширует превью.
 
 Только на этих страницах заменяются теги Open Graph, которые выводят в `wp_head` другие плагины (Yoast SEO, Rank Math и другие). Остальные страницы не меняются. Теги, прописанные в шаблоне темы мимо `wp_head`, не заменяются.
 
-Настройка `Open Graph tags` в **Settings -> Travely Widget** отключает это. По умолчанию включена.
+Настройка `Open Graph tags` в **Настройки -> Travely Widget** отключает это. По умолчанию включена.
 
-Facebook кэширует превью. После обновления плагина откройте уже опубликованную ссылку в [Sharing Debugger](https://developers.facebook.com/tools/debug/) и нажмите **Scrape Again**.
+Facebook кэширует превью. После обновления плагина или если ссылкой поделились, когда теги не удалось собрать, откройте её в [Sharing Debugger](https://developers.facebook.com/tools/debug/) и нажмите **Scrape Again**.
 
 Фильтры:
 
@@ -542,5 +573,7 @@ add_filter( 'travely_widget_open_graph_tags', function ( $tags, $hotel, $hotel_i
     return $tags;
 }, 10, 4 );
 ```
+
+С фильтром `travely_widget_enable_open_graph` плагин не видит атрибут `language` виджета, поэтому язык определяется как при `language="auto"`.
 
 `travely_widget_api_origin` меняет адрес API Travely (по умолчанию `https://travely.ee`). Только для тестов.
