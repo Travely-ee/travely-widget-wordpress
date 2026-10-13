@@ -41,6 +41,19 @@ class Travely_Widget_Open_Graph {
     const API_DOWN_KEY = 'travely_widget_og_v1_api_down';
 
     /**
+     * Site-wide transient counting API lookups in the current minute.
+     */
+    const BUDGET_KEY = 'travely_widget_og_v1_budget';
+
+    /**
+     * Uncached hotel lookups allowed per minute for the whole site.
+     *
+     * The hotel id comes from the visitor's URL, so this bounds the outgoing
+     * requests a crawl of random ids can cause.
+     */
+    const LOOKUPS_PER_MINUTE = 30;
+
+    /**
      * How long a failed lookup is remembered, in seconds.
      */
     const FAILURE_TTL = 600;
@@ -340,11 +353,15 @@ class Travely_Widget_Open_Graph {
     /**
      * Get the hotel preview from the cache or the Travely API.
      *
-     * A complete preview is kept for a month. A preview built while the media
-     * server did not answer, and every failure, is kept for FAILURE_TTL.
-     * Failures that concern the API as a whole are kept once for the whole
-     * site, so an outage costs one timeout per FAILURE_TTL and not one per
-     * hotel.
+     * The hotel id comes from the visitor's URL, so only entries for hotels
+     * the API knows are stored per id, which bounds them by the catalog:
+     * - a complete preview is kept for a month;
+     * - a preview built while the media server did not answer, and a known
+     *   hotel without a usable photo, are kept for FAILURE_TTL;
+     * - unknown hotels and API errors are not stored per id;
+     * - a network failure is kept once for the whole site, so an outage costs
+     *   one timeout per FAILURE_TTL and not one per hotel.
+     * Uncached lookups are limited to LOOKUPS_PER_MINUTE for the whole site.
      *
      * @since 1.2.0
      * @param int    $hotel_id Travely hotel id.
@@ -373,14 +390,20 @@ class Travely_Widget_Open_Graph {
             return array();
         }
 
+        if ( ! self::take_lookup_budget() ) {
+            self::log( sprintf( 'hotel %d (%s) skipped, more than %d lookups in this minute', $hotel_id, $language, self::LOOKUPS_PER_MINUTE ) );
+
+            return array();
+        }
+
         $preview = $this->fetch_preview( $hotel_id, $language );
 
         if ( empty( $preview['ok'] ) ) {
             self::log( sprintf( 'hotel %d (%s): %s', $hotel_id, $language, $preview['reason'] ) );
 
-            if ( ! empty( $preview['api_down'] ) ) {
+            if ( 'site' === $preview['scope'] ) {
                 set_transient( self::API_DOWN_KEY, $preview['reason'], self::FAILURE_TTL );
-            } else {
+            } elseif ( 'hotel' === $preview['scope'] ) {
                 set_transient( $key, array( 'ok' => false, 'reason' => $preview['reason'] ), self::FAILURE_TTL );
             }
 
@@ -418,18 +441,21 @@ class Travely_Widget_Open_Graph {
         );
 
         if ( is_wp_error( $response ) ) {
-            return self::failure( sprintf( 'GET %s failed: %s', $url, $response->get_error_message() ), true );
+            // A network failure does not depend on the hotel id, so it cannot
+            // be caused by choosing one.
+            return self::failure( sprintf( 'GET %s failed: %s', $url, $response->get_error_message() ), 'site' );
         }
 
         $status = (int) wp_remote_retrieve_response_code( $response );
 
         if ( 404 === $status ) {
-            // Hidden hotel, fewer than five photos, or a hidden country.
-            return self::failure( sprintf( 'GET %s returned HTTP 404, the hotel is not published', $url ), false );
+            // Hidden hotel, fewer than five photos, a hidden country, or an id
+            // that does not exist.
+            return self::failure( sprintf( 'GET %s returned HTTP 404, the hotel is not published', $url ), 'request' );
         }
 
         if ( 200 !== $status ) {
-            return self::failure( sprintf( 'GET %s returned HTTP %d', $url, $status ), true );
+            return self::failure( sprintf( 'GET %s returned HTTP %d', $url, $status ), 'request' );
         }
 
         $raw  = wp_remote_retrieve_body( $response );
@@ -445,7 +471,7 @@ class Travely_Widget_Open_Graph {
                     json_last_error_msg(),
                     self::snippet( $raw )
                 ),
-                true
+                'request'
             );
         }
 
@@ -460,14 +486,14 @@ class Travely_Widget_Open_Graph {
         $image = self::text_at( $data, array( 'hotel', 'preview', 'url' ) );
 
         if ( '' === $hotel['name'] || ! preg_match( '#^https?://#i', $image ) ) {
-            return self::failure( sprintf( 'GET %s has no hotel name or main photo URL', $url ), false );
+            return self::failure( sprintf( 'GET %s has no hotel name or main photo URL', $url ), 'hotel' );
         }
 
         $picked = $this->pick_image( $image );
 
         if ( null === $picked ) {
             // A broken or rejected image would be worse than the site logo.
-            return self::failure( sprintf( 'no usable image for main photo %s', $image ), false );
+            return self::failure( sprintf( 'no usable image for main photo %s', $image ), 'hotel' );
         }
 
         return array(
@@ -894,16 +920,48 @@ class Travely_Widget_Open_Graph {
      * Build a failed lookup.
      *
      * @since 1.2.0
-     * @param string $reason   What went wrong, for the debug log and the cached entry.
-     * @param bool   $api_down Whether the failure concerns the API as a whole, not this hotel.
+     * @param string $reason What went wrong, for the debug log and the cached entry.
+     * @param string $scope  What the failure is remembered for: 'site' (the API
+     *                       did not answer), 'hotel' (a hotel the API knows) or
+     *                       'request' (nothing is stored).
      * @return array
      */
-    private static function failure( $reason, $api_down ) {
+    private static function failure( $reason, $scope ) {
         return array(
-            'ok'       => false,
-            'reason'   => $reason,
-            'api_down' => $api_down,
+            'ok'     => false,
+            'reason' => $reason,
+            'scope'  => $scope,
         );
+    }
+
+    /**
+     * Count one uncached lookup against the per-minute limit of the site.
+     *
+     * The count is approximate under concurrent requests, which is enough to
+     * bound the load.
+     *
+     * @since 1.2.0
+     * @return bool Whether the lookup may run.
+     */
+    private static function take_lookup_budget() {
+        $minute = (int) floor( time() / 60 );
+        $budget = get_transient( self::BUDGET_KEY );
+
+        if ( ! is_array( $budget ) || ! isset( $budget['minute'], $budget['count'] ) || (int) $budget['minute'] !== $minute ) {
+            $budget = array(
+                'minute' => $minute,
+                'count'  => 0,
+            );
+        }
+
+        if ( $budget['count'] >= self::LOOKUPS_PER_MINUTE ) {
+            return false;
+        }
+
+        $budget['count']++;
+        set_transient( self::BUDGET_KEY, $budget, 2 * MINUTE_IN_SECONDS );
+
+        return true;
     }
 
     /**
